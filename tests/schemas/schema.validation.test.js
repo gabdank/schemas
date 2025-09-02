@@ -4,26 +4,33 @@ const fs = require('fs');
 const path = require('path');
 
 // Configure AJV for testing with custom keywords
-const ajv = new Ajv({ 
-  strict: false, 
+const ajv = new Ajv({
+  strict: false,
   allErrors: true,
   allowUnionTypes: true,
   validateFormats: false,
-  loadSchema: false
+  loadSchema: false,
 });
 addFormats(ajv);
 
 // Add custom keywords used in IGVFD-style schemas
 const customKeywords = [
-  'mixinProperties', 'linkTo', 'linkSubmitsFor', 'permission', 
-  'serverDefault', 'requestMethod', 'uniqueKey', 'comment',
-  'rdfs:subPropertyOf', 'accessionType'
+  'mixinProperties',
+  'linkTo',
+  'linkSubmitsFor',
+  'permission',
+  'serverDefault',
+  'requestMethod',
+  'uniqueKey',
+  'comment',
+  'rdfs:subPropertyOf',
+  'accessionType',
 ];
 
-customKeywords.forEach(keyword => {
-  ajv.addKeyword({ 
-    keyword, 
-    compile: () => () => true 
+customKeywords.forEach((keyword) => {
+  ajv.addKeyword({
+    keyword,
+    compile: () => () => true,
   });
 });
 

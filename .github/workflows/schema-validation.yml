@@ -26,14 +26,8 @@ jobs:
       - name: Lint code formatting
         run: npm run lint
 
-      - name: Validate schema files
-        run: npm run validate:schemas
-
-      - name: Run Jest tests
+      - name: Run Jest tests (includes schema validation)
         run: npm test
-
-      - name: Validate example data
-        run: npm run validate:examples
 
       - name: Generate coverage report
         run: npm run test:coverage
