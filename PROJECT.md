@@ -305,21 +305,32 @@ Deployment:  ░░░░░░░░░░  0%
 # Clone and setup
 git clone https://github.com/gabdank/schemas
 cd schemas
+npm install
 
-# Validate schemas (future)
-# ajv validate --spec=draft2020 schemas/Donor.json
-# ajv validate --spec=draft2020 schemas/Biosample.json
+# Run all tests
+npm test
 
-# Test schemas against example data (future)
-# ajv test --spec=draft2020 schemas/Donor.json examples/donor-example.json
+# Validate all schemas
+npm run validate
+
+# Validate specific schema types
+npm run validate:schemas          # Self-validate schemas
+npm run validate:examples        # Test example data
+
+# Development
+npm run test:watch               # Watch mode for development
+npm run test:coverage           # Generate coverage report
+npm run lint                    # Check code formatting
+npm run lint:fix               # Auto-fix formatting
 ```
 
-### Development Tools
-```bash
-# Required for schema development
-# JSON Schema validator: npm install -g ajv-cli
-# Schema linting: npm install -g @apidevtools/json-schema-ref-parser
-```
+### Testing Framework
+**Technologies:** AJV + Jest + Husky + Prettier
+- **Schema Validation:** AJV with JSON Schema draft 2020-12 support
+- **Unit Testing:** Jest for comprehensive test suites
+- **Pre-commit Hooks:** Husky + lint-staged for automatic validation
+- **Code Formatting:** Prettier for consistent JSON formatting
+- **CI/CD:** GitHub Actions for automated testing on push/PR
 
 ---
 
@@ -355,16 +366,18 @@ cd schemas
 ## 🎯 Next Actions
 
 ### Immediate (This Week)
-- [ ] Complete PROJECT.md updates with schema establishment plan
-- [ ] Commit PROJECT.md changes to main branch
-- [ ] Push changes to GitHub remote
-- [ ] Create feature/core-schemas branch for schema implementation
+- [x] Complete PROJECT.md updates with schema establishment plan
+- [x] Commit PROJECT.md changes to main branch
+- [x] Push changes to GitHub remote
+- [x] Create feature/core-schemas branch for schema implementation
 
 ### Short Term (Next 2 Weeks)
-- [ ] Implement Donor.json schema based on IGVFD patterns
-- [ ] Implement Biosample.json schema with biological validation rules
-- [ ] Create initial mixins for reusable schema components
-- [ ] Set up basic schema validation workflow
+- [x] Implement Donor.json schema based on IGVFD patterns
+- [x] Implement Biosample.json schema with biological validation rules
+- [x] Create initial mixins for reusable schema components
+- [x] Set up comprehensive schema validation workflow with testing
+- [ ] Merge core schemas to main branch
+- [ ] Begin concrete schema implementations (e.g., HumanDonor, specific biosample types)
 
 ### Long Term (Next Month)  
 - [ ] Complete schema validation and testing framework

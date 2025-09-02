@@ -1,0 +1,6 @@
+{
+  "lab": "research-lab",
+  "donors": ["donor-123"],
+  "sample_terms": ["UBERON:0002369"],
+  "description": "Primary tissue sample from liver"
+}

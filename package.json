@@ -1,0 +1,54 @@
+{
+  "name": "database-schemas",
+  "version": "1.0.0",
+  "description": "JSON Schema definitions for biological database entities",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "validate": "npm run validate:schemas && npm run validate:examples",
+    "validate:schemas": "ajv validate --spec=draft2020 -s schemas/mixins.json && ajv validate --spec=draft2020 -s schemas/User.json && ajv validate --spec=draft2020 -s schemas/Donor.json && ajv validate --spec=draft2020 -s schemas/Biosample.json",
+    "validate:examples": "npm run validate:user-examples && npm run validate:donor-examples && npm run validate:biosample-examples",
+    "validate:user-examples": "ajv validate --spec=draft2020 -s schemas/User.json -d 'tests/examples/user/*.json'",
+    "validate:donor-examples": "ajv validate --spec=draft2020 -s schemas/Donor.json -d 'tests/examples/donor/*.json'",
+    "validate:biosample-examples": "ajv validate --spec=draft2020 -s schemas/Biosample.json -d 'tests/examples/biosample/*.json'",
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write .",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabdank/schemas.git"
+  },
+  "keywords": [
+    "json-schema",
+    "database",
+    "biological-data",
+    "validation"
+  ],
+  "author": "gabdank",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gabdank/schemas/issues"
+  },
+  "homepage": "https://github.com/gabdank/schemas#readme",
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-cli": "^5.0.0",
+    "ajv-formats": "^3.0.1",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10"
+  },
+  "lint-staged": {
+    "*.json": [
+      "prettier --write",
+      "npm run validate:schemas"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
+  }
+}

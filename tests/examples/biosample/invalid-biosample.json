@@ -1,0 +1,5 @@
+{
+  "lab": "test-lab",
+  "donors": ["donor1"],
+  "sample_terms": ["term1", "term2"]
+}
