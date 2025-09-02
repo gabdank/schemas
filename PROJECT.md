@@ -1,109 +1,128 @@
-# Project Plan: schemas
+# Project Plan: Database Schemas
 
 ## Project Metadata
 - **Created:** September 2, 2025
-- **Last Updated:** September 2, 2025
+- **Last Updated:** September 2, 2025 (Schema establishment plan)
 - **Version:** 1.0.0
 - **Repository:** https://github.com/gabdank/schemas
-- **Claude Project:** lattice-db-old
+- **Claude Project:** Database Schema Establishment
 
 ---
 
 ## 🎯 Project Overview
 
 ### Objective
-[Clear, concise project goal]
+Establish comprehensive JSON Schema definitions for database entities, starting with core biological data types: Donor and Biosample schemas.
 
 ### Scope
 - **In Scope:** 
+  - Donor.json schema definition with modern JSON Schema draft 2020-12
+  - Biosample.json schema definition with advanced validation rules
+  - Schema versioning and migration strategy
+  - Integration with existing biological data standards
 - **Out of Scope:** 
+  - Database implementation
+  - API endpoints
+  - User interface components
 - **Success Criteria:** 
+  - Complete Donor.json and Biosample.json schemas with comprehensive validation
+  - Schema compatibility with biological research standards
+  - Proper version management and documentation
 
 ### Key Technologies
-- **Languages:** 
-- **Frameworks:** 
-- **Tools:** 
-- **APIs:** 
+- **Schema Standard:** JSON Schema draft 2020-12
+- **Reference Implementations:** IGVFD schemas, Lattice-DB schemas
+- **Validation:** JSON Schema validation rules
+- **Version Control:** Git-based schema versioning 
 
 ---
 
 ## 📁 Repository Structure
 
 ```
-project-root/
-├── PROJECT.md              # This document
-├── src/                    
-│   ├── components/         
-│   ├── utils/             
-│   └── schemas/           # JSON schema files
-├── docs/                  
-├── tests/                 
+schemas/
+├── PROJECT.md              # This document  
+├── schemas/                # Core schema definitions
+│   ├── Donor.json         # Donor entity schema (planned)
+│   ├── Biosample.json     # Biosample entity schema (planned)
+│   └── mixins/            # Reusable schema components (future)
+├── docs/                  # Schema documentation
+│   ├── schema-guide.md    # Schema usage guidelines (future)
+│   └── migration-log.md   # Schema change history (future)
+├── examples/              # Example data instances (future)
+├── tests/                 # Schema validation tests (future)
 └── .github/
-    └── workflows/         # GitHub Actions
+    └── workflows/         # CI/CD for schema validation
 ```
 
 ### Key Files for Claude Code
 | File Path | Purpose | Current Status |
 |-----------|---------|----------------|
-| `src/main.js` | Entry point | ⏳ Pending |
-| `src/schemas/` | Data schemas | ⏳ Pending |
-| `package.json` | Dependencies | ✅ Complete |
+| `schemas/Donor.json` | Core donor entity schema | ⏳ Planned |
+| `schemas/Biosample.json` | Core biosample entity schema | ⏳ Planned |
+| `PROJECT.md` | Project documentation | 🔄 Updating |
 
 ---
 
 ## 🚀 Project Phases
 
-### Phase 1: Foundation Setup
+### Phase 1: Schema Design & Planning
 **Status:** 🟡 In Progress  
-**GitHub Branch:** `feature/foundation`  
-**Issues:** [#1](link), [#2](link)
+**GitHub Branch:** `main`  
+**Target Date:** September 2025
 
 **Objectives:**
-- Initialize project structure
-- Set up development environment
-- Create base configuration files
+- Analyze existing schema implementations (igvfd, lattice-db-old)
+- Define core schema requirements for Donor and Biosample entities
+- Establish schema versioning strategy
+- Update project documentation
 
 **Claude Code Context:**
 ```
-Focus on setting up the basic project structure. Prioritize:
-1. Package.json with essential dependencies
-2. Basic folder structure
-3. Configuration files (eslint, prettier, etc.)
+Focus on understanding existing schema patterns. Reference implementations:
+1. /Users/gabdank/Documents/Repositories/igvfd/src/igvfd/schemas/ (modern)
+2. /Users/gabdank/Documents/Repositories/lattice-db-old/encoded/src/encoded/schemas/ (legacy)
+Use JSON Schema draft 2020-12 for all new schemas.
 ```
 
-### Phase 2: Core Development
+### Phase 2: Core Schema Implementation
 **Status:** ⏳ Planned  
-**GitHub Branch:** `feature/core`  
-**Target Date:** [DATE]
+**GitHub Branch:** `feature/core-schemas`  
+**Target Date:** September 2025
 
 **Objectives:**
-- Implement core functionality
-- Create main components/modules
-- Set up initial data schemas
+- Implement Donor.json schema with comprehensive validation
+- Implement Biosample.json schema with biological entity requirements
+- Create mixin patterns for reusable schema components
+- Establish schema relationships and dependencies
 
 **Claude Code Context:**
 ```
-Implement the core business logic. Reference the schemas in /src/schemas/ 
-and ensure all components follow the established patterns from Phase 1.
+Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
+- Use JSON Schema draft 2020-12
+- Include mixinProperties for code reuse
+- Add comprehensive validation rules
+- Follow biological data standards
 ```
 
-### Phase 3: Integration & Testing
+### Phase 3: Schema Validation & Testing
 **Status:** ⏳ Planned  
-**GitHub Branch:** `feature/testing`
+**GitHub Branch:** `feature/validation`
 
 **Objectives:**
-- Write comprehensive tests
-- Integrate external APIs
-- Performance optimization
+- Create validation test suites for both schemas
+- Test schema compatibility with example data
+- Implement CI/CD validation workflows
+- Document schema usage patterns
 
-### Phase 4: Deployment & Documentation
+### Phase 4: Documentation & Integration
 **Status:** ⏳ Planned  
-**GitHub Branch:** `feature/deploy`
+**GitHub Branch:** `feature/docs`
 
 **Objectives:**
-- Production deployment setup
-- User documentation
-- Final testing and validation
+- Complete schema documentation
+- Create migration guides from legacy schemas
+- Prepare integration guidelines for database implementation
 
 ---
 
@@ -112,109 +131,100 @@ and ensure all components follow the established patterns from Phase 1.
 ### Current Sprint Tasks
 
 #### Active Tasks
-- [ ] **Task 1** - [Description] 
-  - **File:** `src/component.js`
-  - **Issue:** [#X](github-issue-link)
+- [ ] **PROJECT.md Updates** - Reflect schema establishment plan
+  - **File:** `PROJECT.md`
+  - **Status:** In Progress
   - **Assignee:** Claude Code
-  - **Notes:** [Any specific requirements]
+  - **Notes:** Document Donor and Biosample schema implementation plan
 
-- [ ] **Task 2** - [Description]
-  - **File:** `src/utils/helper.js`
-  - **Issue:** [#Y](github-issue-link)
-  - **Status:** In Review
+- [ ] **Schema Analysis** - Compare igvfd vs lattice-db-old patterns
+  - **Reference Files:** 
+    - `/Users/gabdank/Documents/Repositories/igvfd/src/igvfd/schemas/donor.json`
+    - `/Users/gabdank/Documents/Repositories/igvfd/src/igvfd/schemas/biosample.json`
+    - `/Users/gabdank/Documents/Repositories/lattice-db-old/encoded/src/encoded/schemas/`
+  - **Status:** Pending
 
 #### Completed Tasks
-- [x] **Initial Setup** - Repository initialization
-  - **Completed:** [DATE]
-  - **Commit:** [commit-hash]
+- [x] **Repository Initialization** - Initial commit and setup
+  - **Completed:** September 2, 2025
+  - **Commit:** 441a1f7
 
 ---
 
-## 🔄 JSON Schema Management
+## 🔄 Schema Development Plan
 
-### Schema Registry
-| Schema Name | Version | File Path | Last Updated | Changes |
-|-------------|---------|-----------|--------------|---------|
-| User | 1.0.0 | `src/schemas/user.v1.json` | [DATE] | Initial version |
-| Product | 1.2.0 | `src/schemas/product.v1.2.json` | [DATE] | Added price validation |
+### Target Schema Registry
+| Schema Name | Version | File Path | Status | Reference Implementation |
+|-------------|---------|-----------|--------|--------------------------|
+| Donor | 1.0.0 | `schemas/Donor.json` | ⏳ Planned | IGVFD donor.json (modern) |
+| Biosample | 1.0.0 | `schemas/Biosample.json` | ⏳ Planned | IGVFD biosample.json (modern) |
 
-### Schema Change Log
+### Schema Design Decisions
 
-#### User Schema v1.0.0 → v1.1.0
-**Date:** [DATE]  
-**Breaking Changes:** No  
-**Migration Required:** No
+#### Donor Schema Design Notes
+**Based on:** IGVFD `/profiles/donor.json` (JSON Schema draft 2020-12)  
+**Key Features:**
+- Abstract base schema for biological donors
+- Required fields: award, lab, taxa, sex
+- Supports external references (dbxrefs) with pattern validation
+- Includes phenotypic features and virtual donor support
+- Uses mixinProperties for code reuse
 
-**Changes:**
-- Added optional `avatar` field
-- Updated `email` validation regex
-- Added `createdAt` timestamp
+#### Biosample Schema Design Notes  
+**Based on:** IGVFD `/profiles/biosample.json` (JSON Schema draft 2020-12)  
+**Key Features:**
+- Inherits from Sample schema with biological-specific properties
+- Required fields: award, lab, sources, donors, sample_terms
+- Complex dependent schemas for validation rules
+- Age range support with units
+- Treatment and modification tracking
+- Cellular sub-pool identification
 
-**Files Affected:**
-- `src/schemas/user.v1.1.json`
-- `src/types/user.ts`
-- `src/components/UserProfile.js`
-
-**Claude Code Instructions:**
-```
-Update all user-related components to handle the new avatar field.
-Check UserProfile.js for avatar display logic implementation.
-```
-
-#### Product Schema v1.1.0 → v1.2.0
-**Date:** [DATE]  
-**Breaking Changes:** Yes  
-**Migration Required:** Yes
-
-**Changes:**
-- Changed `price` from string to number
-- Made `category` required
-- Deprecated `oldField`
-
-**Migration Notes:**
-```javascript
-// Convert existing data
-const migrateProduct = (oldProduct) => ({
-  ...oldProduct,
-  price: parseFloat(oldProduct.price),
-  category: oldProduct.category || 'uncategorized'
-});
-```
+### Reference Implementation Analysis
+| Feature | IGVFD Implementation | Lattice-DB Implementation | Our Choice |
+|---------|---------------------|---------------------------|------------|
+| Schema Version | JSON Schema 2020-12 | JSON Schema draft-04 | **2020-12** (modern) |
+| Validation Complexity | High (dependentSchemas) | Medium (basic validation) | **High** |
+| Mixin Pattern | Advanced mixinProperties | Basic mixinProperties | **Advanced** |
+| External References | Sophisticated pattern matching | Simple pattern validation | **Sophisticated** |
 
 ---
 
 ## 🧠 Claude Code Context & Instructions
 
 ### Current Development Focus
-**Phase:** [Current Phase]  
-**Priority:** [High/Medium/Low]  
-**Next Milestone:** [Description]
+**Phase:** Schema Design & Planning  
+**Priority:** High  
+**Next Milestone:** Complete Donor.json and Biosample.json schema implementation
 
 ### Key Context for Claude Code
 ```
 Project Context:
-- This is a [type] application focused on [primary purpose]
-- We're currently in [phase] working on [specific goals]
-- The codebase follows [architectural pattern/conventions]
-- Pay special attention to [specific areas of focus]
+- Database schema repository for biological research data
+- Currently in Phase 1: analyzing existing implementations and planning new schemas
+- Focus on creating modern, comprehensive JSON Schema definitions
+- Pay special attention to biological data validation requirements
 
 Current Priorities:
-1. [Priority 1 with file references]
-2. [Priority 2 with file references]
-3. [Priority 3 with file references]
+1. Complete PROJECT.md updates reflecting schema establishment plan
+2. Implement Donor.json schema based on IGVFD patterns (schemas/Donor.json)
+3. Implement Biosample.json schema with biological validation (schemas/Biosample.json)
 
-Code Standards:
-- Follow existing patterns in /src/components/
-- All new schemas go in /src/schemas/ with version numbers
-- Update this PROJECT.md when making structural changes
-- Use TypeScript interfaces that match JSON schemas
+Schema Standards:
+- Use JSON Schema draft 2020-12 exclusively
+- All schemas go in /schemas/ directory with capitalized names
+- Follow IGVFD advanced patterns over lattice-db-old legacy patterns
+- Include comprehensive validation rules and mixinProperties
+- Update this PROJECT.md when adding new schemas
+- Reference external ontologies and standards where applicable
 ```
 
 ### Architecture Decisions
 | Decision | Rationale | Impact | Files |
 |----------|-----------|--------|-------|
-| React + TypeScript | Type safety, component reusability | All frontend code | `src/components/` |
-| JSON Schema validation | Data integrity, API validation | Data layer | `src/schemas/` |
+| JSON Schema draft 2020-12 | Modern standard with advanced validation features | All schema definitions | `schemas/` |
+| IGVFD pattern adoption | Proven biological research schema patterns | Schema structure and validation | `schemas/Donor.json`, `schemas/Biosample.json` |
+| MixinProperties approach | Code reuse and consistency across schemas | Schema organization | Future `schemas/mixins/` |
 
 ---
 
@@ -280,26 +290,22 @@ Deployment:  ░░░░░░░░░░  0%
 ### Setup Instructions for Claude Code
 ```bash
 # Clone and setup
-git clone [REPO_URL]
-cd [PROJECT_NAME]
-npm install
+git clone https://github.com/gabdank/schemas
+cd schemas
 
-# Start development
-npm run dev
+# Validate schemas (future)
+# ajv validate --spec=draft2020 schemas/Donor.json
+# ajv validate --spec=draft2020 schemas/Biosample.json
 
-# Run tests
-npm test
-
-# Schema validation
-npm run validate-schemas
+# Test schemas against example data (future)
+# ajv test --spec=draft2020 schemas/Donor.json examples/donor-example.json
 ```
 
-### Environment Variables
+### Development Tools
 ```bash
-# Required for development
-API_KEY=your_api_key
-DATABASE_URL=your_db_url
-NODE_ENV=development
+# Required for schema development
+# JSON Schema validator: npm install -g ajv-cli
+# Schema linting: npm install -g @apidevtools/json-schema-ref-parser
 ```
 
 ---
@@ -321,33 +327,36 @@ NODE_ENV=development
 ## 📚 References & Resources
 
 ### Documentation Links
-- [API Documentation](link)
-- [Schema Specifications](link)
-- [Development Guidelines](link)
+- [JSON Schema Specification](https://json-schema.org/draft/2020-12/schema)
+- [IGVFD Schema Documentation](https://igvfd.org)
+- [Biological Ontology Standards](https://bioportal.bioontology.org)
 
 ### Claude Code Quick References
-- **Schema Location:** Always check `/src/schemas/` for latest versions
-- **Component Patterns:** Follow examples in `/src/components/BaseComponent.js`
-- **Testing:** Use patterns from `/tests/example.test.js`
+- **Schema Location:** Always check `/schemas/` for current schema definitions
+- **Reference Patterns:** Follow IGVFD examples in `/Users/gabdank/Documents/Repositories/igvfd/src/igvfd/schemas/`
+- **Legacy Reference:** Check lattice-db-old patterns in `/Users/gabdank/Documents/Repositories/lattice-db-old/encoded/src/encoded/schemas/`
+- **Schema Standard:** Use JSON Schema draft 2020-12 for all new schemas
 
 ---
 
 ## 🎯 Next Actions
 
 ### Immediate (This Week)
-- [ ] Complete [specific task]
-- [ ] Update [specific schema]
-- [ ] Review [specific component]
+- [ ] Complete PROJECT.md updates with schema establishment plan
+- [ ] Commit PROJECT.md changes to main branch
+- [ ] Push changes to GitHub remote
+- [ ] Create feature/core-schemas branch for schema implementation
 
 ### Short Term (Next 2 Weeks)
-- [ ] Implement [feature]
-- [ ] Migrate to [new version]
-- [ ] Optimize [performance area]
+- [ ] Implement Donor.json schema based on IGVFD patterns
+- [ ] Implement Biosample.json schema with biological validation rules
+- [ ] Create initial mixins for reusable schema components
+- [ ] Set up basic schema validation workflow
 
-### Long Term (Next Month)
-- [ ] [Major milestone]
-- [ ] [Integration goal]
-- [ ] [Deployment target]
+### Long Term (Next Month)  
+- [ ] Complete schema validation and testing framework
+- [ ] Create comprehensive schema documentation
+- [ ] Establish migration guidelines from legacy schemas
 
 ---
 
