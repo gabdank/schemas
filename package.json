@@ -15,7 +15,6 @@
     "validate:biosample-examples": "ajv validate --spec=draft2020 -s schemas/Biosample.json -d 'tests/examples/biosample/*.json'",
     "lint": "prettier --check .",
     "lint:fix": "prettier --write .",
-    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -41,14 +40,5 @@
     "prettier": "^3.3.3",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10"
-  },
-  "lint-staged": {
-    "*.json": [
-      "prettier --write",
-      "npm run validate:schemas"
-    ],
-    "*.md": [
-      "prettier --write"
-    ]
   }
 }
