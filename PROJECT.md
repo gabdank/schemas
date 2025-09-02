@@ -156,9 +156,10 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 ### Target Schema Registry
 | Schema Name | Version | File Path | Status | Reference Implementation |
 |-------------|---------|-----------|--------|--------------------------|
-| mixins | 1.0.0 | `schemas/mixins.json` | ⏳ Planned | IGVFD mixins.json (basic_item only) |
-| Donor | 1.0.0 | `schemas/Donor.json` | ⏳ Planned | IGVFD donor.json (modern) |
-| Biosample | 1.0.0 | `schemas/Biosample.json` | ⏳ Planned | IGVFD biosample.json (modern) |
+| mixins | 1.0.0 | `schemas/mixins.json` | ✅ Complete | IGVFD mixins.json (basic_item only) |
+| User | 1.0.0 | `schemas/User.json` | ✅ Complete | IGVFD user.json (simplified) |
+| Donor | 1.0.0 | `schemas/Donor.json` | ✅ Complete | IGVFD donor.json (simplified) |
+| Biosample | 1.0.0 | `schemas/Biosample.json` | ✅ Complete | IGVFD biosample.json (simplified) |
 
 ### Schema Design Decisions
 
@@ -167,6 +168,14 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 **Key Features:**
 - Core metadata properties (uuid, schema_version, aliases, creation_timestamp, submitted_by, submitter_comment, description, notes)
 - Reduces complexity while maintaining essential functionality
+
+#### User Schema Design Notes
+**Based on:** IGVFD `/profiles/user.json` (JSON Schema draft 2020-12)  
+**Simplified Properties:**
+- `basic_item` mixin for core metadata
+- `email` (required) - unique email address with validation
+- `first_name` (required) - user's given name
+- `last_name` (required) - user's family name
 
 #### Donor Schema Design Notes
 **Based on:** IGVFD `/profiles/donor.json` (JSON Schema draft 2020-12)  
