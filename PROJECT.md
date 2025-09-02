@@ -156,36 +156,40 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 ### Target Schema Registry
 | Schema Name | Version | File Path | Status | Reference Implementation |
 |-------------|---------|-----------|--------|--------------------------|
+| mixins | 1.0.0 | `schemas/mixins.json` | ⏳ Planned | IGVFD mixins.json (basic_item only) |
 | Donor | 1.0.0 | `schemas/Donor.json` | ⏳ Planned | IGVFD donor.json (modern) |
 | Biosample | 1.0.0 | `schemas/Biosample.json` | ⏳ Planned | IGVFD biosample.json (modern) |
 
 ### Schema Design Decisions
 
+#### Mixins Design Notes
+**Minimal Approach:** Only `basic_item` mixin included  
+**Key Features:**
+- Core metadata properties (uuid, schema_version, aliases, creation_timestamp, submitted_by, submitter_comment, description, notes)
+- Reduces complexity while maintaining essential functionality
+
 #### Donor Schema Design Notes
 **Based on:** IGVFD `/profiles/donor.json` (JSON Schema draft 2020-12)  
-**Key Features:**
-- Abstract base schema for biological donors
-- Required fields: award, lab, taxa, sex
-- Supports external references (dbxrefs) with pattern validation
-- Includes phenotypic features and virtual donor support
-- Uses mixinProperties for code reuse
+**Simplified Properties:**
+- `basic_item` mixin for core metadata
+- `lab` (required) - lab attribution
+- `taxa` (required) - species specification
 
 #### Biosample Schema Design Notes  
 **Based on:** IGVFD `/profiles/biosample.json` (JSON Schema draft 2020-12)  
-**Key Features:**
-- Inherits from Sample schema with biological-specific properties
-- Required fields: award, lab, sources, donors, sample_terms
-- Complex dependent schemas for validation rules
-- Age range support with units
-- Treatment and modification tracking
-- Cellular sub-pool identification
+**Simplified Properties:**
+- `basic_item` mixin for core metadata
+- `lab` (required) - lab attribution
+- `donors` (required) - links to donor entities
+- `sample_terms` (required) - ontology terms for biosample type
 
 ### Reference Implementation Analysis
 | Feature | IGVFD Implementation | Lattice-DB Implementation | Our Choice |
 |---------|---------------------|---------------------------|------------|
 | Schema Version | JSON Schema 2020-12 | JSON Schema draft-04 | **2020-12** (modern) |
-| Validation Complexity | High (dependentSchemas) | Medium (basic validation) | **High** |
-| Mixin Pattern | Advanced mixinProperties | Basic mixinProperties | **Advanced** |
+| Validation Complexity | High (dependentSchemas) | Medium (basic validation) | **Minimal** |
+| Mixin Pattern | Advanced mixinProperties | Basic mixinProperties | **Minimal** |
+| Property Count | Many properties | Medium properties | **Essential only** |
 | External References | Sophisticated pattern matching | Simple pattern validation | **Sophisticated** |
 
 ---

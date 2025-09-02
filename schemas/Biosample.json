@@ -1,0 +1,57 @@
+{
+    "title": "Biosample",
+    "$id": "/profiles/biosample.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Schema for submitting a specific biological sample.",
+    "type": "object",
+    "required": [
+        "lab",
+        "donors",
+        "sample_terms"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        }
+    ],
+    "properties": {
+        "lab": {
+            "title": "Lab",
+            "description": "Lab associated with the submission.",
+            "comment": "Required. See lab.json for list of available identifiers.",
+            "type": "string",
+            "linkTo": "Lab",
+            "linkSubmitsFor": true
+        },
+        "donors": {
+            "title": "Donors",
+            "description": "Donor(s) the sample was derived from.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Donor",
+                "description": "Donor.",
+                "comment": "See Donor.json for available identifiers.",
+                "type": "string",
+                "linkTo": "Donor"
+            }
+        },
+        "sample_terms": {
+            "title": "Sample Terms",
+            "description": "Ontology terms identifying a biosample.",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Sample Term",
+                "description": "Ontology term identifying a biosample.",
+                "type": "string",
+                "comment": "See sample_term.json for available identifiers.",
+                "linkTo": "SampleTerm"
+            }
+        }
+    }
+}
