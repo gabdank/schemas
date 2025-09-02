@@ -1,81 +1,81 @@
 {
-    "title": "Mixin Properties",
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "basic_item": {
-        "schema_version": {
-            "title": "Schema Version",
-            "description": "The version of the JSON schema that the server uses to validate the object.",
-            "comment": "Do not submit. The version used to validate the object is set by the server. The default should be set to the current version.",
-            "type": "string",
-            "pattern": "^\\d+(\\.\\d+)*$",
-            "permission": "admin_only",
-            "requestMethod": []
-        },
-        "uuid": {
-            "title": "UUID",
-            "description": "The unique identifier associated with every object.",
-            "comment": "Do not submit. The uuid is set by the server.",
-            "type": "string",
-            "format": "uuid",
-            "serverDefault": "uuid4",
-            "permission": "admin_only",
-            "requestMethod": "POST"
-        },
-        "notes": {
-            "title": "Notes",
-            "description": "Internal notes.",
-            "comment": "Do not submit. A place to keep information that does not have a place in the schema.",
-            "type": "string",
-            "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$",
-            "permission": "admin_only"
-        },
-        "aliases": {
-            "title": "Aliases",
-            "description": "Lab specific identifiers to reference an object.",
-            "comment": "The purpose of this field is to provide a link into the lab LIMS and to facilitate shared objects.",
-            "type": "array",
-            "minItems": 1,
-            "uniqueItems": true,
-            "items": {
-                "uniqueKey": "alias",
-                "title": "Lab Alias",
-                "description": "A lab specific identifier to reference an object.",
-                "comment": "Current convention is colon separated lab name and lab identifier. (e.g. john-doe:42).",
-                "type": "string",
-                "pattern": "^[a-zA-Z\\d_-]+:[a-zA-Z\\d_$.+!*,()'-]+(?:\\s[a-zA-Z\\d_$.+!*,()'-]+)*$"
-            }
-        },
-        "creation_timestamp": {
-            "rdfs:subPropertyOf": "dc:created",
-            "title": "Creation Timestamp",
-            "description": "The date the object was created.",
-            "comment": "Do not submit. The date the object is created is assigned by the server.",
-            "type": "string",
-            "format": "date-time",
-            "serverDefault": "now",
-            "permission": "admin_only"
-        },
-        "submitted_by": {
-            "rdfs:subPropertyOf": "dc:creator",
-            "title": "Submitted By",
-            "description": "The user who submitted the object.",
-            "comment": "Do not submit. The user that created the object is assigned by the server.",
-            "type": "string",
-            "linkTo": "User",
-            "serverDefault": "userid",
-            "permission": "admin_only"
-        },
-        "submitter_comment": {
-            "title": "Submitter Comment",
-            "description": "Additional information specified by the submitter to be displayed as a comment on the portal.",
-            "type": "string",
-            "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$"
-        },
-        "description": {
-            "title": "Description",
-            "description": "A plain text description of the object.",
-            "type": "string",
-            "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$"
-        }
+  "title": "Mixin Properties",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "basic_item": {
+    "schema_version": {
+      "title": "Schema Version",
+      "description": "The version of the JSON schema that the server uses to validate the object.",
+      "comment": "Do not submit. The version used to validate the object is set by the server. The default should be set to the current version.",
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d+)*$",
+      "permission": "admin_only",
+      "requestMethod": []
+    },
+    "uuid": {
+      "title": "UUID",
+      "description": "The unique identifier associated with every object.",
+      "comment": "Do not submit. The uuid is set by the server.",
+      "type": "string",
+      "format": "uuid",
+      "serverDefault": "uuid4",
+      "permission": "admin_only",
+      "requestMethod": "POST"
+    },
+    "notes": {
+      "title": "Notes",
+      "description": "Internal notes.",
+      "comment": "Do not submit. A place to keep information that does not have a place in the schema.",
+      "type": "string",
+      "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$",
+      "permission": "admin_only"
+    },
+    "aliases": {
+      "title": "Aliases",
+      "description": "Lab specific identifiers to reference an object.",
+      "comment": "The purpose of this field is to provide a link into the lab LIMS and to facilitate shared objects.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "uniqueKey": "alias",
+        "title": "Lab Alias",
+        "description": "A lab specific identifier to reference an object.",
+        "comment": "Current convention is colon separated lab name and lab identifier. (e.g. john-doe:42).",
+        "type": "string",
+        "pattern": "^[a-zA-Z\\d_-]+:[a-zA-Z\\d_$.+!*,()'-]+(?:\\s[a-zA-Z\\d_$.+!*,()'-]+)*$"
+      }
+    },
+    "creation_timestamp": {
+      "rdfs:subPropertyOf": "dc:created",
+      "title": "Creation Timestamp",
+      "description": "The date the object was created.",
+      "comment": "Do not submit. The date the object is created is assigned by the server.",
+      "type": "string",
+      "format": "date-time",
+      "serverDefault": "now",
+      "permission": "admin_only"
+    },
+    "submitted_by": {
+      "rdfs:subPropertyOf": "dc:creator",
+      "title": "Submitted By",
+      "description": "The user who submitted the object.",
+      "comment": "Do not submit. The user that created the object is assigned by the server.",
+      "type": "string",
+      "linkTo": "User",
+      "serverDefault": "userid",
+      "permission": "admin_only"
+    },
+    "submitter_comment": {
+      "title": "Submitter Comment",
+      "description": "Additional information specified by the submitter to be displayed as a comment on the portal.",
+      "type": "string",
+      "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$"
+    },
+    "description": {
+      "title": "Description",
+      "description": "A plain text description of the object.",
+      "type": "string",
+      "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$"
     }
+  }
 }

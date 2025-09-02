@@ -75,113 +75,131 @@ describe('Schema Validation Tests', () => {
   describe('Required Fields Validation', () => {
     test('User schema requires email, first_name, last_name', () => {
       const validate = ajv.compile(userSchema);
-      
+
       // Missing required fields should fail
       expect(validate({})).toBe(false);
       expect(validate({ email: 'test@example.com' })).toBe(false);
       expect(validate({ email: 'test@example.com', first_name: 'John' })).toBe(false);
-      
+
       // All required fields should pass
-      expect(validate({
-        email: 'test@example.com',
-        first_name: 'John',
-        last_name: 'Doe'
-      })).toBe(true);
+      expect(
+        validate({
+          email: 'test@example.com',
+          first_name: 'John',
+          last_name: 'Doe',
+        })
+      ).toBe(true);
     });
 
     test('Donor schema requires lab, taxa', () => {
       const validate = ajv.compile(donorSchema);
-      
+
       // Missing required fields should fail
       expect(validate({})).toBe(false);
       expect(validate({ lab: 'test-lab' })).toBe(false);
-      
+
       // All required fields should pass
-      expect(validate({
-        lab: 'test-lab',
-        taxa: 'Homo sapiens'
-      })).toBe(true);
+      expect(
+        validate({
+          lab: 'test-lab',
+          taxa: 'Homo sapiens',
+        })
+      ).toBe(true);
     });
 
     test('Biosample schema requires lab, donors, sample_terms', () => {
       const validate = ajv.compile(biosampleSchema);
-      
+
       // Missing required fields should fail
       expect(validate({})).toBe(false);
       expect(validate({ lab: 'test-lab' })).toBe(false);
       expect(validate({ lab: 'test-lab', donors: ['donor1'] })).toBe(false);
-      
+
       // All required fields should pass
-      expect(validate({
-        lab: 'test-lab',
-        donors: ['donor1'],
-        sample_terms: ['term1']
-      })).toBe(true);
+      expect(
+        validate({
+          lab: 'test-lab',
+          donors: ['donor1'],
+          sample_terms: ['term1'],
+        })
+      ).toBe(true);
     });
   });
 
   describe('Field Validation Rules', () => {
     test('User email should follow pattern validation', () => {
       const validate = ajv.compile(userSchema);
-      
+
       const validUser = {
         email: 'valid@example.com',
         first_name: 'John',
-        last_name: 'Doe'
+        last_name: 'Doe',
       };
-      
+
       const invalidUser = {
         email: 'INVALID@EXAMPLE.COM', // uppercase not allowed
         first_name: 'John',
-        last_name: 'Doe'
+        last_name: 'Doe',
       };
-      
+
       expect(validate(validUser)).toBe(true);
       expect(validate(invalidUser)).toBe(false);
     });
 
     test('Donor taxa should only accept valid species', () => {
       const validate = ajv.compile(donorSchema);
-      
-      expect(validate({
-        lab: 'test-lab',
-        taxa: 'Homo sapiens'
-      })).toBe(true);
-      
-      expect(validate({
-        lab: 'test-lab',
-        taxa: 'Mus musculus'
-      })).toBe(true);
-      
-      expect(validate({
-        lab: 'test-lab',
-        taxa: 'Invalid species'
-      })).toBe(false);
+
+      expect(
+        validate({
+          lab: 'test-lab',
+          taxa: 'Homo sapiens',
+        })
+      ).toBe(true);
+
+      expect(
+        validate({
+          lab: 'test-lab',
+          taxa: 'Mus musculus',
+        })
+      ).toBe(true);
+
+      expect(
+        validate({
+          lab: 'test-lab',
+          taxa: 'Invalid species',
+        })
+      ).toBe(false);
     });
 
     test('Biosample sample_terms should be array with exactly one item', () => {
       const validate = ajv.compile(biosampleSchema);
-      
+
       // Valid: exactly one sample term
-      expect(validate({
-        lab: 'test-lab',
-        donors: ['donor1'],
-        sample_terms: ['term1']
-      })).toBe(true);
-      
+      expect(
+        validate({
+          lab: 'test-lab',
+          donors: ['donor1'],
+          sample_terms: ['term1'],
+        })
+      ).toBe(true);
+
       // Invalid: empty array
-      expect(validate({
-        lab: 'test-lab',
-        donors: ['donor1'],
-        sample_terms: []
-      })).toBe(false);
-      
+      expect(
+        validate({
+          lab: 'test-lab',
+          donors: ['donor1'],
+          sample_terms: [],
+        })
+      ).toBe(false);
+
       // Invalid: multiple sample terms
-      expect(validate({
-        lab: 'test-lab',
-        donors: ['donor1'],
-        sample_terms: ['term1', 'term2']
-      })).toBe(false);
+      expect(
+        validate({
+          lab: 'test-lab',
+          donors: ['donor1'],
+          sample_terms: ['term1', 'term2'],
+        })
+      ).toBe(false);
     });
   });
 });

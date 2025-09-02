@@ -1,36 +1,30 @@
 {
-    "title": "Donor",
-    "$id": "/profiles/donor.json",
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "description": "Abstract schema for donors.",
-    "type": "object",
-    "required": [
-        "lab",
-        "taxa"
-    ],
-    "additionalProperties": false,
-    "mixinProperties": [
-        {
-            "$ref": "mixins.json#/basic_item"
-        }
-    ],
-    "properties": {
-        "lab": {
-            "title": "Lab",
-            "description": "Lab associated with the submission.",
-            "comment": "Required. See lab.json for list of available identifiers.",
-            "type": "string",
-            "linkTo": "Lab",
-            "linkSubmitsFor": true
-        },
-        "taxa": {
-            "title": "Taxa",
-            "type": "string",
-            "description": "The species of the organism.",
-            "enum": [
-                "Homo sapiens",
-                "Mus musculus"
-            ]
-        }
+  "title": "Donor",
+  "$id": "/profiles/donor.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Abstract schema for donors.",
+  "type": "object",
+  "required": ["lab", "taxa"],
+  "additionalProperties": false,
+  "mixinProperties": [
+    {
+      "$ref": "mixins.json#/basic_item"
     }
+  ],
+  "properties": {
+    "lab": {
+      "title": "Lab",
+      "description": "Lab associated with the submission.",
+      "comment": "Required. See lab.json for list of available identifiers.",
+      "type": "string",
+      "linkTo": "Lab",
+      "linkSubmitsFor": true
+    },
+    "taxa": {
+      "title": "Taxa",
+      "type": "string",
+      "description": "The species of the organism.",
+      "enum": ["Homo sapiens", "Mus musculus"]
+    }
+  }
 }
