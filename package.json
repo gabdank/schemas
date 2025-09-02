@@ -14,7 +14,7 @@
     "validate:donor-examples": "ajv validate --spec=draft2020 -s schemas/Donor.json -d 'tests/examples/donor/*.json'",
     "validate:biosample-examples": "ajv validate --spec=draft2020 -s schemas/Biosample.json -d 'tests/examples/biosample/*.json'",
     "lint": "prettier --check .",
-    "lint:fix": "prettier --write .",
+    "lint:fix": "prettier --write ."
   },
   "repository": {
     "type": "git",
