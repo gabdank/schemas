@@ -45,27 +45,38 @@ Establish comprehensive JSON Schema definitions for database entities, starting 
 
 ```
 schemas/
-├── PROJECT.md              # This document
-├── schemas/                # Core schema definitions
-│   ├── Donor.json         # Donor entity schema (planned)
-│   ├── Biosample.json     # Biosample entity schema (planned)
-│   └── mixins/            # Reusable schema components (future)
-├── docs/                  # Schema documentation
-│   ├── schema-guide.md    # Schema usage guidelines (future)
-│   └── migration-log.md   # Schema change history (future)
-├── examples/              # Example data instances (future)
-├── tests/                 # Schema validation tests (future)
+├── PROJECT.md                           # This document
+├── schemas/                             # Core schema definitions
+│   ├── mixins.json                     # Basic item mixin properties
+│   ├── User.json                       # User entity schema (concrete)
+│   ├── Donor.json                      # Donor entity schema (abstract)
+│   ├── Biosample.json                  # Biosample entity schema (abstract)
+│   ├── Tissue.json                     # Tissue sample schema (concrete)
+│   └── BiosampleOntologyTerm.json      # Ontology terms for biosamples
+├── tests/                              # Schema validation tests
+│   ├── schemas/                        # Schema structure tests
+│   │   └── schema.validation.test.js   # Jest test suite (20 tests)
+│   └── examples/                       # Example data validation tests
+│       ├── user/                       # User test data
+│       ├── donor/                      # Donor test data
+│       └── biosample/                  # Biosample test data
 └── .github/
-    └── workflows/         # CI/CD for schema validation
+    └── workflows/                      # CI/CD for schema validation
+        └── schema-validation.yml       # GitHub Actions workflow
 ```
 
 ### Key Files for Claude Code
 
-| File Path                | Purpose                      | Current Status |
-| ------------------------ | ---------------------------- | -------------- |
-| `schemas/Donor.json`     | Core donor entity schema     | ⏳ Planned     |
-| `schemas/Biosample.json` | Core biosample entity schema | ⏳ Planned     |
-| `PROJECT.md`             | Project documentation        | 🔄 Updating    |
+| File Path                            | Purpose                        | Current Status |
+| ------------------------------------ | ------------------------------ | -------------- |
+| `schemas/mixins.json`                | Basic item mixin properties    | ✅ Complete    |
+| `schemas/User.json`                  | User entity schema (concrete)  | ✅ Complete    |
+| `schemas/Donor.json`                 | Donor entity schema (abstract) | ✅ Complete    |
+| `schemas/Biosample.json`             | Biosample schema (abstract)    | ✅ Complete    |
+| `schemas/Tissue.json`                | Tissue sample schema (concrete)| ✅ Complete    |
+| `schemas/BiosampleOntologyTerm.json` | Ontology terms for samples     | ✅ Complete    |
+| `tests/schemas/schema.validation.test.js` | Jest test suite (20 tests) | ✅ Complete    |
+| `PROJECT.md`                         | Project documentation          | 🔄 Updating    |
 
 ---
 
@@ -143,24 +154,42 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 
 ## 📋 Detailed Task Breakdown
 
-### Current Sprint Tasks
+### Current Sprint Tasks - Sample Hierarchy Development
 
 #### Active Tasks
 
-- [ ] **PROJECT.md Updates** - Reflect schema establishment plan
-  - **File:** `PROJECT.md`
-  - **Status:** In Progress
+- [ ] **Sample Hierarchy Expansion** - Implement concrete sample types
+  - **Focus:** Create concrete implementations of abstract Biosample class
+  - **Next Targets:** PrimaryCell, Organoid, CellLine schemas
+  - **Status:** Planning
   - **Assignee:** Claude Code
-  - **Notes:** Document Donor and Biosample schema implementation plan
+  - **Notes:** Build on Tissue.json pattern for additional sample types
 
-- [ ] **Schema Analysis** - Compare igvfd vs lattice-db-old patterns
+- [ ] **Ontology Integration** - Expand ontology term support
   - **Reference Files:**
-    - `/Users/gabdank/Documents/Repositories/igvfd/src/igvfd/schemas/donor.json`
-    - `/Users/gabdank/Documents/Repositories/igvfd/src/igvfd/schemas/biosample.json`
-    - `/Users/gabdank/Documents/Repositories/lattice-db-old/encoded/src/encoded/schemas/`
-  - **Status:** Pending
+    - `/Users/gabdank/Documents/Repositories/igvfd/src/igvfd/schemas/ontology_term.json`
+    - `/Users/gabdank/Documents/Repositories/lattice-db-old/encoded/src/encoded/schemas/ontology_term.json`
+  - **Status:** BiosampleOntologyTerm complete, expand for other domains
+  - **Next:** Lab ontology terms, treatment terms
 
 #### Completed Tasks
+
+- [x] **Abstract Class System** - Donor and Biosample as abstract classes
+  - **Completed:** September 3, 2025
+  - **Files:** `schemas/Donor.json`, `schemas/Biosample.json`
+  - **Commit:** 4dcf390
+
+- [x] **Tissue Implementation** - First concrete sample type with inheritance
+  - **Completed:** September 3, 2025
+  - **Files:** `schemas/Tissue.json`
+  - **Features:** Abstract class inheritance, comprehensive validation
+  - **Commit:** 4dcf390
+
+- [x] **Ontology Foundation** - BiosampleOntologyTerm implementation
+  - **Completed:** September 3, 2025
+  - **Files:** `schemas/BiosampleOntologyTerm.json`
+  - **Integration:** Updated Biosample.json linkTo references
+  - **Commit:** 4dcf390
 
 - [x] **Repository Initialization** - Initial commit and setup
   - **Completed:** September 2, 2025
