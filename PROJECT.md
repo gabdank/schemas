@@ -172,14 +172,14 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 
 ### Target Schema Registry
 
-| Schema Name | Version | File Path                | Status      | Class Type | Reference Implementation            |
-| ----------- | ------- | ------------------------ | ----------- | ---------- | ----------------------------------- |
-| mixins      | 1.0.0   | `schemas/mixins.json`    | ✅ Complete | Mixin      | IGVFD mixins.json (basic_item only) |
-| User        | 1.0.0   | `schemas/User.json`      | ✅ Complete | Concrete   | IGVFD user.json (simplified)        |
-| Donor       | 1.0.0   | `schemas/Donor.json`     | ✅ Complete | Abstract   | IGVFD donor.json (simplified)       |
-| Biosample   | 1.0.0   | `schemas/Biosample.json` | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)   |
-| Tissue      | 1.0.0   | `schemas/Tissue.json`    | ✅ Complete | Concrete   | IGVFD + Lattice-DB tissue analysis  |
-| BiosampleOntologyTerm | 1.0.0 | `schemas/BiosampleOntologyTerm.json` | ✅ Complete | Concrete | IGVFD sample_term.json + ontology patterns |
+| Schema Name           | Version | File Path                            | Status      | Class Type | Reference Implementation                   |
+| --------------------- | ------- | ------------------------------------ | ----------- | ---------- | ------------------------------------------ |
+| mixins                | 1.0.0   | `schemas/mixins.json`                | ✅ Complete | Mixin      | IGVFD mixins.json (basic_item only)        |
+| User                  | 1.0.0   | `schemas/User.json`                  | ✅ Complete | Concrete   | IGVFD user.json (simplified)               |
+| Donor                 | 1.0.0   | `schemas/Donor.json`                 | ✅ Complete | Abstract   | IGVFD donor.json (simplified)              |
+| Biosample             | 1.0.0   | `schemas/Biosample.json`             | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)          |
+| Tissue                | 1.0.0   | `schemas/Tissue.json`                | ✅ Complete | Concrete   | IGVFD + Lattice-DB tissue analysis         |
+| BiosampleOntologyTerm | 1.0.0   | `schemas/BiosampleOntologyTerm.json` | ✅ Complete | Concrete   | IGVFD sample_term.json + ontology patterns |
 
 ### Schema Design Decisions
 
@@ -443,6 +443,7 @@ npm run lint:fix               # Auto-fix formatting
 ### Current Implementation Status
 
 **Completed Core Schemas:**
+
 - ✅ **User.json** - Concrete class (submittable objects)
 - ✅ **Donor.json** - Abstract class (no direct object submission)
 - ✅ **Biosample.json** - Abstract class (no direct object submission)
@@ -463,20 +464,22 @@ npm run lint:fix               # Auto-fix formatting
 **Tissue Schema Analysis & Proposal:**
 
 #### Schema Comparison
-| Property Category | IGVFD tissue.json | Lattice-DB tissue.json | Lattice-DB tissue_section.json | Proposed Tissue |
-|------------------|-------------------|----------------------|-------------------------------|-----------------|
-| **Core Identity** | award, lab, sources | biosample_ontology | derived_from, derivation_process | lab, derived_from, derivation_process |
-| **Biological Links** | donors, sample_terms | derived_from | derived_from | donors, sample_terms, derived_from |
-| **Preservation** | preservation_method | preservation_method | preservation_method | preservation_method |
-| **Timing** | pmi/pmi_units | death_to_preservation_interval | - | pmi/pmi_units |
-| **Spatial** | ccf_id, part_of | spatial_information | spatial_information, orientation | spatial_information, ccf_id |
-| **Processing** | pooled_from | derivation_process | derivation_process, thickness | derivation_process |
+
+| Property Category    | IGVFD tissue.json    | Lattice-DB tissue.json         | Lattice-DB tissue_section.json   | Proposed Tissue                       |
+| -------------------- | -------------------- | ------------------------------ | -------------------------------- | ------------------------------------- |
+| **Core Identity**    | award, lab, sources  | biosample_ontology             | derived_from, derivation_process | lab, derived_from, derivation_process |
+| **Biological Links** | donors, sample_terms | derived_from                   | derived_from                     | donors, sample_terms, derived_from    |
+| **Preservation**     | preservation_method  | preservation_method            | preservation_method              | preservation_method                   |
+| **Timing**           | pmi/pmi_units        | death_to_preservation_interval | -                                | pmi/pmi_units                         |
+| **Spatial**          | ccf_id, part_of      | spatial_information            | spatial_information, orientation | spatial_information, ccf_id           |
+| **Processing**       | pooled_from          | derivation_process             | derivation_process, thickness    | derivation_process                    |
 
 #### Proposed Tissue Schema Structure
 
 **Required Fields:** `lab`, `donors`, `sample_terms`, `derived_from`, `derivation_process`
 
 **MixinProperties:**
+
 ```json
 "mixinProperties": [
     {"$ref": "mixins.json#/basic_item"},
@@ -486,6 +489,7 @@ npm run lint:fix               # Auto-fix formatting
 ```
 
 **Essential Properties:**
+
 - `derived_from` - Links to Donor or other Tissue objects
 - `derivation_process` - Enum of extraction methods (biopsy, dissection, etc.)
 - `preservation_method` - Tissue preservation approach

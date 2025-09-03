@@ -149,8 +149,12 @@ describe('Schema Validation Tests', () => {
     });
 
     test('BiosampleOntologyTerm has correct pattern validations', () => {
-      expect(biosampleOntologyTermSchema.properties.term_id.pattern).toBe('^(UBERON|EFO|CL|CLO|NTR):[0-9]{2,8}$');
-      expect(biosampleOntologyTermSchema.properties.term_name.pattern).toBe('^(?![\\s\"\'])[\\S|\\s]*[^\\s\"\']$');
+      expect(biosampleOntologyTermSchema.properties.term_id.pattern).toBe(
+        '^(UBERON|EFO|CL|CLO|NTR):[0-9]{2,8}$'
+      );
+      expect(biosampleOntologyTermSchema.properties.term_name.pattern).toBe(
+        '^(?![\\s\"\'])[\\S|\\s]*[^\\s\"\']$'
+      );
     });
 
     test('Biosample schema links to BiosampleOntologyTerm', () => {
@@ -164,8 +168,12 @@ describe('Schema Validation Tests', () => {
     });
 
     test('Tissue schema has dependent validations', () => {
-      expect(tissueSchema.dependentSchemas.sample_procurement_interval.required).toContain('sample_procurement_interval_units');
-      expect(tissueSchema.dependentSchemas.sample_procurement_interval_units.required).toContain('sample_procurement_interval');
+      expect(tissueSchema.dependentSchemas.sample_procurement_interval.required).toContain(
+        'sample_procurement_interval_units'
+      );
+      expect(tissueSchema.dependentSchemas.sample_procurement_interval_units.required).toContain(
+        'sample_procurement_interval'
+      );
       expect(tissueSchema.dependentSchemas.thickness.required).toContain('thickness_units');
       expect(tissueSchema.dependentSchemas.thickness_units.required).toContain('thickness');
     });
