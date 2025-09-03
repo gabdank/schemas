@@ -212,6 +212,8 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 | BiosampleOntologyTerm | 1.0.0   | `schemas/BiosampleOntologyTerm.json` | ✅ Complete | Concrete   | IGVFD sample_term.json + ontology patterns |
 | Tissue                | 1.0.0   | `schemas/Tissue.json`                | ✅ Complete | Concrete   | IGVFD + Lattice-DB tissue + tissue_section |
 | PrimaryCell           | 1.0.0   | `schemas/PrimaryCell.json`           | ✅ Complete | Concrete   | IGVFD primary_cell.json (simplified)       |
+| InVitroSystem         | 1.0.0   | `schemas/InVitroSystem.json`         | 📋 Planned  | Concrete   | IGVFD in_vitro_system.json                 |
+| InVivoSystem          | 1.0.0   | `schemas/InVivoSystem.json`          | 📋 Planned  | Concrete   | IGVFD in_vivo_system.json                  |
 
 ### Schema Design Decisions
 
@@ -546,7 +548,11 @@ npm run lint:fix               # Auto-fix formatting
 
 **Completed Concrete Biosamples:**
 - ✅ **Tissue.json** - Inherited TissueSection properties, includes sample_procurement_interval
-- ✅ **PrimaryCell.json** - Basic cell culture schema, missing suspension properties
+- ✅ **PrimaryCell.json** - Basic cell culture schema
+
+**Planned Concrete Biosamples:**
+- 📋 **InVitroSystem.json** - In vitro biological system schema
+- 📋 **InVivoSystem.json** - In vivo biological system schema
 
 ### Missing Suspension Properties Analysis
 
