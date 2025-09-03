@@ -2,7 +2,7 @@
   "title": "Biosample",
   "$id": "/profiles/biosample.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Schema for submitting a specific biological sample.",
+  "description": "Abstract schema for biological samples.",
   "type": "object",
   "required": ["lab", "donors", "sample_terms"],
   "additionalProperties": false,
@@ -45,8 +45,8 @@
         "title": "Sample Term",
         "description": "Ontology term identifying a biosample.",
         "type": "string",
-        "comment": "See sample_term.json for available identifiers.",
-        "linkTo": "SampleTerm"
+        "comment": "See biosample_ontology_term.json for available identifiers.",
+        "linkTo": "BiosampleOntologyTerm"
       }
     }
   }

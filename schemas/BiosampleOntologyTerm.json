@@ -1,0 +1,40 @@
+{
+  "title": "Biosample Ontology Term",
+  "$id": "/profiles/biosample_ontology_term.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "An ontology term for biological sample classification.",
+  "type": "object",
+  "required": ["term_id", "term_name"],
+  "additionalProperties": false,
+  "mixinProperties": [
+    {
+      "$ref": "mixins.json#/basic_item"
+    }
+  ],
+  "properties": {
+    "term_id": {
+      "title": "Term ID",
+      "description": "An ontology identifier describing a biological sample.",
+      "type": "string",
+      "pattern": "^(UBERON|EFO|CL|CLO|NTR):[0-9]{2,8}$"
+    },
+    "term_name": {
+      "title": "Term Name",
+      "description": "Ontology term name describing a biological sample.",
+      "type": "string",
+      "pattern": "^(?![\\s\"'])[\\S|\\s]*[^\\s\"']$"
+    },
+    "dbxrefs": {
+      "title": "External References",
+      "description": "External identifiers for this ontology term.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "title": "External Identifier",
+        "description": "An identifier from external resource.",
+        "type": "string",
+        "pattern": "^(Cellosaurus:CVCL_\\w{4})$"
+      }
+    }
+  }
+}

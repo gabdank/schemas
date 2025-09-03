@@ -44,6 +44,8 @@ const mixinsSchema = loadSchema('mixins.json');
 const userSchema = loadSchema('User.json');
 const donorSchema = loadSchema('Donor.json');
 const biosampleSchema = loadSchema('Biosample.json');
+const tissueSchema = loadSchema('Tissue.json');
+const biosampleOntologyTermSchema = loadSchema('BiosampleOntologyTerm.json');
 
 describe('Schema Validation Tests', () => {
   describe('Schema Structure Validation', () => {
@@ -76,6 +78,23 @@ describe('Schema Validation Tests', () => {
       expect(biosampleSchema.required).toContain('donors');
       expect(biosampleSchema.required).toContain('sample_terms');
     });
+
+    test('Tissue.json should have required JSON Schema properties', () => {
+      expect(tissueSchema).toHaveProperty('$schema');
+      expect(tissueSchema).toHaveProperty('title');
+      expect(tissueSchema).toHaveProperty('type', 'object');
+      expect(tissueSchema.required).toContain('lab');
+      expect(tissueSchema.required).toContain('sample_terms');
+      expect(tissueSchema.required).toContain('donors');
+    });
+
+    test('BiosampleOntologyTerm.json should have required JSON Schema properties', () => {
+      expect(biosampleOntologyTermSchema).toHaveProperty('$schema');
+      expect(biosampleOntologyTermSchema).toHaveProperty('title');
+      expect(biosampleOntologyTermSchema).toHaveProperty('type', 'object');
+      expect(biosampleOntologyTermSchema.required).toContain('term_id');
+      expect(biosampleOntologyTermSchema.required).toContain('term_name');
+    });
   });
 
   describe('Schema Required Fields', () => {
@@ -89,6 +108,14 @@ describe('Schema Validation Tests', () => {
 
     test('Biosample schema has correct required fields array', () => {
       expect(biosampleSchema.required).toEqual(['lab', 'donors', 'sample_terms']);
+    });
+
+    test('Tissue schema has correct required fields array', () => {
+      expect(tissueSchema.required).toEqual(['lab', 'sample_terms', 'donors']);
+    });
+
+    test('BiosampleOntologyTerm schema has correct required fields array', () => {
+      expect(biosampleOntologyTermSchema.required).toEqual(['term_id', 'term_name']);
     });
   });
 
@@ -113,6 +140,34 @@ describe('Schema Validation Tests', () => {
       expect(userSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(donorSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(biosampleSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(tissueSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(biosampleOntologyTermSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+    });
+
+    test('Tissue schema inherits from abstract Biosample', () => {
+      expect(tissueSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
+    });
+
+    test('BiosampleOntologyTerm has correct pattern validations', () => {
+      expect(biosampleOntologyTermSchema.properties.term_id.pattern).toBe('^(UBERON|EFO|CL|CLO|NTR):[0-9]{2,8}$');
+      expect(biosampleOntologyTermSchema.properties.term_name.pattern).toBe('^(?![\\s\"\'])[\\S|\\s]*[^\\s\"\']$');
+    });
+
+    test('Biosample schema links to BiosampleOntologyTerm', () => {
+      expect(biosampleSchema.properties.sample_terms.items.linkTo).toBe('BiosampleOntologyTerm');
+    });
+
+    test('Tissue schema has orientation enum values', () => {
+      expect(tissueSchema.properties.orientation.enum).toContain('coronal');
+      expect(tissueSchema.properties.orientation.enum).toContain('sagittal');
+      expect(tissueSchema.properties.orientation.enum).toContain('transverse');
+    });
+
+    test('Tissue schema has dependent validations', () => {
+      expect(tissueSchema.dependentSchemas.sample_procurement_interval.required).toContain('sample_procurement_interval_units');
+      expect(tissueSchema.dependentSchemas.sample_procurement_interval_units.required).toContain('sample_procurement_interval');
+      expect(tissueSchema.dependentSchemas.thickness.required).toContain('thickness_units');
+      expect(tissueSchema.dependentSchemas.thickness_units.required).toContain('thickness');
     });
   });
 });

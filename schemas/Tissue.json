@@ -1,0 +1,80 @@
+{
+  "title": "Tissue",
+  "$id": "/profiles/tissue.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "A concrete tissue sample schema inheriting from abstract Biosample class.",
+  "type": "object",
+  "required": ["lab", "sample_terms", "donors"],
+  "additionalProperties": false,
+  "mixinProperties": [
+    {
+      "$ref": "mixins.json#/basic_item"
+    },
+    {
+      "$ref": "Biosample.json#/properties"
+    }
+  ],
+  "dependentSchemas": {
+    "sample_procurement_interval": {
+      "required": ["sample_procurement_interval_units"]
+    },
+    "sample_procurement_interval_units": {
+      "required": ["sample_procurement_interval"]
+    },
+    "thickness": {
+      "required": ["thickness_units"]
+    },
+    "thickness_units": {
+      "required": ["thickness"]
+    }
+  },
+  "properties": {
+    "spatial_information": {
+      "title": "Spatial Information",
+      "description": "Text about spatial information of the tissue.",
+      "type": "string"
+    },
+    "preservation_method": {
+      "title": "Preservation Method",
+      "description": "The method used to preserve the tissue sample.",
+      "type": "string",
+      "enum": ["cryopreservation", "flash-freezing", "fresh", "paraffin embedding", "OCT embedding"]
+    },
+    "sample_procurement_interval": {
+      "title": "Sample Procurement Interval",
+      "description": "Time passing from the moment of sample collection till the freezing or initiation of the experiment with the sample.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "sample_procurement_interval_units": {
+      "title": "Sample Procurement Interval Units",
+      "description": "The unit in which the sample procurement interval was reported.",
+      "type": "string",
+      "enum": ["second", "minute", "hour", "day", "week"]
+    },
+    "thickness": {
+      "title": "Thickness",
+      "description": "The thickness of the tissue sample.",
+      "type": "number",
+      "minimum": 0
+    },
+    "thickness_units": {
+      "title": "Thickness Units",
+      "description": "The unit of thickness measurement.",
+      "type": "string",
+      "enum": ["μm", "mm", "cm"]
+    },
+    "date_obtained": {
+      "title": "Date Obtained",
+      "description": "The date the tissue sample was collected.",
+      "type": "string",
+      "format": "date"
+    },
+    "orientation": {
+      "title": "Orientation",
+      "description": "The orientation of the tissue sample.",
+      "type": "string",
+      "enum": ["coronal", "lateral", "longitudinal", "sagittal", "transverse"]
+    }
+  }
+}
