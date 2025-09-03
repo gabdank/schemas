@@ -67,16 +67,16 @@ schemas/
 
 ### Key Files for Claude Code
 
-| File Path                            | Purpose                        | Current Status |
-| ------------------------------------ | ------------------------------ | -------------- |
-| `schemas/mixins.json`                | Basic item mixin properties    | ✅ Complete    |
-| `schemas/User.json`                  | User entity schema (concrete)  | ✅ Complete    |
-| `schemas/Donor.json`                 | Donor entity schema (abstract) | ✅ Complete    |
-| `schemas/Biosample.json`             | Biosample schema (abstract)    | ✅ Complete    |
-| `schemas/Tissue.json`                | Tissue sample schema (concrete)| ✅ Complete    |
-| `schemas/BiosampleOntologyTerm.json` | Ontology terms for samples     | ✅ Complete    |
-| `tests/schemas/schema.validation.test.js` | Jest test suite (20 tests) | ✅ Complete    |
-| `PROJECT.md`                         | Project documentation          | 🔄 Updating    |
+| File Path                                 | Purpose                         | Current Status |
+| ----------------------------------------- | ------------------------------- | -------------- |
+| `schemas/mixins.json`                     | Basic item mixin properties     | ✅ Complete    |
+| `schemas/User.json`                       | User entity schema (concrete)   | ✅ Complete    |
+| `schemas/Donor.json`                      | Donor entity schema (abstract)  | ✅ Complete    |
+| `schemas/Biosample.json`                  | Biosample schema (abstract)     | ✅ Complete    |
+| `schemas/Tissue.json`                     | Tissue sample schema (concrete) | ✅ Complete    |
+| `schemas/BiosampleOntologyTerm.json`      | Ontology terms for samples      | ✅ Complete    |
+| `tests/schemas/schema.validation.test.js` | Jest test suite (20 tests)      | ✅ Complete    |
+| `PROJECT.md`                              | Project documentation           | 🔄 Updating    |
 
 ---
 
