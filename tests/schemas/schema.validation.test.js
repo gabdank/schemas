@@ -46,6 +46,7 @@ const donorSchema = loadSchema('Donor.json');
 const biosampleSchema = loadSchema('Biosample.json');
 const tissueSchema = loadSchema('Tissue.json');
 const biosampleOntologyTermSchema = loadSchema('BiosampleOntologyTerm.json');
+const primaryCellSchema = loadSchema('PrimaryCell.json');
 
 describe('Schema Validation Tests', () => {
   describe('Schema Structure Validation', () => {
@@ -95,6 +96,15 @@ describe('Schema Validation Tests', () => {
       expect(biosampleOntologyTermSchema.required).toContain('term_id');
       expect(biosampleOntologyTermSchema.required).toContain('term_name');
     });
+
+    test('PrimaryCell.json should have required JSON Schema properties', () => {
+      expect(primaryCellSchema).toHaveProperty('$schema');
+      expect(primaryCellSchema).toHaveProperty('title');
+      expect(primaryCellSchema).toHaveProperty('type', 'object');
+      expect(primaryCellSchema.required).toContain('lab');
+      expect(primaryCellSchema.required).toContain('sample_terms');
+      expect(primaryCellSchema.required).toContain('donors');
+    });
   });
 
   describe('Schema Required Fields', () => {
@@ -116,6 +126,10 @@ describe('Schema Validation Tests', () => {
 
     test('BiosampleOntologyTerm schema has correct required fields array', () => {
       expect(biosampleOntologyTermSchema.required).toEqual(['term_id', 'term_name']);
+    });
+
+    test('PrimaryCell schema has correct required fields array', () => {
+      expect(primaryCellSchema.required).toEqual(['lab', 'sample_terms', 'donors']);
     });
   });
 
@@ -142,10 +156,20 @@ describe('Schema Validation Tests', () => {
       expect(biosampleSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(tissueSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(biosampleOntologyTermSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(primaryCellSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
     });
 
     test('Tissue schema inherits from abstract Biosample', () => {
       expect(tissueSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
+    });
+
+    test('PrimaryCell schema inherits from abstract Biosample', () => {
+      expect(primaryCellSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
+    });
+
+    test('PrimaryCell has passage_number with minimum validation', () => {
+      expect(primaryCellSchema.properties.passage_number.type).toBe('integer');
+      expect(primaryCellSchema.properties.passage_number.minimum).toBe(0);
     });
 
     test('BiosampleOntologyTerm has correct pattern validations', () => {
