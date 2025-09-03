@@ -51,18 +51,19 @@ schemas/
 │   ├── User.json                       # User entity schema (concrete)
 │   ├── Donor.json                      # Donor entity schema (abstract)
 │   ├── Biosample.json                  # Biosample entity schema (abstract)
+│   ├── BiosampleOntologyTerm.json      # Ontology terms for biosamples
 │   ├── Tissue.json                     # Tissue sample schema (concrete)
-│   └── BiosampleOntologyTerm.json      # Ontology terms for biosamples
+│   └── PrimaryCell.json                # Primary cell schema (concrete)
 ├── tests/                              # Schema validation tests
 │   ├── schemas/                        # Schema structure tests
-│   │   └── schema.validation.test.js   # Jest test suite (20 tests)
+│   │   └── schema.validation.test.js   # Jest test suite (24 tests)
 │   └── examples/                       # Example data validation tests
 │       ├── user/                       # User test data
 │       ├── donor/                      # Donor test data
 │       └── biosample/                  # Biosample test data
 └── .github/
     └── workflows/                      # CI/CD for schema validation
-        └── schema-validation.yml       # GitHub Actions workflow
+        └── schema-validation.yml       # Auto-formatting + validation workflow
 ```
 
 ### Key Files for Claude Code
@@ -73,9 +74,10 @@ schemas/
 | `schemas/User.json`                       | User entity schema (concrete)   | ✅ Complete    |
 | `schemas/Donor.json`                      | Donor entity schema (abstract)  | ✅ Complete    |
 | `schemas/Biosample.json`                  | Biosample schema (abstract)     | ✅ Complete    |
-| `schemas/Tissue.json`                     | Tissue sample schema (concrete) | ✅ Complete    |
 | `schemas/BiosampleOntologyTerm.json`      | Ontology terms for samples      | ✅ Complete    |
-| `tests/schemas/schema.validation.test.js` | Jest test suite (20 tests)      | ✅ Complete    |
+| `schemas/Tissue.json`                     | Tissue sample schema (concrete) | ✅ Complete    |
+| `schemas/PrimaryCell.json`                | Primary cell schema (concrete)  | ✅ Complete    |
+| `tests/schemas/schema.validation.test.js` | Jest test suite (24 tests)      | ✅ Complete    |
 | `PROJECT.md`                              | Project documentation           | 🔄 Updating    |
 
 ---
@@ -207,8 +209,9 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 | User                  | 1.0.0   | `schemas/User.json`                  | ✅ Complete | Concrete   | IGVFD user.json (simplified)               |
 | Donor                 | 1.0.0   | `schemas/Donor.json`                 | ✅ Complete | Abstract   | IGVFD donor.json (simplified)              |
 | Biosample             | 1.0.0   | `schemas/Biosample.json`             | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)          |
-| Tissue                | 1.0.0   | `schemas/Tissue.json`                | ✅ Complete | Concrete   | IGVFD + Lattice-DB tissue analysis         |
 | BiosampleOntologyTerm | 1.0.0   | `schemas/BiosampleOntologyTerm.json` | ✅ Complete | Concrete   | IGVFD sample_term.json + ontology patterns |
+| Tissue                | 1.0.0   | `schemas/Tissue.json`                | ✅ Complete | Concrete   | IGVFD + Lattice-DB tissue + tissue_section |
+| PrimaryCell           | 1.0.0   | `schemas/PrimaryCell.json`           | ✅ Complete | Concrete   | IGVFD primary_cell.json (simplified)       |
 
 ### Schema Design Decisions
 
@@ -351,14 +354,15 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Current Metrics
 
-- **Files:** 17 total, 6 schemas implemented
-- **Tests:** 20 passing / 20 total
+- **Files:** 18 total, 7 schemas implemented
+- **Tests:** 24 passing / 24 total
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
-- **Schema Versions:** 6 active schemas (mixins, User, Donor, Biosample, Tissue, BiosampleOntologyTerm)
+- **Schema Versions:** 7 active schemas (mixins, User, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell)
 
 ### Recent Activity
 
+- **September 3, 2025:** Implemented PrimaryCell.json schema with Biosample inheritance and GitHub Actions auto-formatting
 - **September 3, 2025:** Implemented BiosampleOntologyTerm.json and updated Biosample linkTo references
 - **September 3, 2025:** Implemented Tissue.json schema with abstract class inheritance from Biosample
 - **September 3, 2025:** Fixed GitHub Actions validation workflow and formatting issues
@@ -528,10 +532,48 @@ npm run lint:fix               # Auto-fix formatting
 
 #### Implementation Plan
 
-1. **Update Abstract Classes** - Add properties to Donor.json and Biosample.json for inheritance
-2. **Create Tissue.json** - Implement as concrete class with abstract class mixins
-3. **Update Tests** - Add comprehensive Tissue schema validation
-4. **Validate Integration** - Ensure proper mixin inheritance and property composition
+1. ✅ **Update Abstract Classes** - Add properties to Donor.json and Biosample.json for inheritance
+2. ✅ **Create Tissue.json** - Implement as concrete class with abstract class mixins
+3. ✅ **Create PrimaryCell.json** - Implement as concrete class inheriting from Biosample
+4. ✅ **Update Tests** - Add comprehensive schema validation (24 tests passing)
+5. ✅ **Validate Integration** - Ensure proper mixin inheritance and property composition
+
+---
+
+## 🔧 Phase 3: Suspension Properties & Mixin Refactoring
+
+### Current Implementation Analysis
+
+**Completed Concrete Biosamples:**
+- ✅ **Tissue.json** - Inherited TissueSection properties, includes sample_procurement_interval
+- ✅ **PrimaryCell.json** - Basic cell culture schema, missing suspension properties
+
+### Missing Suspension Properties Analysis
+
+**Properties from IGVFD suspension/primary_cell patterns:**
+- `suspension_type` - Type of cell suspension
+- `enrichment_factors` - Factors used for cell enrichment
+- `depletion_factors` - Factors used for cell depletion  
+- `enriched_cells` - Description of enriched cell populations
+- `depleted_cells` - Description of depleted cell populations
+- `sample_procurement_interval`/`sample_procurement_interval_units` - Time from collection to processing
+
+### Proposed Mixin Refactoring Strategy
+
+**Issue Identified:** Both Tissue.json and PrimaryCell.json currently implement `sample_procurement_interval` independently, suggesting this property belongs in the abstract Biosample class.
+
+**Refactoring Plan:**
+1. **Move to Abstract Biosample:** `sample_procurement_interval`/`sample_procurement_interval_units` 
+2. **Add Suspension Properties:** Suspension-specific properties to PrimaryCell.json
+3. **Validate Inheritance:** Ensure proper property composition via mixinProperties
+4. **Update Tests:** Comprehensive validation of refactored inheritance
+
+**Next Implementation Steps:**
+1. Analyze suspension properties from IGVFD schemas
+2. Identify which properties belong in abstract vs concrete classes
+3. Refactor Biosample.json to include shared timing properties
+4. Update concrete classes to remove duplicated properties
+5. Add suspension-specific properties to PrimaryCell.json
 
 ---
 
