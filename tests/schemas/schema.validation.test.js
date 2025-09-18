@@ -191,15 +191,117 @@ describe('Schema Validation Tests', () => {
       expect(tissueSchema.properties.orientation.enum).toContain('transverse');
     });
 
-    test('Tissue schema has dependent validations', () => {
-      expect(tissueSchema.dependentSchemas.sample_procurement_interval.required).toContain(
+    test('Biosample schema has sample procurement interval dependent validations', () => {
+      expect(biosampleSchema.dependentSchemas.sample_procurement_interval.required).toContain(
         'sample_procurement_interval_units'
       );
-      expect(tissueSchema.dependentSchemas.sample_procurement_interval_units.required).toContain(
+      expect(biosampleSchema.dependentSchemas.sample_procurement_interval_units.required).toContain(
         'sample_procurement_interval'
       );
+    });
+
+    test('Biosample schema has sample procurement interval properties', () => {
+      expect(biosampleSchema.properties.sample_procurement_interval.type).toBe('integer');
+      expect(biosampleSchema.properties.sample_procurement_interval.minimum).toBe(0);
+      expect(biosampleSchema.properties.sample_procurement_interval_units.type).toBe('string');
+      expect(biosampleSchema.properties.sample_procurement_interval_units.enum).toContain('hour');
+      expect(biosampleSchema.properties.sample_procurement_interval_units.enum).toContain('day');
+    });
+
+    test('Tissue schema has thickness dependent validations only', () => {
       expect(tissueSchema.dependentSchemas.thickness.required).toContain('thickness_units');
       expect(tissueSchema.dependentSchemas.thickness_units.required).toContain('thickness');
+      expect(tissueSchema.dependentSchemas.sample_procurement_interval).toBeUndefined();
+    });
+
+    test('Concrete schemas inherit sample procurement properties via mixinProperties', () => {
+      // Tissue inherits from Biosample which has sample_procurement_interval
+      expect(tissueSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
+      // PrimaryCell also inherits from Biosample
+      expect(primaryCellSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
+      // Direct properties should not exist in concrete schemas
+      expect(tissueSchema.properties.sample_procurement_interval).toBeUndefined();
+      expect(primaryCellSchema.properties.sample_procurement_interval).toBeUndefined();
+    });
+  });
+
+  describe('Example Data Structure Validation', () => {
+    const loadExample = (examplePath) => {
+      const fullPath = path.join(__dirname, '../examples', examplePath);
+      return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+    };
+
+    test('Valid tissue example has proper structure and inheritance properties', () => {
+      const validTissue = loadExample('tissue/valid-tissue.json');
+      
+      // Check inherited Biosample properties
+      expect(validTissue.lab).toBeDefined();
+      expect(validTissue.donors).toBeDefined();
+      expect(validTissue.sample_terms).toBeDefined();
+      expect(validTissue.sample_procurement_interval).toBeDefined();
+      expect(validTissue.sample_procurement_interval_units).toBeDefined();
+      
+      // Check tissue-specific properties
+      expect(validTissue.thickness).toBeDefined();
+      expect(validTissue.thickness_units).toBeDefined();
+      expect(validTissue.orientation).toBeDefined();
+      
+      // Verify dependent property pairing is correct
+      expect(validTissue.sample_procurement_interval).toBe(2);
+      expect(validTissue.sample_procurement_interval_units).toBe('hour');
+    });
+
+    test('Invalid tissue example missing required dependent property', () => {
+      const invalidTissue = loadExample('tissue/invalid-tissue.json');
+      
+      // Should have sample_procurement_interval but missing units
+      expect(invalidTissue.sample_procurement_interval).toBeDefined();
+      expect(invalidTissue.sample_procurement_interval_units).toBeUndefined();
+      
+      // This violates the dependentSchemas rule from Biosample
+    });
+
+    test('Valid primary cell example has proper structure and inheritance properties', () => {
+      const validPrimaryCell = loadExample('primary_cell/valid-primary-cell.json');
+      
+      // Check inherited Biosample properties
+      expect(validPrimaryCell.lab).toBeDefined();
+      expect(validPrimaryCell.donors).toBeDefined();
+      expect(validPrimaryCell.sample_terms).toBeDefined();
+      expect(validPrimaryCell.sample_procurement_interval).toBeDefined();
+      expect(validPrimaryCell.sample_procurement_interval_units).toBeDefined();
+      
+      // Check primary cell-specific properties
+      expect(validPrimaryCell.passage_number).toBeDefined();
+      
+      // Verify dependent property pairing is correct
+      expect(validPrimaryCell.sample_procurement_interval).toBe(1);
+      expect(validPrimaryCell.sample_procurement_interval_units).toBe('day');
+    });
+
+    test('Invalid primary cell example missing required dependent property', () => {
+      const invalidPrimaryCell = loadExample('primary_cell/invalid-primary-cell.json');
+      
+      // Should have units but missing sample_procurement_interval
+      expect(invalidPrimaryCell.sample_procurement_interval).toBeUndefined();
+      expect(invalidPrimaryCell.sample_procurement_interval_units).toBeDefined();
+      
+      // This violates the dependentSchemas rule from Biosample
+    });
+
+    test('Both tissue and primary cell inherit sample_procurement_interval properties', () => {
+      const validTissue = loadExample('tissue/valid-tissue.json');
+      const validPrimaryCell = loadExample('primary_cell/valid-primary-cell.json');
+      
+      // Both should have inherited the timing properties from Biosample
+      expect(validTissue.sample_procurement_interval).toBe(2);
+      expect(validTissue.sample_procurement_interval_units).toBe('hour');
+      expect(validPrimaryCell.sample_procurement_interval).toBe(1);
+      expect(validPrimaryCell.sample_procurement_interval_units).toBe('day');
+      
+      // Verify units are from valid enum values
+      expect(['second', 'minute', 'hour', 'day', 'week']).toContain(validTissue.sample_procurement_interval_units);
+      expect(['second', 'minute', 'hour', 'day', 'week']).toContain(validPrimaryCell.sample_procurement_interval_units);
     });
   });
 });

@@ -356,14 +356,16 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Current Metrics
 
-- **Files:** 18 total, 7 schemas implemented
-- **Tests:** 24 passing / 24 total
+- **Files:** 22 total, 7 schemas implemented, 4 example data files
+- **Tests:** 32 passing / 32 total (increased from 24)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
 - **Schema Versions:** 7 active schemas (mixins, User, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell)
+- **Example Data:** Tissue and PrimaryCell examples with inheritance validation
 
 ### Recent Activity
 
+- **September 18, 2025:** Completed sample_procurement_interval refactoring - moved properties to abstract Biosample class, enhanced test coverage to 32 tests, added inheritance validation with example data
 - **September 3, 2025:** Implemented PrimaryCell.json schema with Biosample inheritance and GitHub Actions auto-formatting
 - **September 3, 2025:** Implemented BiosampleOntologyTerm.json and updated Biosample linkTo references
 - **September 3, 2025:** Implemented Tissue.json schema with abstract class inheritance from Biosample
@@ -461,9 +463,11 @@ npm run lint:fix               # Auto-fix formatting
 - [x] Create initial mixins for reusable schema components
 - [x] Set up comprehensive schema validation workflow with testing
 - [x] Fix GitHub Actions validation workflow issues
-- [ ] Implement abstract class system (Donor and Biosample as abstract)
-- [ ] Plan and implement Tissue schema combining IGVFD and lattice-db patterns
-- [ ] Merge abstract classes and Tissue schema to main branch
+- [x] Implement abstract class system (Donor and Biosample as abstract)
+- [x] Plan and implement Tissue schema combining IGVFD and lattice-db patterns
+- [x] Merge abstract classes and Tissue schema to main branch
+- [x] **COMPLETED:** Refactor sample_procurement_interval properties to abstract Biosample class
+- [x] **COMPLETED:** Enhance test coverage with inheritance validation and example data
 
 ### Long Term (Next Month)
 
@@ -566,13 +570,13 @@ npm run lint:fix               # Auto-fix formatting
 
 ### Proposed Mixin Refactoring Strategy
 
-**Issue Identified:** Both Tissue.json and PrimaryCell.json currently implement `sample_procurement_interval` independently, suggesting this property belongs in the abstract Biosample class.
+**✅ COMPLETED REFACTORING:** `sample_procurement_interval` properties have been successfully moved to abstract Biosample class.
 
-**Refactoring Plan:**
-1. **Move to Abstract Biosample:** `sample_procurement_interval`/`sample_procurement_interval_units` 
-2. **Add Suspension Properties:** Suspension-specific properties to PrimaryCell.json
-3. **Validate Inheritance:** Ensure proper property composition via mixinProperties
-4. **Update Tests:** Comprehensive validation of refactored inheritance
+**Completed Changes:**
+1. **✅ Moved to Abstract Biosample:** `sample_procurement_interval`/`sample_procurement_interval_units` with dependentSchemas validation
+2. **✅ Enhanced Inheritance:** Both Tissue.json and PrimaryCell.json now inherit timing properties via mixinProperties
+3. **✅ Expanded Test Coverage:** Added comprehensive inheritance validation and example data tests (32 total tests)
+4. **✅ Example Data:** Created valid/invalid examples demonstrating proper dependent property usage
 
 **Next Implementation Steps:**
 1. Analyze suspension properties from IGVFD schemas

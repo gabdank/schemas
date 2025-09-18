@@ -1,0 +1,10 @@
+{
+  "lab": "jane-smith-lab",
+  "donors": ["DONOR456"],
+  "sample_terms": ["CL:0000057"],
+  "passage_number": 3,
+  "sample_procurement_interval": 1,
+  "sample_procurement_interval_units": "day",
+  "date_obtained": "2024-02-10",
+  "description": "Primary fibroblast cells isolated from skin biopsy"
+}

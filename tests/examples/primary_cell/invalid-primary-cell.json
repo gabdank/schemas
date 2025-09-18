@@ -1,0 +1,9 @@
+{
+  "lab": "jane-smith-lab",
+  "donors": ["DONOR456"],
+  "sample_terms": ["CL:0000057"],
+  "passage_number": 3,
+  "sample_procurement_interval_units": "day",
+  "date_obtained": "2024-02-10",
+  "description": "Invalid primary cell - has units but missing sample_procurement_interval value"
+}

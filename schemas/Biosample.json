@@ -11,6 +11,14 @@
       "$ref": "mixins.json#/basic_item"
     }
   ],
+  "dependentSchemas": {
+    "sample_procurement_interval": {
+      "required": ["sample_procurement_interval_units"]
+    },
+    "sample_procurement_interval_units": {
+      "required": ["sample_procurement_interval"]
+    }
+  },
   "properties": {
     "lab": {
       "title": "Lab",
@@ -48,6 +56,18 @@
         "comment": "See biosample_ontology_term.json for available identifiers.",
         "linkTo": "BiosampleOntologyTerm"
       }
+    },
+    "sample_procurement_interval": {
+      "title": "Sample Procurement Interval",
+      "description": "Time passing from the moment of sample collection till the freezing or initiation of the experiment with the sample.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "sample_procurement_interval_units": {
+      "title": "Sample Procurement Interval Units",
+      "description": "The unit in which the sample procurement interval was reported.",
+      "type": "string",
+      "enum": ["second", "minute", "hour", "day", "week"]
     }
   }
 }
