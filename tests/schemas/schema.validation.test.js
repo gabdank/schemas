@@ -153,11 +153,11 @@ describe('Schema Validation Tests', () => {
     });
 
     test('InVitroSystem schema has correct required fields array', () => {
-      expect(inVitroSystemSchema.required).toEqual(['lab', 'sample_terms', 'donors']);
+      expect(inVitroSystemSchema.required).toEqual(['lab', 'sample_terms', 'donors', 'classification']);
     });
 
     test('InVivoSystem schema has correct required fields array', () => {
-      expect(inVivoSystemSchema.required).toEqual(['lab', 'sample_terms', 'donors']);
+      expect(inVivoSystemSchema.required).toEqual(['lab', 'sample_terms', 'donors', 'classification']);
     });
   });
 
@@ -262,14 +262,31 @@ describe('Schema Validation Tests', () => {
       expect(primaryCellSchema.properties.sample_procurement_interval).toBeUndefined();
     });
 
-    test('InVitro and InVivo systems have pure inheritance with empty properties', () => {
+    test('InVitroSystem has classification enum with correct values', () => {
+      expect(inVitroSystemSchema.properties.classification.type).toBe('string');
+      expect(inVitroSystemSchema.properties.classification.enum).toEqual([
+        'organoid', 'gastruloid', 'embryoid', 'immortalized cell line'
+      ]);
+    });
+
+    test('InVivoSystem has classification enum and optional host property', () => {
+      expect(inVivoSystemSchema.properties.classification.type).toBe('string');
+      expect(inVivoSystemSchema.properties.classification.enum).toEqual(['xenograft']);
+      expect(inVivoSystemSchema.properties.host.type).toBe('string');
+      expect(inVivoSystemSchema.properties.host.linkTo).toBe('Donor');
+      // Host should be optional (not in required array)
+      expect(inVivoSystemSchema.required).not.toContain('host');
+    });
+
+    test('InVitro and InVivo systems inherit from Biosample with additional properties', () => {
       // Both schemas inherit from Biosample
       expect(inVitroSystemSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
       expect(inVivoSystemSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
-      // Properties object should be empty (pure inheritance)
-      expect(Object.keys(inVitroSystemSchema.properties)).toHaveLength(0);
-      expect(Object.keys(inVivoSystemSchema.properties)).toHaveLength(0);
-      // Should inherit all Biosample properties via mixinProperties
+      // Properties object should now contain classification (no longer empty)
+      expect(Object.keys(inVitroSystemSchema.properties)).toContain('classification');
+      expect(Object.keys(inVivoSystemSchema.properties)).toContain('classification');
+      expect(Object.keys(inVivoSystemSchema.properties)).toContain('host');
+      // Should still inherit all Biosample properties via mixinProperties
       expect(inVitroSystemSchema.properties.sample_procurement_interval).toBeUndefined();
       expect(inVivoSystemSchema.properties.sample_procurement_interval).toBeUndefined();
     });
@@ -364,6 +381,11 @@ describe('Schema Validation Tests', () => {
       expect(validInVitro.sample_procurement_interval).toBeDefined();
       expect(validInVitro.sample_procurement_interval_units).toBeDefined();
       
+      // Check new classification property
+      expect(validInVitro.classification).toBeDefined();
+      expect(validInVitro.classification).toBe('organoid');
+      expect(['organoid', 'gastruloid', 'embryoid', 'immortalized cell line']).toContain(validInVitro.classification);
+      
       // Verify inherited timing properties work correctly
       expect(validInVitro.sample_procurement_interval).toBe(4);
       expect(validInVitro.sample_procurement_interval_units).toBe('hour');
@@ -372,8 +394,9 @@ describe('Schema Validation Tests', () => {
     test('Invalid in vitro system example missing required properties', () => {
       const invalidInVitro = loadExample('in_vitro_system/invalid-in-vitro-system.json');
       
-      // Should be missing required sample_terms
+      // Should be missing required sample_terms and classification
       expect(invalidInVitro.sample_terms).toBeUndefined();
+      expect(invalidInVitro.classification).toBeUndefined();
       // Has procurement interval but missing units (violates dependentSchemas)
       expect(invalidInVitro.sample_procurement_interval).toBeDefined();
       expect(invalidInVitro.sample_procurement_interval_units).toBeUndefined();
@@ -389,6 +412,13 @@ describe('Schema Validation Tests', () => {
       expect(validInVivo.sample_procurement_interval).toBeDefined();
       expect(validInVivo.sample_procurement_interval_units).toBeDefined();
       
+      // Check new classification and host properties
+      expect(validInVivo.classification).toBeDefined();
+      expect(validInVivo.classification).toBe('xenograft');
+      expect(['xenograft']).toContain(validInVivo.classification);
+      expect(validInVivo.host).toBeDefined();
+      expect(validInVivo.host).toBe('HOST_MOUSE_001');
+      
       // Verify inherited timing properties work correctly
       expect(validInVivo.sample_procurement_interval).toBe(30);
       expect(validInVivo.sample_procurement_interval_units).toBe('minute');
@@ -397,8 +427,9 @@ describe('Schema Validation Tests', () => {
     test('Invalid in vivo system example missing required properties', () => {
       const invalidInVivo = loadExample('in_vivo_system/invalid-in-vivo-system.json');
       
-      // Should be missing required donors array
+      // Should be missing required donors array and classification
       expect(invalidInVivo.donors).toBeUndefined();
+      expect(invalidInVivo.classification).toBeUndefined();
       // Has valid timing properties
       expect(invalidInVivo.sample_procurement_interval).toBeDefined();
       expect(invalidInVivo.sample_procurement_interval_units).toBeDefined();

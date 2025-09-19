@@ -4,7 +4,7 @@
   "$id": "/profiles/in_vitro_system.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["lab", "sample_terms", "donors"],
+  "required": ["lab", "sample_terms", "donors", "classification"],
   "additionalProperties": false,
   "mixinProperties": [
     {
@@ -14,5 +14,12 @@
       "$ref": "Biosample.json#/properties"
     }
   ],
-  "properties": {}
+  "properties": {
+    "classification": {
+      "title": "Classification",
+      "description": "The type of in vitro biological system.",
+      "type": "string",
+      "enum": ["organoid", "gastruloid", "embryoid", "immortalized cell line"]
+    }
+  }
 }

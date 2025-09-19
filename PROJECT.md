@@ -254,6 +254,24 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 - `donors` (required) - links to donor entities
 - `sample_terms` (required) - ontology terms for biosample type
 
+#### InVitroSystem Schema Design Notes
+
+**Based on:** IGVFD `/profiles/in_vitro_system.json` (JSON Schema draft 2020-12)  
+**Enhanced Properties:**
+
+- Inherits all Biosample properties via mixinProperties
+- `classification` (required) - enum: ["organoid", "gastruloid", "embryoid", "immortalized cell line"]
+- Covers major in vitro biological system categories
+
+#### InVivoSystem Schema Design Notes
+
+**Based on:** IGVFD `/profiles/in_vivo_system.json` (JSON Schema draft 2020-12)  
+**Enhanced Properties:**
+
+- Inherits all Biosample properties via mixinProperties  
+- `classification` (required) - enum: ["xenograft"] (expandable for future system types)
+- `host` (optional) - links to Donor for transplantation scenarios
+
 ### Reference Implementation Analysis
 
 | Feature               | IGVFD Implementation           | Lattice-DB Implementation | Our Choice           |
@@ -357,14 +375,15 @@ Deployment:  ░░░░░░░░░░   0%
 ### Current Metrics
 
 - **Files:** 30 total, 9 schemas implemented, 8 example data files
-- **Tests:** 44 passing / 44 total (increased from 32)
+- **Tests:** 46 passing / 46 total (increased from 44)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
 - **Schema Versions:** 9 active schemas (mixins, User, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
-- **Example Data:** Complete validation examples for all concrete biosample types
+- **Example Data:** Complete validation examples for all concrete biosample types with classification properties
 
 ### Recent Activity
 
+- **September 18, 2025:** Enhanced InVitro/InVivo systems with classification properties - added required `classification` enums (organoid, gastruloid, embryoid, immortalized cell line for in vitro; xenograft for in vivo) and optional `host` linking for in vivo systems, expanded test coverage to 46 tests
 - **September 18, 2025:** Implemented minimal InVitroSystem and InVivoSystem schemas with pure Biosample inheritance, expanded test coverage to 44 tests, added comprehensive example data for all biosample types
 - **September 18, 2025:** Completed sample_procurement_interval refactoring - moved properties to abstract Biosample class, enhanced test coverage to 32 tests, added inheritance validation with example data
 - **September 3, 2025:** Implemented PrimaryCell.json schema with Biosample inheritance and GitHub Actions auto-formatting
