@@ -418,7 +418,11 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Recent Activity
 
-- **September 19, 2025:** Implemented Library.json schema for sample-derived libraries - added abstract Library schema with required lab and samples properties, samples array links to any Biosample type, expanded test coverage to 52 tests, enables library preparation tracking across all concrete sample types
+- **September 19, 2025:** Updated Tissue preservation_method enum with standardized terminology - changed to past-tense adjectives (cryopreserved, paraffin embedded, OCT embedded), added new preservation methods (frozen, fixed, fixed-frozen), maintained test coverage at 52 tests
+- **September 19, 2025:** Changed Library schema from abstract to concrete class - Library.json now allows direct object instantiation, updated PROJECT.md documentation to reflect concrete classification
+- **September 19, 2025:** Updated PROJECT.md repository structure to reflect current state - added missing schema files, corrected test count to 52 tests, updated example data file count to 14 files, included complete file tree structure
+- **September 19, 2025:** Added Phase 4 planning for sample enhancement and treatment integration - documented enrichment criteria, genetic modification tracking, treatment integration, preservation enhancements, and suspension type plans with implementation priority matrix
+- **September 19, 2025:** Implemented Library.json schema for sample-derived libraries - added Library schema with required lab and samples properties, samples array links to any Biosample type, expanded test coverage to 52 tests, enables library preparation tracking across all concrete sample types
 - **September 19, 2025:** Implemented Lab.json schema to resolve linkTo dependencies - added required name, institute_label, and pi properties with User linkTo relationship, expanded test coverage to 49 tests, resolved missing linkTo dependencies across Donor and Biosample schemas
 - **September 18, 2025:** Enhanced InVitro/InVivo systems with classification properties - added required `classification` enums (organoid, gastruloid, embryoid, immortalized cell line for in vitro; xenograft for in vivo) and optional `host` linking for in vivo systems, expanded test coverage to 46 tests
 - **September 18, 2025:** Implemented minimal InVitroSystem and InVivoSystem schemas with pure Biosample inheritance, expanded test coverage to 44 tests, added comprehensive example data for all biosample types
