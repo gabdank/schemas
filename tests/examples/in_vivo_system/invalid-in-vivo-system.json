@@ -1,0 +1,7 @@
+{
+  "lab": "animal-model-lab",
+  "sample_terms": ["UBERON:0002107"],
+  "sample_procurement_interval": 30,
+  "sample_procurement_interval_units": "minute",
+  "description": "Invalid in vivo system - missing required donors array"
+}

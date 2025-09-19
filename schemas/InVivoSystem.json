@@ -1,0 +1,18 @@
+{
+  "title": "In Vivo System",
+  "description": "A concrete in vivo biological system schema inheriting from abstract Biosample class.",
+  "$id": "/profiles/in_vivo_system.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["lab", "sample_terms", "donors"],
+  "additionalProperties": false,
+  "mixinProperties": [
+    {
+      "$ref": "mixins.json#/basic_item"
+    },
+    {
+      "$ref": "Biosample.json#/properties"
+    }
+  ],
+  "properties": {}
+}

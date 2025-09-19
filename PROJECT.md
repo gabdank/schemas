@@ -212,8 +212,8 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 | BiosampleOntologyTerm | 1.0.0   | `schemas/BiosampleOntologyTerm.json` | ✅ Complete | Concrete   | IGVFD sample_term.json + ontology patterns |
 | Tissue                | 1.0.0   | `schemas/Tissue.json`                | ✅ Complete | Concrete   | IGVFD + Lattice-DB tissue + tissue_section |
 | PrimaryCell           | 1.0.0   | `schemas/PrimaryCell.json`           | ✅ Complete | Concrete   | IGVFD primary_cell.json (simplified)       |
-| InVitroSystem         | 1.0.0   | `schemas/InVitroSystem.json`         | 📋 Planned  | Concrete   | IGVFD in_vitro_system.json                 |
-| InVivoSystem          | 1.0.0   | `schemas/InVivoSystem.json`          | 📋 Planned  | Concrete   | IGVFD in_vivo_system.json                  |
+| InVitroSystem         | 1.0.0   | `schemas/InVitroSystem.json`         | ✅ Complete | Concrete   | IGVFD in_vitro_system.json (minimal)       |
+| InVivoSystem          | 1.0.0   | `schemas/InVivoSystem.json`          | ✅ Complete | Concrete   | IGVFD in_vivo_system.json (minimal)        |
 
 ### Schema Design Decisions
 
@@ -356,15 +356,16 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Current Metrics
 
-- **Files:** 22 total, 7 schemas implemented, 4 example data files
-- **Tests:** 32 passing / 32 total (increased from 24)
+- **Files:** 30 total, 9 schemas implemented, 8 example data files
+- **Tests:** 44 passing / 44 total (increased from 32)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
-- **Schema Versions:** 7 active schemas (mixins, User, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell)
-- **Example Data:** Tissue and PrimaryCell examples with inheritance validation
+- **Schema Versions:** 9 active schemas (mixins, User, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
+- **Example Data:** Complete validation examples for all concrete biosample types
 
 ### Recent Activity
 
+- **September 18, 2025:** Implemented minimal InVitroSystem and InVivoSystem schemas with pure Biosample inheritance, expanded test coverage to 44 tests, added comprehensive example data for all biosample types
 - **September 18, 2025:** Completed sample_procurement_interval refactoring - moved properties to abstract Biosample class, enhanced test coverage to 32 tests, added inheritance validation with example data
 - **September 3, 2025:** Implemented PrimaryCell.json schema with Biosample inheritance and GitHub Actions auto-formatting
 - **September 3, 2025:** Implemented BiosampleOntologyTerm.json and updated Biosample linkTo references
@@ -578,13 +579,39 @@ npm run lint:fix               # Auto-fix formatting
 3. **✅ Expanded Test Coverage:** Added comprehensive inheritance validation and example data tests (32 total tests)
 4. **✅ Example Data:** Created valid/invalid examples demonstrating proper dependent property usage
 
-**Next Implementation Steps:**
-1. Analyze suspension properties from IGVFD schemas
-2. Identify which properties belong in abstract vs concrete classes
-3. Refactor Biosample.json to include shared timing properties
-4. Update concrete classes to remove duplicated properties
-5. Add suspension-specific properties to PrimaryCell.json
+## 🔮 Phase 4: Planned Schema Enhancements (Future)
+
+### Donor Pooling Enhancement
+**Status:** 📋 Planned for Future Implementation
+
+**Objective:** Add support for donor pooling to better represent biological sample collection workflows.
+
+**Proposed Changes to Donor.json:**
+- `pooled_donors` (boolean, required) - indicates if this represents a single donor (false) or pooled donors (true)
+- `donor_count` (integer, optional) - number of individual donors in pool (required if pooled_donors=true)
+- Add dependentSchemas validation: if pooled_donors=true, then donor_count is required
+
+**Benefits:**
+- Accurate representation of sample collection methodologies
+- Support for both individual and pooled donor scenarios
+- Proper validation of pooling requirements
+
+### Sample Enrichment Enhancement
+**Status:** 📋 Planned for Future Implementation
+
+**Objective:** Add enrichment/depletion tracking to support advanced sample processing workflows.
+
+**Proposed Changes to Biosample.json:**
+- `enrichment_factors` (array, optional) - factors used for cell enrichment/selection
+- `depletion_factors` (array, optional) - factors used for cell depletion/removal
+- `enriched_cell_types` (array, optional) - description of enriched cell populations
+- `depleted_cell_types` (array, optional) - description of depleted cell populations
+
+**Benefits:**
+- Support for advanced sample processing documentation
+- Tracking of enrichment/depletion methodologies
+- Enhanced metadata for processed biological samples
 
 ---
 
-_Last updated: September 3, 2025 | Version: 1.0.0 | [Latest Commit](https://github.com/gabdank/schemas/commits/main)_
+_Last updated: September 18, 2025 | Version: 1.0.0 | [Latest Commit](https://github.com/gabdank/schemas/commits/main)_

@@ -1,0 +1,6 @@
+{
+  "lab": "stem-cell-lab",
+  "donors": ["DONOR789"],
+  "sample_procurement_interval": 4,
+  "description": "Invalid in vitro system - missing required sample_terms and sample_procurement_interval_units"
+}

@@ -1,0 +1,8 @@
+{
+  "lab": "animal-model-lab",
+  "donors": ["DONOR456"],
+  "sample_terms": ["UBERON:0002107"],
+  "sample_procurement_interval": 30,
+  "sample_procurement_interval_units": "minute",
+  "description": "Mouse liver tissue sample collected in vivo"
+}

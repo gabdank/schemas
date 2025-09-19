@@ -47,6 +47,8 @@ const biosampleSchema = loadSchema('Biosample.json');
 const tissueSchema = loadSchema('Tissue.json');
 const biosampleOntologyTermSchema = loadSchema('BiosampleOntologyTerm.json');
 const primaryCellSchema = loadSchema('PrimaryCell.json');
+const inVitroSystemSchema = loadSchema('InVitroSystem.json');
+const inVivoSystemSchema = loadSchema('InVivoSystem.json');
 
 describe('Schema Validation Tests', () => {
   describe('Schema Structure Validation', () => {
@@ -105,6 +107,24 @@ describe('Schema Validation Tests', () => {
       expect(primaryCellSchema.required).toContain('sample_terms');
       expect(primaryCellSchema.required).toContain('donors');
     });
+
+    test('InVitroSystem.json should have required JSON Schema properties', () => {
+      expect(inVitroSystemSchema).toHaveProperty('$schema');
+      expect(inVitroSystemSchema).toHaveProperty('title');
+      expect(inVitroSystemSchema).toHaveProperty('type', 'object');
+      expect(inVitroSystemSchema.required).toContain('lab');
+      expect(inVitroSystemSchema.required).toContain('sample_terms');
+      expect(inVitroSystemSchema.required).toContain('donors');
+    });
+
+    test('InVivoSystem.json should have required JSON Schema properties', () => {
+      expect(inVivoSystemSchema).toHaveProperty('$schema');
+      expect(inVivoSystemSchema).toHaveProperty('title');
+      expect(inVivoSystemSchema).toHaveProperty('type', 'object');
+      expect(inVivoSystemSchema.required).toContain('lab');
+      expect(inVivoSystemSchema.required).toContain('sample_terms');
+      expect(inVivoSystemSchema.required).toContain('donors');
+    });
   });
 
   describe('Schema Required Fields', () => {
@@ -130,6 +150,14 @@ describe('Schema Validation Tests', () => {
 
     test('PrimaryCell schema has correct required fields array', () => {
       expect(primaryCellSchema.required).toEqual(['lab', 'sample_terms', 'donors']);
+    });
+
+    test('InVitroSystem schema has correct required fields array', () => {
+      expect(inVitroSystemSchema.required).toEqual(['lab', 'sample_terms', 'donors']);
+    });
+
+    test('InVivoSystem schema has correct required fields array', () => {
+      expect(inVivoSystemSchema.required).toEqual(['lab', 'sample_terms', 'donors']);
     });
   });
 
@@ -157,6 +185,8 @@ describe('Schema Validation Tests', () => {
       expect(tissueSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(biosampleOntologyTermSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(primaryCellSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(inVitroSystemSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(inVivoSystemSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
     });
 
     test('Tissue schema inherits from abstract Biosample', () => {
@@ -165,6 +195,14 @@ describe('Schema Validation Tests', () => {
 
     test('PrimaryCell schema inherits from abstract Biosample', () => {
       expect(primaryCellSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
+    });
+
+    test('InVitroSystem schema inherits from abstract Biosample', () => {
+      expect(inVitroSystemSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
+    });
+
+    test('InVivoSystem schema inherits from abstract Biosample', () => {
+      expect(inVivoSystemSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
     });
 
     test('PrimaryCell has passage_number with minimum validation', () => {
@@ -222,6 +260,18 @@ describe('Schema Validation Tests', () => {
       // Direct properties should not exist in concrete schemas
       expect(tissueSchema.properties.sample_procurement_interval).toBeUndefined();
       expect(primaryCellSchema.properties.sample_procurement_interval).toBeUndefined();
+    });
+
+    test('InVitro and InVivo systems have pure inheritance with empty properties', () => {
+      // Both schemas inherit from Biosample
+      expect(inVitroSystemSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
+      expect(inVivoSystemSchema.mixinProperties[1].$ref).toBe('Biosample.json#/properties');
+      // Properties object should be empty (pure inheritance)
+      expect(Object.keys(inVitroSystemSchema.properties)).toHaveLength(0);
+      expect(Object.keys(inVivoSystemSchema.properties)).toHaveLength(0);
+      // Should inherit all Biosample properties via mixinProperties
+      expect(inVitroSystemSchema.properties.sample_procurement_interval).toBeUndefined();
+      expect(inVivoSystemSchema.properties.sample_procurement_interval).toBeUndefined();
     });
   });
 
@@ -302,6 +352,70 @@ describe('Schema Validation Tests', () => {
       // Verify units are from valid enum values
       expect(['second', 'minute', 'hour', 'day', 'week']).toContain(validTissue.sample_procurement_interval_units);
       expect(['second', 'minute', 'hour', 'day', 'week']).toContain(validPrimaryCell.sample_procurement_interval_units);
+    });
+
+    test('Valid in vitro system example has proper structure and inheritance properties', () => {
+      const validInVitro = loadExample('in_vitro_system/valid-in-vitro-system.json');
+      
+      // Check inherited Biosample properties
+      expect(validInVitro.lab).toBeDefined();
+      expect(validInVitro.donors).toBeDefined();
+      expect(validInVitro.sample_terms).toBeDefined();
+      expect(validInVitro.sample_procurement_interval).toBeDefined();
+      expect(validInVitro.sample_procurement_interval_units).toBeDefined();
+      
+      // Verify inherited timing properties work correctly
+      expect(validInVitro.sample_procurement_interval).toBe(4);
+      expect(validInVitro.sample_procurement_interval_units).toBe('hour');
+    });
+
+    test('Invalid in vitro system example missing required properties', () => {
+      const invalidInVitro = loadExample('in_vitro_system/invalid-in-vitro-system.json');
+      
+      // Should be missing required sample_terms
+      expect(invalidInVitro.sample_terms).toBeUndefined();
+      // Has procurement interval but missing units (violates dependentSchemas)
+      expect(invalidInVitro.sample_procurement_interval).toBeDefined();
+      expect(invalidInVitro.sample_procurement_interval_units).toBeUndefined();
+    });
+
+    test('Valid in vivo system example has proper structure and inheritance properties', () => {
+      const validInVivo = loadExample('in_vivo_system/valid-in-vivo-system.json');
+      
+      // Check inherited Biosample properties
+      expect(validInVivo.lab).toBeDefined();
+      expect(validInVivo.donors).toBeDefined();
+      expect(validInVivo.sample_terms).toBeDefined();
+      expect(validInVivo.sample_procurement_interval).toBeDefined();
+      expect(validInVivo.sample_procurement_interval_units).toBeDefined();
+      
+      // Verify inherited timing properties work correctly
+      expect(validInVivo.sample_procurement_interval).toBe(30);
+      expect(validInVivo.sample_procurement_interval_units).toBe('minute');
+    });
+
+    test('Invalid in vivo system example missing required properties', () => {
+      const invalidInVivo = loadExample('in_vivo_system/invalid-in-vivo-system.json');
+      
+      // Should be missing required donors array
+      expect(invalidInVivo.donors).toBeUndefined();
+      // Has valid timing properties
+      expect(invalidInVivo.sample_procurement_interval).toBeDefined();
+      expect(invalidInVivo.sample_procurement_interval_units).toBeDefined();
+    });
+
+    test('All biosample types inherit sample_procurement_interval properties consistently', () => {
+      const validTissue = loadExample('tissue/valid-tissue.json');
+      const validPrimaryCell = loadExample('primary_cell/valid-primary-cell.json');
+      const validInVitro = loadExample('in_vitro_system/valid-in-vitro-system.json');
+      const validInVivo = loadExample('in_vivo_system/valid-in-vivo-system.json');
+      
+      // All should have inherited timing properties from Biosample
+      [validTissue, validPrimaryCell, validInVitro, validInVivo].forEach(sample => {
+        expect(sample.sample_procurement_interval).toBeDefined();
+        expect(sample.sample_procurement_interval_units).toBeDefined();
+        expect(['second', 'minute', 'hour', 'day', 'week']).toContain(sample.sample_procurement_interval_units);
+      });
     });
   });
 });

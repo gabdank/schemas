@@ -1,0 +1,8 @@
+{
+  "lab": "stem-cell-lab",
+  "donors": ["DONOR789"],
+  "sample_terms": ["EFO:0007563"],
+  "sample_procurement_interval": 4,
+  "sample_procurement_interval_units": "hour",
+  "description": "Organoid culture derived from human iPSCs"
+}
