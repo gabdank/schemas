@@ -46,21 +46,50 @@ Establish comprehensive JSON Schema definitions for database entities, starting 
 ```
 schemas/
 ├── PROJECT.md                           # This document
-├── schemas/                             # Core schema definitions
+├── README.md                            # Repository overview
+├── package.json                         # NPM dependencies and scripts
+├── package-lock.json                    # NPM lock file
+├── jest.config.js                       # Jest testing configuration
+├── .prettierrc                          # Code formatting configuration
+├── .gitignore                           # Git ignore patterns
+├── schemas/                             # Core schema definitions (11 schemas)
 │   ├── mixins.json                     # Basic item mixin properties
 │   ├── User.json                       # User entity schema (concrete)
+│   ├── Lab.json                        # Lab entity schema (concrete)
+│   ├── Library.json                    # Library entity schema (abstract)
 │   ├── Donor.json                      # Donor entity schema (abstract)
 │   ├── Biosample.json                  # Biosample entity schema (abstract)
 │   ├── BiosampleOntologyTerm.json      # Ontology terms for biosamples
 │   ├── Tissue.json                     # Tissue sample schema (concrete)
-│   └── PrimaryCell.json                # Primary cell schema (concrete)
+│   ├── PrimaryCell.json                # Primary cell schema (concrete)
+│   ├── InVitroSystem.json              # In vitro system schema (concrete)
+│   └── InVivoSystem.json               # In vivo system schema (concrete)
 ├── tests/                              # Schema validation tests
 │   ├── schemas/                        # Schema structure tests
-│   │   └── schema.validation.test.js   # Jest test suite (24 tests)
+│   │   └── schema.validation.test.js   # Jest test suite (52 tests)
 │   └── examples/                       # Example data validation tests
 │       ├── user/                       # User test data
+│       │   ├── valid-user.json
+│       │   └── invalid-user.json
 │       ├── donor/                      # Donor test data
-│       └── biosample/                  # Biosample test data
+│       │   ├── valid-donor.json
+│       │   └── invalid-donor.json
+│       ├── biosample/                  # Biosample test data
+│       │   ├── valid-biosample.json
+│       │   └── invalid-biosample.json
+│       ├── tissue/                     # Tissue test data
+│       │   ├── valid-tissue.json
+│       │   └── invalid-tissue.json
+│       ├── primary_cell/               # Primary cell test data
+│       │   ├── valid-primary-cell.json
+│       │   └── invalid-primary-cell.json
+│       ├── in_vitro_system/            # In vitro system test data
+│       │   ├── valid-in-vitro-system.json
+│       │   └── invalid-in-vitro-system.json
+│       └── in_vivo_system/             # In vivo system test data
+│           ├── valid-in-vivo-system.json
+│           └── invalid-in-vivo-system.json
+├── coverage/                           # Test coverage reports
 └── .github/
     └── workflows/                      # CI/CD for schema validation
         └── schema-validation.yml       # Auto-formatting + validation workflow
@@ -72,13 +101,17 @@ schemas/
 | ----------------------------------------- | ------------------------------- | -------------- |
 | `schemas/mixins.json`                     | Basic item mixin properties     | ✅ Complete    |
 | `schemas/User.json`                       | User entity schema (concrete)   | ✅ Complete    |
+| `schemas/Lab.json`                        | Lab entity schema (concrete)    | ✅ Complete    |
+| `schemas/Library.json`                    | Library entity schema (abstract)| ✅ Complete    |
 | `schemas/Donor.json`                      | Donor entity schema (abstract)  | ✅ Complete    |
 | `schemas/Biosample.json`                  | Biosample schema (abstract)     | ✅ Complete    |
 | `schemas/BiosampleOntologyTerm.json`      | Ontology terms for samples      | ✅ Complete    |
 | `schemas/Tissue.json`                     | Tissue sample schema (concrete) | ✅ Complete    |
 | `schemas/PrimaryCell.json`                | Primary cell schema (concrete)  | ✅ Complete    |
-| `tests/schemas/schema.validation.test.js` | Jest test suite (24 tests)      | ✅ Complete    |
-| `PROJECT.md`                              | Project documentation           | 🔄 Updating    |
+| `schemas/InVitroSystem.json`              | In vitro system schema (concrete)| ✅ Complete   |
+| `schemas/InVivoSystem.json`               | In vivo system schema (concrete) | ✅ Complete    |
+| `tests/schemas/schema.validation.test.js` | Jest test suite (52 tests)      | ✅ Complete    |
+| `PROJECT.md`                              | Project documentation           | ✅ Complete    |
 
 ---
 
@@ -376,7 +409,7 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Current Metrics
 
-- **Files:** 30 total, 11 schemas implemented, 8 example data files
+- **Files:** 30 total, 11 schemas implemented, 14 example data files
 - **Tests:** 52 passing / 52 total (increased from 49)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
