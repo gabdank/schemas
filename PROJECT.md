@@ -501,6 +501,113 @@ npm run lint:fix               # Auto-fix formatting
 
 ---
 
+## 📋 Planned Schema Enhancements
+
+### Phase 4: Sample Enhancement & Treatment Integration
+
+#### Sample Enrichment & Processing Enhancements
+**Target Schema:** Biosample.json (Abstract class)
+**Status:** 📋 Planned
+
+**Enrichment Criteria/Info Addition:**
+- `enrichment_factors` (array, optional) - Factors used for cell enrichment/selection (e.g., ["CD4+", "FACS sorted"])
+- `depletion_factors` (array, optional) - Factors used for cell depletion/removal (e.g., ["CD8+", "dead cells"])
+- `enriched_cell_types` (array, optional) - Description of enriched cell populations
+- `depleted_cell_types` (array, optional) - Description of depleted cell populations
+
+**Benefits:**
+- Support for advanced sample processing documentation
+- Tracking of enrichment/depletion methodologies
+- Enhanced metadata for processed biological samples
+
+#### Genetic Modification Tracking
+**Target Schema:** Biosample.json (Abstract class)
+**Status:** 📋 Planned
+
+**Genetic Modification Properties:**
+- `genetic_modifications` (array, optional) - Links to genetic modification records
+- `modification_type` (enum, optional) - Type of genetic modification ["CRISPR", "overexpression", "knockdown", "knockout", "transgenic"]
+- `modified_genes` (array, optional) - List of genes that were modified
+- `modification_status` (enum, optional) - Status of modification ["confirmed", "pending", "failed"]
+
+**Benefits:**
+- Track genetic engineering interventions
+- Link samples to their modification history
+- Support experimental design documentation
+
+#### Treatment Integration
+**Target Schemas:** Biosample.json + New Treatment.json
+**Status:** 📋 Planned
+
+**Treatment Schema (New):**
+- **File:** `schemas/Treatment.json`
+- **Type:** Concrete class
+- **Required:** `treatment_type`, `lab`
+- **Properties:**
+  - `treatment_type` (enum) - ["chemical", "drug", "growth_factor", "cytokine", "hormone", "physical", "radiation"]
+  - `treatment_agent` (string) - Name/identifier of treatment agent
+  - `concentration` (number, optional) - Treatment concentration
+  - `concentration_units` (enum, optional) - ["M", "mM", "μM", "nM", "pM", "mg/ml", "μg/ml"]
+  - `duration` (number, optional) - Treatment duration
+  - `duration_units` (enum, optional) - ["second", "minute", "hour", "day", "week"]
+
+**Biosample Updates:**
+- `treatments` (array, optional) - Links to Treatment records (`"linkTo": "Treatment"`)
+
+#### Tissue-Specific Enhancements
+**Target Schema:** Tissue.json
+**Status:** 📋 Planned
+
+**Preservation Enhancement:**
+- Update existing `preservation_method` enum to include:
+  - `["fresh", "frozen", "flash-frozen", "fixed-frozen", "fixed", "cryopreservation", "flash-freezing", "paraffin embedding", "OCT embedding"]`
+- Maintain backward compatibility with existing values
+- Add validation for preservation-specific metadata
+
+#### Sample Suspension Type
+**Target Schema:** Biosample.json (Abstract class)
+**Status:** 📋 Planned
+
+**Suspension Type Property:**
+- `suspension_type` (enum, optional) - Type of single cell/nuclei suspension
+  - `["single_cell", "single_nuclei", "bulk_tissue", "organoid_dissociation", "primary_culture", "cell_line"]`
+- `suspension_method` (string, optional) - Method used to create suspension
+- `viability_percentage` (number, optional) - Cell viability percentage (0-100)
+
+**Benefits:**
+- Capture single cell vs nuclei preparation methods
+- Track suspension quality metrics
+- Support downstream analysis requirements
+
+### Implementation Priority & Timeline
+
+| Enhancement | Target Schema | Estimated Effort | Dependencies | Priority |
+|-------------|---------------|------------------|--------------|----------|
+| Enrichment Criteria | Biosample.json | Medium | None | High |
+| Suspension Type | Biosample.json | Low | None | High |
+| Preservation Update | Tissue.json | Low | None | Medium |
+| Genetic Modifications | Biosample.json | Medium | None | Medium |
+| Treatment Integration | Biosample.json + Treatment.json | High | New Treatment schema | Low |
+
+### Design Considerations
+
+**Abstract vs Concrete Placement:**
+- **Biosample.json** enhancements affect all concrete sample types (Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
+- **Tissue.json** enhancements are tissue-specific and don't affect other sample types
+- **Treatment.json** as new concrete schema enables reusable treatment records
+
+**Validation Strategy:**
+- Use dependentSchemas for property interdependencies
+- Maintain enum extensibility for future enhancement
+- Preserve backward compatibility with existing data
+
+**Testing Requirements:**
+- Add comprehensive test coverage for new properties
+- Test inheritance behavior across concrete sample types
+- Validate enum constraints and dependent property requirements
+
+---
+
 ## 🏗️ Phase 2: Abstract Classes & Tissue Implementation
 
 ### Current Implementation Status
