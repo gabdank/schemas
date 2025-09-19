@@ -32,7 +32,7 @@
       "title": "Preservation Method",
       "description": "The method used to preserve the tissue sample.",
       "type": "string",
-      "enum": ["cryopreservation", "flash-freezing", "fresh", "paraffin embedding", "OCT embedding"]
+      "enum": ["fresh", "frozen", "flash-frozen", "fixed", "fixed-frozen", "cryopreserved", "paraffin embedded", "OCT embedded"]
     },
     "thickness": {
       "title": "Thickness",
