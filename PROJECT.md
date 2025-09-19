@@ -56,7 +56,7 @@ schemas/
 │   ├── mixins.json                     # Basic item mixin properties
 │   ├── User.json                       # User entity schema (concrete)
 │   ├── Lab.json                        # Lab entity schema (concrete)
-│   ├── Library.json                    # Library entity schema (abstract)
+│   ├── Library.json                    # Library entity schema (concrete)
 │   ├── Donor.json                      # Donor entity schema (abstract)
 │   ├── Biosample.json                  # Biosample entity schema (abstract)
 │   ├── BiosampleOntologyTerm.json      # Ontology terms for biosamples
@@ -102,7 +102,7 @@ schemas/
 | `schemas/mixins.json`                     | Basic item mixin properties     | ✅ Complete    |
 | `schemas/User.json`                       | User entity schema (concrete)   | ✅ Complete    |
 | `schemas/Lab.json`                        | Lab entity schema (concrete)    | ✅ Complete    |
-| `schemas/Library.json`                    | Library entity schema (abstract)| ✅ Complete    |
+| `schemas/Library.json`                    | Library entity schema (concrete)| ✅ Complete    |
 | `schemas/Donor.json`                      | Donor entity schema (abstract)  | ✅ Complete    |
 | `schemas/Biosample.json`                  | Biosample schema (abstract)     | ✅ Complete    |
 | `schemas/BiosampleOntologyTerm.json`      | Ontology terms for samples      | ✅ Complete    |
@@ -241,7 +241,7 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 | mixins                | 1.0.0   | `schemas/mixins.json`                | ✅ Complete | Mixin      | IGVFD mixins.json (basic_item only)        |
 | User                  | 1.0.0   | `schemas/User.json`                  | ✅ Complete | Concrete   | IGVFD user.json (simplified)               |
 | Lab                   | 1.0.0   | `schemas/Lab.json`                   | ✅ Complete | Concrete   | IGVFD lab.json (minimal)                   |
-| Library               | 1.0.0   | `schemas/Library.json`               | ✅ Complete | Abstract   | IGVFD library.json (minimal)               |
+| Library               | 1.0.0   | `schemas/Library.json`               | ✅ Complete | Concrete   | IGVFD library.json (minimal)               |
 | Donor                 | 1.0.0   | `schemas/Donor.json`                 | ✅ Complete | Abstract   | IGVFD donor.json (simplified)              |
 | Biosample             | 1.0.0   | `schemas/Biosample.json`             | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)          |
 | BiosampleOntologyTerm | 1.0.0   | `schemas/BiosampleOntologyTerm.json` | ✅ Complete | Concrete   | IGVFD sample_term.json + ontology patterns |

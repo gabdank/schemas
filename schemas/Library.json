@@ -2,7 +2,7 @@
   "title": "Library",
   "$id": "/profiles/library.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Abstract schema for libraries prepared from biological samples.",
+  "description": "A concrete schema for libraries prepared from biological samples.",
   "type": "object",
   "required": ["lab", "samples"],
   "additionalProperties": false,
