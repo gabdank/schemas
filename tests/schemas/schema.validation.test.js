@@ -292,6 +292,11 @@ describe('Schema Validation Tests', () => {
       expect(biosampleSchema.properties.sample_procurement_interval_units.enum).toContain('day');
     });
 
+    test('Biosample schema has suspension_type property with correct enum values', () => {
+      expect(biosampleSchema.properties.suspension_type).toHaveProperty('type', 'string');
+      expect(biosampleSchema.properties.suspension_type.enum).toEqual(['cell', 'nucleus']);
+    });
+
     test('Tissue schema has thickness dependent validations only', () => {
       expect(tissueSchema.dependentSchemas.thickness.required).toContain('thickness_units');
       expect(tissueSchema.dependentSchemas.thickness_units.required).toContain('thickness');

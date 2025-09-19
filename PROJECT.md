@@ -410,7 +410,7 @@ Deployment:  ░░░░░░░░░░   0%
 ### Current Metrics
 
 - **Files:** 30 total, 11 schemas implemented, 14 example data files
-- **Tests:** 52 passing / 52 total (increased from 49)
+- **Tests:** 53 passing / 53 total (increased from 52)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
 - **Schema Versions:** 11 active schemas (mixins, User, Lab, Library, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
@@ -418,6 +418,7 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Recent Activity
 
+- **September 19, 2025:** Implemented suspension_type property in Biosample schema - added optional enum with values ["cell", "nucleus"], moved suspension_method and viability_percentage to future planning, expanded test coverage to 53 tests
 - **September 19, 2025:** Updated Tissue preservation_method enum with standardized terminology - changed to past-tense adjectives (cryopreserved, paraffin embedded, OCT embedded), added new preservation methods (frozen, fixed, fixed-frozen), maintained test coverage at 52 tests
 - **September 19, 2025:** Changed Library schema from abstract to concrete class - Library.json now allows direct object instantiation, updated PROJECT.md documentation to reflect concrete classification
 - **September 19, 2025:** Updated PROJECT.md repository structure to reflect current state - added missing schema files, corrected test count to 52 tests, updated example data file count to 14 files, included complete file tree structure
@@ -603,18 +604,20 @@ npm run lint:fix               # Auto-fix formatting
 
 #### Sample Suspension Type
 **Target Schema:** Biosample.json (Abstract class)
-**Status:** 📋 Planned
+**Status:** 🚧 In Development
 
 **Suspension Type Property:**
-- `suspension_type` (enum, optional) - Type of single cell/nuclei suspension
-  - `["single_cell", "single_nuclei", "bulk_tissue", "organoid_dissociation", "primary_culture", "cell_line"]`
+- `suspension_type` (enum, optional) - Type of suspension: cells or nuclei
+  - `["cell", "nucleus"]`
+
+**Future Potential Additions:**
 - `suspension_method` (string, optional) - Method used to create suspension
 - `viability_percentage` (number, optional) - Cell viability percentage (0-100)
 
 **Benefits:**
-- Capture single cell vs nuclei preparation methods
-- Track suspension quality metrics
+- Capture fundamental biological distinction between cell and nuclei suspensions
 - Support downstream analysis requirements
+- Simple enum without underscores for clean API usage
 
 ### Implementation Priority & Timeline
 

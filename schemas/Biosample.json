@@ -68,6 +68,12 @@
       "description": "The unit in which the sample procurement interval was reported.",
       "type": "string",
       "enum": ["second", "minute", "hour", "day", "week"]
+    },
+    "suspension_type": {
+      "title": "Suspension Type",
+      "description": "Type of suspension - single cells or single nuclei.",
+      "type": "string",
+      "enum": ["cell", "nucleus"]
     }
   }
 }
