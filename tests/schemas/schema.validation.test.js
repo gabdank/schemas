@@ -43,6 +43,7 @@ const loadSchema = (schemaPath) => {
 const mixinsSchema = loadSchema('mixins.json');
 const userSchema = loadSchema('User.json');
 const labSchema = loadSchema('Lab.json');
+const librarySchema = loadSchema('Library.json');
 const donorSchema = loadSchema('Donor.json');
 const biosampleSchema = loadSchema('Biosample.json');
 const tissueSchema = loadSchema('Tissue.json');
@@ -73,6 +74,14 @@ describe('Schema Validation Tests', () => {
       expect(labSchema.required).toContain('name');
       expect(labSchema.required).toContain('institute_label');
       expect(labSchema.required).toContain('pi');
+    });
+
+    test('Library.json should have required JSON Schema properties', () => {
+      expect(librarySchema).toHaveProperty('$schema');
+      expect(librarySchema).toHaveProperty('title');
+      expect(librarySchema).toHaveProperty('type', 'object');
+      expect(librarySchema.required).toContain('lab');
+      expect(librarySchema.required).toContain('samples');
     });
 
     test('Donor.json should have required JSON Schema properties', () => {
@@ -146,6 +155,10 @@ describe('Schema Validation Tests', () => {
       expect(labSchema.required).toEqual(['name', 'institute_label', 'pi']);
     });
 
+    test('Library schema has correct required fields array', () => {
+      expect(librarySchema.required).toEqual(['lab', 'samples']);
+    });
+
     test('Donor schema has correct required fields array', () => {
       expect(donorSchema.required).toEqual(['lab', 'taxa']);
     });
@@ -200,9 +213,19 @@ describe('Schema Validation Tests', () => {
       expect(labSchema.properties.pi).toHaveProperty('linkTo', 'User');
     });
 
+    test('Library schema has correct property validations', () => {
+      expect(librarySchema.properties.lab).toHaveProperty('type', 'string');
+      expect(librarySchema.properties.lab).toHaveProperty('linkTo', 'Lab');
+      expect(librarySchema.properties.samples).toHaveProperty('type', 'array');
+      expect(librarySchema.properties.samples).toHaveProperty('minItems', 1);
+      expect(librarySchema.properties.samples).toHaveProperty('uniqueItems', true);
+      expect(librarySchema.properties.samples.items).toHaveProperty('linkTo', 'Biosample');
+    });
+
     test('All schemas reference basic_item mixin', () => {
       expect(userSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(labSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(librarySchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(donorSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(biosampleSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(tissueSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');

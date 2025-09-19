@@ -208,6 +208,7 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 | mixins                | 1.0.0   | `schemas/mixins.json`                | ✅ Complete | Mixin      | IGVFD mixins.json (basic_item only)        |
 | User                  | 1.0.0   | `schemas/User.json`                  | ✅ Complete | Concrete   | IGVFD user.json (simplified)               |
 | Lab                   | 1.0.0   | `schemas/Lab.json`                   | ✅ Complete | Concrete   | IGVFD lab.json (minimal)                   |
+| Library               | 1.0.0   | `schemas/Library.json`               | ✅ Complete | Abstract   | IGVFD library.json (minimal)               |
 | Donor                 | 1.0.0   | `schemas/Donor.json`                 | ✅ Complete | Abstract   | IGVFD donor.json (simplified)              |
 | Biosample             | 1.0.0   | `schemas/Biosample.json`             | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)          |
 | BiosampleOntologyTerm | 1.0.0   | `schemas/BiosampleOntologyTerm.json` | ✅ Complete | Concrete   | IGVFD sample_term.json + ontology patterns |
@@ -375,15 +376,17 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Current Metrics
 
-- **Files:** 30 total, 9 schemas implemented, 8 example data files
-- **Tests:** 46 passing / 46 total (increased from 44)
+- **Files:** 30 total, 11 schemas implemented, 8 example data files
+- **Tests:** 52 passing / 52 total (increased from 49)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
-- **Schema Versions:** 10 active schemas (mixins, User, Lab, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
+- **Schema Versions:** 11 active schemas (mixins, User, Lab, Library, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
 - **Example Data:** Complete validation examples for all concrete biosample types with classification properties
 
 ### Recent Activity
 
+- **September 19, 2025:** Implemented Library.json schema for sample-derived libraries - added abstract Library schema with required lab and samples properties, samples array links to any Biosample type, expanded test coverage to 52 tests, enables library preparation tracking across all concrete sample types
+- **September 19, 2025:** Implemented Lab.json schema to resolve linkTo dependencies - added required name, institute_label, and pi properties with User linkTo relationship, expanded test coverage to 49 tests, resolved missing linkTo dependencies across Donor and Biosample schemas
 - **September 18, 2025:** Enhanced InVitro/InVivo systems with classification properties - added required `classification` enums (organoid, gastruloid, embryoid, immortalized cell line for in vitro; xenograft for in vivo) and optional `host` linking for in vivo systems, expanded test coverage to 46 tests
 - **September 18, 2025:** Implemented minimal InVitroSystem and InVivoSystem schemas with pure Biosample inheritance, expanded test coverage to 44 tests, added comprehensive example data for all biosample types
 - **September 18, 2025:** Completed sample_procurement_interval refactoring - moved properties to abstract Biosample class, enhanced test coverage to 32 tests, added inheritance validation with example data
