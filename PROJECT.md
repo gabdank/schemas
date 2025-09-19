@@ -207,6 +207,7 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 | --------------------- | ------- | ------------------------------------ | ----------- | ---------- | ------------------------------------------ |
 | mixins                | 1.0.0   | `schemas/mixins.json`                | ✅ Complete | Mixin      | IGVFD mixins.json (basic_item only)        |
 | User                  | 1.0.0   | `schemas/User.json`                  | ✅ Complete | Concrete   | IGVFD user.json (simplified)               |
+| Lab                   | 1.0.0   | `schemas/Lab.json`                   | ✅ Complete | Concrete   | IGVFD lab.json (minimal)                   |
 | Donor                 | 1.0.0   | `schemas/Donor.json`                 | ✅ Complete | Abstract   | IGVFD donor.json (simplified)              |
 | Biosample             | 1.0.0   | `schemas/Biosample.json`             | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)          |
 | BiosampleOntologyTerm | 1.0.0   | `schemas/BiosampleOntologyTerm.json` | ✅ Complete | Concrete   | IGVFD sample_term.json + ontology patterns |
@@ -378,7 +379,7 @@ Deployment:  ░░░░░░░░░░   0%
 - **Tests:** 46 passing / 46 total (increased from 44)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
-- **Schema Versions:** 9 active schemas (mixins, User, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
+- **Schema Versions:** 10 active schemas (mixins, User, Lab, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
 - **Example Data:** Complete validation examples for all concrete biosample types with classification properties
 
 ### Recent Activity

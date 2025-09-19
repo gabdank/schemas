@@ -1,0 +1,39 @@
+{
+  "title": "Lab",
+  "$id": "/profiles/lab.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "A laboratory or research group.",
+  "type": "object",
+  "required": ["name", "institute_label", "pi"],
+  "additionalProperties": false,
+  "mixinProperties": [
+    {
+      "$ref": "mixins.json#/basic_item"
+    }
+  ],
+  "properties": {
+    "name": {
+      "title": "Name",
+      "description": "The name of the lab or research group.",
+      "type": "string",
+      "pattern": "^(?![\\s\"'])[\\S|\\s]*[^\\s\"']$"
+    },
+    "pi": {
+      "title": "Principal Investigator",
+      "description": "The principal investigator of the lab.",
+      "type": "string",
+      "linkTo": "User"
+    },
+    "institute_label": {
+      "title": "Institute Label",
+      "description": "An abbreviation for the institute the lab is associated with.",
+      "type": "string",
+      "default": "",
+      "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$|^$",
+      "submissionExample": {
+        "appscript": "Stanford",
+        "igvf_utils": "Stanford"
+      }
+    }
+  }
+}
