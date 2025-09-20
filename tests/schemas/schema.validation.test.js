@@ -406,14 +406,30 @@ describe('Schema Validation Tests', () => {
       const nonCompositeSchema = treatmentSchema.dependentSchemas.is_composite.then;
       expect(nonCompositeSchema.required).toEqual(['ontological_term', 'concentration', 'duration']);
       expect(nonCompositeSchema.properties.ontological_term.type).toBe('string');
-      expect(nonCompositeSchema.properties.concentration.type).toBe('string');
-      expect(nonCompositeSchema.properties.duration.type).toBe('string');
+      expect(nonCompositeSchema.properties.concentration.type).toBe('number');
+      expect(nonCompositeSchema.properties.concentration.minimum).toBe(0);
+      expect(nonCompositeSchema.properties.concentration_units.type).toBe('string');
+      expect(nonCompositeSchema.properties.concentration_units.enum).toContain('μM');
+      expect(nonCompositeSchema.properties.concentration_units.enum).toContain('nM');
+      expect(nonCompositeSchema.properties.duration.type).toBe('number');
+      expect(nonCompositeSchema.properties.duration.minimum).toBe(0);
+      expect(nonCompositeSchema.properties.duration_units.type).toBe('string');
+      expect(nonCompositeSchema.properties.duration_units.enum).toContain('hour');
+      expect(nonCompositeSchema.properties.duration_units.enum).toContain('day');
 
       // Test composite treatment requirements
       const compositeSchema = treatmentSchema.dependentSchemas.is_composite.else;
-      expect(compositeSchema.required).toEqual(['description']);
+      expect(compositeSchema.required).toEqual(['description', 'protocol_document']);
       expect(compositeSchema.properties.description.type).toBe('string');
       expect(compositeSchema.properties.protocol_document.type).toBe('string');
+    });
+
+    test('Treatment schema has concentration/duration unit dependencies in non-composite', () => {
+      const nonCompositeSchema = treatmentSchema.dependentSchemas.is_composite.then;
+      expect(nonCompositeSchema.dependentSchemas.concentration.required).toContain('concentration_units');
+      expect(nonCompositeSchema.dependentSchemas.concentration_units.required).toContain('concentration');
+      expect(nonCompositeSchema.dependentSchemas.duration.required).toContain('duration_units');
+      expect(nonCompositeSchema.dependentSchemas.duration_units.required).toContain('duration');
     });
   });
 
