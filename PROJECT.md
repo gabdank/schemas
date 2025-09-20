@@ -583,37 +583,37 @@ npm run lint:fix               # Auto-fix formatting
 
 #### Treatment Integration
 **Target Schemas:** Biosample.json + New Treatment.json + Ontological Term Refactoring
-**Status:** 📋 Planned
+**Status:** ✅ Complete
 
-**Treatment Schema (New):**
+**Treatment Schema (Implemented):**
 - **File:** `schemas/Treatment.json`
 - **Type:** Concrete class
-- **Required:** `lab`, `is_composite`
+- **Required:** `is_composite`
 - **Core Properties:**
   - `is_composite` (boolean) - True for combination/complex treatments, false for single-agent treatments
 
 **Composite Treatment Properties (when is_composite: true):**
-  - `treatment_description` (string, required) - Manual text description of the complex treatment
-  - `treatment_protocol_document` (string, optional) - Link to PDF document with detailed protocol
-  - `component_count` (integer, optional) - Number of individual components in the treatment
+  - `description` (string, required) - Manual text description of the complex treatment
+  - `protocol_document` (string, required) - Link to PDF document with detailed protocol
 
 **Non-Composite Treatment Properties (when is_composite: false):**
   - `ontological_term` (string, required) - CheBI ID, UniProt ID, or other ontological identifier
-  - `ontology_source` (enum, required) - ["CheBI", "UniProt", "NCBI Taxonomy", "Gene Ontology"]
-  - `concentration` (number, optional) - Treatment concentration
-  - `concentration_units` (enum, optional) - ["M", "mM", "μM", "nM", "pM", "mg/ml", "μg/ml"]
+  - `concentration` (number, required) - Treatment concentration (minimum: 0)
+  - `concentration_units` (enum, required) - ["M", "mM", "μM", "nM", "pM", "mg/ml", "μg/ml", "ng/ml", "g/L", "mg/L", "μg/L"]
+  - `duration` (number, required) - Treatment duration (minimum: 0)
+  - `duration_units` (enum, required) - ["second", "minute", "hour", "day", "week", "month"]
 
-**Common Properties:**
-  - `duration` (number, optional) - Treatment duration
-  - `duration_units` (enum, optional) - ["second", "minute", "hour", "day", "week"]
-  - `temperature` (number, optional) - Treatment temperature in Celsius
-  - `notes` (string, optional) - Additional treatment notes
+**Validation Features:**
+- **Dependent schemas** ensure concentration/duration paired with respective units
+- **Conditional validation** based on is_composite boolean
+- **Type safety** with number validation and minimum constraints
+- **Comprehensive unit enums** covering common laboratory concentrations and time periods
 
 **Benefits:**
 - **Clear classification** between single-agent vs combination treatments
 - **Ontological standardization** for simple treatments (leverages CheBI, UniProt databases)
+- **Strict validation** ensures data consistency and completeness
 - **Flexibility** for complex custom treatments requiring manual documentation
-- **Validation rules** ensure appropriate properties based on treatment type
 
 **Biosample Updates:**
 - `treatments` (array, optional) - Links to Treatment records (`"linkTo": "Treatment"`)
@@ -652,8 +652,8 @@ npm run lint:fix               # Auto-fix formatting
 | Enrichment Criteria | Biosample.json | Medium | None | High |
 | Suspension Type | Biosample.json | Low | None | ✅ Complete |
 | Preservation Update | Tissue.json | Low | None | ✅ Complete |
+| Treatment Integration | Biosample.json + Treatment.json | High | New Treatment schema | ✅ Complete |
 | Genetic Modifications | Biosample.json | Medium | None | Medium |
-| Treatment Integration | Biosample.json + Treatment.json | High | New Treatment schema + Ontological refactor | Medium |
 | Ontological Term Refactoring | Abstract OntologicalTerm + Concrete terms | High | BiosampleOntologyTerm migration | Low |
 
 ### Design Considerations
