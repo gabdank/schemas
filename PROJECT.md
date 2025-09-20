@@ -416,7 +416,7 @@ Deployment:  ░░░░░░░░░░   0%
 ### Current Metrics
 
 - **Files:** 30 total, 13 schemas implemented, 14 example data files
-- **Tests:** 59 passing / 59 total (increased from 53)
+- **Tests:** 60 passing / 60 total (increased from 59)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
 - **Schema Versions:** 13 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
@@ -424,6 +424,7 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Recent Activity
 
+- **September 19, 2025:** Added dependentSchemas validation for multiplexing_method in Library schema - enforces logical constraint that multiplexing requires minimum 2 samples, expanded test coverage to 60 tests
 - **September 19, 2025:** Refactored Library to abstract schema with concrete DropletLibrary and PlateBasedLibrary - added multiplexing_method enum ["cell hashing", "lipid hashing", "genetic", "sample barcodes"], expanded test coverage to 59 tests, enables proper library type modeling for droplet vs plate-based workflows
 - **September 19, 2025:** Implemented suspension_type property in Biosample schema - added optional enum with values ["cell", "nucleus"], moved suspension_method and viability_percentage to future planning, expanded test coverage to 53 tests
 - **September 19, 2025:** Updated Tissue preservation_method enum with standardized terminology - changed to past-tense adjectives (cryopreserved, paraffin embedded, OCT embedded), added new preservation methods (frozen, fixed, fixed-frozen), maintained test coverage at 52 tests
