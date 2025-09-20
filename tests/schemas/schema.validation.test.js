@@ -258,6 +258,11 @@ describe('Schema Validation Tests', () => {
       expect(plateBasedLibrarySchema.mixinProperties).toContainEqual({"$ref": "Library.json#/properties"});
     });
 
+    test('Library schema has multiplexing_method dependency validation', () => {
+      expect(librarySchema.dependentSchemas.multiplexing_method).toBeDefined();
+      expect(librarySchema.dependentSchemas.multiplexing_method.properties.samples.minItems).toBe(2);
+    });
+
     test('All schemas reference basic_item mixin', () => {
       expect(userSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(labSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');

@@ -40,5 +40,14 @@
       "type": "string",
       "enum": ["cell hashing", "lipid hashing", "genetic", "sample barcodes"]
     }
+  },
+  "dependentSchemas": {
+    "multiplexing_method": {
+      "properties": {
+        "samples": {
+          "minItems": 2
+        }
+      }
+    }
   }
 }
