@@ -3,7 +3,7 @@
 ## Project Metadata
 
 - **Created:** September 2, 2025
-- **Last Updated:** September 19, 2025 (Lab, Library schemas and Phase 4 planning)
+- **Last Updated:** January 15, 2025 (Treatment schema implementation)
 - **Version:** 1.0.0
 - **Repository:** https://github.com/gabdank/schemas
 - **Claude Project:** Database Schema Establishment
@@ -415,11 +415,11 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Current Metrics
 
-- **Files:** 30 total, 13 schemas implemented, 14 example data files
-- **Tests:** 60 passing / 60 total (increased from 59)
+- **Files:** 31 total, 14 schemas implemented, 14 example data files
+- **Tests:** 64 passing / 64 total (increased from 63)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
-- **Schema Versions:** 13 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
+- **Schema Versions:** 14 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem, Treatment)
 - **Example Data:** Complete validation examples for all concrete biosample types with classification properties
 
 ### Recent Activity
