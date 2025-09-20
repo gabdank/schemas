@@ -353,6 +353,11 @@ describe('Schema Validation Tests', () => {
       expect(biosampleSchema.properties.suspension_type.enum).toEqual(['cell', 'nucleus']);
     });
 
+    test('Biosample schema has treatment property linking to Treatment', () => {
+      expect(biosampleSchema.properties.treatment).toHaveProperty('type', 'string');
+      expect(biosampleSchema.properties.treatment).toHaveProperty('linkTo', 'Treatment');
+    });
+
     test('Tissue schema has thickness dependent validations only', () => {
       expect(tissueSchema.dependentSchemas.thickness.required).toContain('thickness_units');
       expect(tissueSchema.dependentSchemas.thickness_units.required).toContain('thickness');

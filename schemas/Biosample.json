@@ -74,6 +74,13 @@
       "description": "Type of suspension - single cells or single nuclei.",
       "type": "string",
       "enum": ["cell", "nucleus"]
+    },
+    "treatment": {
+      "title": "Treatment",
+      "description": "Treatment applied to this biosample.",
+      "comment": "See Treatment.json for available identifiers.",
+      "type": "string",
+      "linkTo": "Treatment"
     }
   }
 }
