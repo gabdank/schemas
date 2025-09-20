@@ -2,8 +2,8 @@
 
 ## Project Metadata
 
-- **Created:** September 2, 2025
-- **Last Updated:** January 15, 2025 (Treatment schema implementation)
+- **Created:** September 2, 2024
+- **Last Updated:** January 15, 2025 (GeneticModification schema implementation)
 - **Version:** 1.0.0
 - **Repository:** https://github.com/gabdank/schemas
 - **Claude Project:** Database Schema Establishment
@@ -14,23 +14,28 @@
 
 ### Objective
 
-Establish comprehensive JSON Schema definitions for database entities, starting with core biological data types: Donor and Biosample schemas.
+Establish comprehensive JSON Schema definitions for biological research database entities, including users, labs, donors, biosamples, treatments, genetic modifications, and library preparation workflows.
 
 ### Scope
 
 - **In Scope:**
-  - Donor.json schema definition with modern JSON Schema draft 2020-12
-  - Biosample.json schema definition with advanced validation rules
+  - Complete schema ecosystem for biological research (15 schemas implemented)
+  - User management, lab organization, and sample tracking
+  - Treatment and genetic modification documentation
+  - Library preparation workflows (droplet and plate-based)
+  - Abstract/concrete class hierarchies with inheritance
+  - Advanced validation rules and dependent schemas
   - Schema versioning and migration strategy
-  - Integration with existing biological data standards
+  - Integration with biological data standards (ontologies, CHEBI, etc.)
 - **Out of Scope:**
   - Database implementation
   - API endpoints
   - User interface components
 - **Success Criteria:**
-  - Complete Donor.json and Biosample.json schemas with comprehensive validation
-  - Schema compatibility with biological research standards
-  - Proper version management and documentation
+  - ✅ Complete schema ecosystem with 15 schemas and 71 passing tests
+  - ✅ Schema compatibility with biological research standards
+  - ✅ Proper version management and comprehensive documentation
+  - ✅ Abstract/concrete inheritance patterns for extensibility
 
 ### Key Technologies
 
@@ -52,20 +57,22 @@ schemas/
 ├── jest.config.js                       # Jest testing configuration
 ├── .prettierrc                          # Code formatting configuration
 ├── .gitignore                           # Git ignore patterns
-├── schemas/                             # Core schema definitions (13 schemas)
+├── schemas/                             # Core schema definitions (15 schemas)
 │   ├── mixins.json                     # Basic item mixin properties
 │   ├── User.json                       # User entity schema (concrete)
 │   ├── Lab.json                        # Lab entity schema (concrete)
 │   ├── Library.json                    # Library entity schema (abstract)
 │   ├── DropletLibrary.json             # Droplet library schema (concrete)
 │   ├── PlateBasedLibrary.json          # Plate-based library schema (concrete)
-│   ├── Donor.json                      # Donor entity schema (abstract)
+│   ├── Donor.json                      # Donor entity schema (concrete)
 │   ├── Biosample.json                  # Biosample entity schema (abstract)
 │   ├── BiosampleOntologyTerm.json      # Ontology terms for biosamples
 │   ├── Tissue.json                     # Tissue sample schema (concrete)
 │   ├── PrimaryCell.json                # Primary cell schema (concrete)
 │   ├── InVitroSystem.json              # In vitro system schema (concrete)
-│   └── InVivoSystem.json               # In vivo system schema (concrete)
+│   ├── InVivoSystem.json               # In vivo system schema (concrete)
+│   ├── Treatment.json                  # Treatment schema (concrete)
+│   └── GeneticModification.json        # Genetic modification schema (concrete)
 ├── tests/                              # Schema validation tests
 │   ├── schemas/                        # Schema structure tests
 │   │   └── schema.validation.test.js   # Jest test suite (52 tests)
@@ -683,6 +690,13 @@ npm run lint:fix               # Auto-fix formatting
 - Capture fundamental biological distinction between cell and nuclei suspensions
 - Support downstream analysis requirements
 - Simple enum without underscores for clean API usage
+
+
+**MORE TODO**
+- refactor Ontology Terms, having an abstract and concrete biosample, treatment, diesease, etc
+- make sure Treatment linked to termontology
+- make sure the Samples linked to ontology biosample
+- consider introducing ExperimentalCondition instead of Treatment? to cover diet, environmental consitions and such.
 
 ### Implementation Priority & Timeline
 
