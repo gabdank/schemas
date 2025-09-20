@@ -53,6 +53,7 @@ const biosampleOntologyTermSchema = loadSchema('BiosampleOntologyTerm.json');
 const primaryCellSchema = loadSchema('PrimaryCell.json');
 const inVitroSystemSchema = loadSchema('InVitroSystem.json');
 const inVivoSystemSchema = loadSchema('InVivoSystem.json');
+const treatmentSchema = loadSchema('Treatment.json');
 
 describe('Schema Validation Tests', () => {
   describe('Schema Structure Validation', () => {
@@ -162,6 +163,13 @@ describe('Schema Validation Tests', () => {
       expect(inVivoSystemSchema.required).toContain('sample_terms');
       expect(inVivoSystemSchema.required).toContain('donors');
     });
+
+    test('Treatment.json should have required JSON Schema properties', () => {
+      expect(treatmentSchema).toHaveProperty('$schema');
+      expect(treatmentSchema).toHaveProperty('title');
+      expect(treatmentSchema).toHaveProperty('type', 'object');
+      expect(treatmentSchema.required).toContain('is_composite');
+    });
   });
 
   describe('Schema Required Fields', () => {
@@ -211,6 +219,10 @@ describe('Schema Validation Tests', () => {
 
     test('InVivoSystem schema has correct required fields array', () => {
       expect(inVivoSystemSchema.required).toEqual(['lab', 'sample_terms', 'donors', 'classification']);
+    });
+
+    test('Treatment schema has correct required fields array', () => {
+      expect(treatmentSchema.required).toEqual(['is_composite']);
     });
   });
 
@@ -276,6 +288,7 @@ describe('Schema Validation Tests', () => {
       expect(primaryCellSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(inVitroSystemSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(inVivoSystemSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(treatmentSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
     });
 
     test('Tissue schema inherits from abstract Biosample', () => {
@@ -383,6 +396,24 @@ describe('Schema Validation Tests', () => {
       // Should still inherit all Biosample properties via mixinProperties
       expect(inVitroSystemSchema.properties.sample_procurement_interval).toBeUndefined();
       expect(inVivoSystemSchema.properties.sample_procurement_interval).toBeUndefined();
+    });
+
+    test('Treatment schema has is_composite property with dependent validation', () => {
+      expect(treatmentSchema.properties.is_composite.type).toBe('boolean');
+      expect(treatmentSchema.dependentSchemas.is_composite).toBeDefined();
+
+      // Test non-composite treatment requirements
+      const nonCompositeSchema = treatmentSchema.dependentSchemas.is_composite.then;
+      expect(nonCompositeSchema.required).toEqual(['ontological_term', 'concentration', 'duration']);
+      expect(nonCompositeSchema.properties.ontological_term.type).toBe('string');
+      expect(nonCompositeSchema.properties.concentration.type).toBe('string');
+      expect(nonCompositeSchema.properties.duration.type).toBe('string');
+
+      // Test composite treatment requirements
+      const compositeSchema = treatmentSchema.dependentSchemas.is_composite.else;
+      expect(compositeSchema.required).toEqual(['description']);
+      expect(compositeSchema.properties.description.type).toBe('string');
+      expect(compositeSchema.properties.protocol_document.type).toBe('string');
     });
   });
 

@@ -582,20 +582,38 @@ npm run lint:fix               # Auto-fix formatting
 - Support experimental design documentation
 
 #### Treatment Integration
-**Target Schemas:** Biosample.json + New Treatment.json
+**Target Schemas:** Biosample.json + New Treatment.json + Ontological Term Refactoring
 **Status:** 📋 Planned
 
 **Treatment Schema (New):**
 - **File:** `schemas/Treatment.json`
 - **Type:** Concrete class
-- **Required:** `treatment_type`, `lab`
-- **Properties:**
-  - `treatment_type` (enum) - ["chemical", "drug", "growth_factor", "cytokine", "hormone", "physical", "radiation"]
-  - `treatment_agent` (string) - Name/identifier of treatment agent
+- **Required:** `lab`, `is_composite`
+- **Core Properties:**
+  - `is_composite` (boolean) - True for combination/complex treatments, false for single-agent treatments
+
+**Composite Treatment Properties (when is_composite: true):**
+  - `treatment_description` (string, required) - Manual text description of the complex treatment
+  - `treatment_protocol_document` (string, optional) - Link to PDF document with detailed protocol
+  - `component_count` (integer, optional) - Number of individual components in the treatment
+
+**Non-Composite Treatment Properties (when is_composite: false):**
+  - `ontological_term` (string, required) - CheBI ID, UniProt ID, or other ontological identifier
+  - `ontology_source` (enum, required) - ["CheBI", "UniProt", "NCBI Taxonomy", "Gene Ontology"]
   - `concentration` (number, optional) - Treatment concentration
   - `concentration_units` (enum, optional) - ["M", "mM", "μM", "nM", "pM", "mg/ml", "μg/ml"]
+
+**Common Properties:**
   - `duration` (number, optional) - Treatment duration
   - `duration_units` (enum, optional) - ["second", "minute", "hour", "day", "week"]
+  - `temperature` (number, optional) - Treatment temperature in Celsius
+  - `notes` (string, optional) - Additional treatment notes
+
+**Benefits:**
+- **Clear classification** between single-agent vs combination treatments
+- **Ontological standardization** for simple treatments (leverages CheBI, UniProt databases)
+- **Flexibility** for complex custom treatments requiring manual documentation
+- **Validation rules** ensure appropriate properties based on treatment type
 
 **Biosample Updates:**
 - `treatments` (array, optional) - Links to Treatment records (`"linkTo": "Treatment"`)
@@ -632,10 +650,11 @@ npm run lint:fix               # Auto-fix formatting
 | Enhancement | Target Schema | Estimated Effort | Dependencies | Priority |
 |-------------|---------------|------------------|--------------|----------|
 | Enrichment Criteria | Biosample.json | Medium | None | High |
-| Suspension Type | Biosample.json | Low | None | High |
-| Preservation Update | Tissue.json | Low | None | Medium |
+| Suspension Type | Biosample.json | Low | None | ✅ Complete |
+| Preservation Update | Tissue.json | Low | None | ✅ Complete |
 | Genetic Modifications | Biosample.json | Medium | None | Medium |
-| Treatment Integration | Biosample.json + Treatment.json | High | New Treatment schema | Low |
+| Treatment Integration | Biosample.json + Treatment.json | High | New Treatment schema + Ontological refactor | Medium |
+| Ontological Term Refactoring | Abstract OntologicalTerm + Concrete terms | High | BiosampleOntologyTerm migration | Low |
 
 ### Design Considerations
 
@@ -653,6 +672,33 @@ npm run lint:fix               # Auto-fix formatting
 - Add comprehensive test coverage for new properties
 - Test inheritance behavior across concrete sample types
 - Validate enum constraints and dependent property requirements
+
+### Phase 5: Ontological Term Architecture Refactoring
+
+#### Proposed Abstract OntologicalTerm Architecture
+**Motivation:** Current BiosampleOntologyTerm.json could be generalized to support multiple ontology types
+
+**Abstract OntologicalTerm.json:**
+- **Properties:** `term_id`, `term_name`, `ontology_source`, `definition`, `synonyms`
+- **Validation:** Pattern matching for different ID formats (CheBI:123, UniProt:P12345, etc.)
+
+**Concrete Implementations:**
+1. **BiosampleOntologyTerm.json** - Current implementation (tissues, cell types, anatomical terms)
+2. **ChemicalOntologyTerm.json** - Chemical compounds, drugs (CheBI, ChEMBL)
+3. **ProteinOntologyTerm.json** - Proteins, enzymes (UniProt, InterPro)
+4. **DiseaseOntologyTerm.json** - Diseases, phenotypes (MONDO, HPO)
+5. **EnvironmentalOntologyTerm.json** - Environmental conditions (ENVO)
+
+**Benefits:**
+- **Consistency** across all ontological references
+- **Validation** for proper ID formats per ontology
+- **Extensibility** for future ontology types
+- **Reusability** across Treatment, Biosample, and other schemas
+
+**Migration Strategy:**
+- Maintain backward compatibility with existing BiosampleOntologyTerm
+- Gradual migration to abstract architecture
+- Automated validation for ontology ID formats
 
 ---
 

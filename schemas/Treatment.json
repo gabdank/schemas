@@ -1,0 +1,65 @@
+{
+  "title": "Treatment",
+  "$id": "/profiles/treatment.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Treatment applied to biological samples or systems.",
+  "type": "object",
+  "required": ["is_composite"],
+  "additionalProperties": false,
+  "mixinProperties": [
+    {
+      "$ref": "mixins.json#/basic_item"
+    }
+  ],
+  "properties": {
+    "is_composite": {
+      "title": "Is Composite",
+      "description": "Indicates whether this treatment is a composite (combination) treatment or a single-agent treatment.",
+      "type": "boolean"
+    }
+  },
+  "dependentSchemas": {
+    "is_composite": {
+      "if": {
+        "properties": {
+          "is_composite": {"const": false}
+        }
+      },
+      "then": {
+        "properties": {
+          "ontological_term": {
+            "title": "Ontological Term",
+            "description": "Standardized ontological term (CheBI, UniProt, etc.) for the treatment agent.",
+            "type": "string"
+          },
+          "concentration": {
+            "title": "Concentration",
+            "description": "Concentration of the treatment agent.",
+            "type": "string"
+          },
+          "duration": {
+            "title": "Duration",
+            "description": "Duration of treatment exposure.",
+            "type": "string"
+          }
+        },
+        "required": ["ontological_term", "concentration", "duration"]
+      },
+      "else": {
+        "properties": {
+          "description": {
+            "title": "Description",
+            "description": "Detailed description of the composite treatment protocol.",
+            "type": "string"
+          },
+          "protocol_document": {
+            "title": "Protocol Document",
+            "description": "Reference to detailed protocol document.",
+            "type": "string"
+          }
+        },
+        "required": ["description"]
+      }
+    }
+  }
+}
