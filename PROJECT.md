@@ -52,11 +52,13 @@ schemas/
 ├── jest.config.js                       # Jest testing configuration
 ├── .prettierrc                          # Code formatting configuration
 ├── .gitignore                           # Git ignore patterns
-├── schemas/                             # Core schema definitions (11 schemas)
+├── schemas/                             # Core schema definitions (13 schemas)
 │   ├── mixins.json                     # Basic item mixin properties
 │   ├── User.json                       # User entity schema (concrete)
 │   ├── Lab.json                        # Lab entity schema (concrete)
-│   ├── Library.json                    # Library entity schema (concrete)
+│   ├── Library.json                    # Library entity schema (abstract)
+│   ├── DropletLibrary.json             # Droplet library schema (concrete)
+│   ├── PlateBasedLibrary.json          # Plate-based library schema (concrete)
 │   ├── Donor.json                      # Donor entity schema (abstract)
 │   ├── Biosample.json                  # Biosample entity schema (abstract)
 │   ├── BiosampleOntologyTerm.json      # Ontology terms for biosamples
@@ -102,7 +104,9 @@ schemas/
 | `schemas/mixins.json`                     | Basic item mixin properties     | ✅ Complete    |
 | `schemas/User.json`                       | User entity schema (concrete)   | ✅ Complete    |
 | `schemas/Lab.json`                        | Lab entity schema (concrete)    | ✅ Complete    |
-| `schemas/Library.json`                    | Library entity schema (concrete)| ✅ Complete    |
+| `schemas/Library.json`                    | Library entity schema (abstract)| ✅ Complete    |
+| `schemas/DropletLibrary.json`             | Droplet library schema (concrete)| ✅ Complete   |
+| `schemas/PlateBasedLibrary.json`          | Plate-based library schema (concrete)| ✅ Complete |
 | `schemas/Donor.json`                      | Donor entity schema (abstract)  | ✅ Complete    |
 | `schemas/Biosample.json`                  | Biosample schema (abstract)     | ✅ Complete    |
 | `schemas/BiosampleOntologyTerm.json`      | Ontology terms for samples      | ✅ Complete    |
@@ -241,7 +245,9 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 | mixins                | 1.0.0   | `schemas/mixins.json`                | ✅ Complete | Mixin      | IGVFD mixins.json (basic_item only)        |
 | User                  | 1.0.0   | `schemas/User.json`                  | ✅ Complete | Concrete   | IGVFD user.json (simplified)               |
 | Lab                   | 1.0.0   | `schemas/Lab.json`                   | ✅ Complete | Concrete   | IGVFD lab.json (minimal)                   |
-| Library               | 1.0.0   | `schemas/Library.json`               | ✅ Complete | Concrete   | IGVFD library.json (minimal)               |
+| Library               | 1.0.0   | `schemas/Library.json`               | ✅ Complete | Abstract   | IGVFD library.json (minimal)               |
+| DropletLibrary        | 1.0.0   | `schemas/DropletLibrary.json`        | ✅ Complete | Concrete   | Droplet-based libraries (10X, Bio-Rad)     |
+| PlateBasedLibrary     | 1.0.0   | `schemas/PlateBasedLibrary.json`     | ✅ Complete | Concrete   | Plate-based libraries (sci-methods, SCALE) |
 | Donor                 | 1.0.0   | `schemas/Donor.json`                 | ✅ Complete | Abstract   | IGVFD donor.json (simplified)              |
 | Biosample             | 1.0.0   | `schemas/Biosample.json`             | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)          |
 | BiosampleOntologyTerm | 1.0.0   | `schemas/BiosampleOntologyTerm.json` | ✅ Complete | Concrete   | IGVFD sample_term.json + ontology patterns |
@@ -409,15 +415,16 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Current Metrics
 
-- **Files:** 30 total, 11 schemas implemented, 14 example data files
-- **Tests:** 53 passing / 53 total (increased from 52)
+- **Files:** 30 total, 13 schemas implemented, 14 example data files
+- **Tests:** 59 passing / 59 total (increased from 53)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
-- **Schema Versions:** 11 active schemas (mixins, User, Lab, Library, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
+- **Schema Versions:** 13 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
 - **Example Data:** Complete validation examples for all concrete biosample types with classification properties
 
 ### Recent Activity
 
+- **September 19, 2025:** Refactored Library to abstract schema with concrete DropletLibrary and PlateBasedLibrary - added multiplexing_method enum ["cell hashing", "lipid hashing", "genetic", "sample barcodes"], expanded test coverage to 59 tests, enables proper library type modeling for droplet vs plate-based workflows
 - **September 19, 2025:** Implemented suspension_type property in Biosample schema - added optional enum with values ["cell", "nucleus"], moved suspension_method and viability_percentage to future planning, expanded test coverage to 53 tests
 - **September 19, 2025:** Updated Tissue preservation_method enum with standardized terminology - changed to past-tense adjectives (cryopreserved, paraffin embedded, OCT embedded), added new preservation methods (frozen, fixed, fixed-frozen), maintained test coverage at 52 tests
 - **September 19, 2025:** Changed Library schema from abstract to concrete class - Library.json now allows direct object instantiation, updated PROJECT.md documentation to reflect concrete classification

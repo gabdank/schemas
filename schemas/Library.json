@@ -2,7 +2,7 @@
   "title": "Library",
   "$id": "/profiles/library.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "A concrete schema for libraries prepared from biological samples.",
+  "description": "Abstract schema for libraries prepared from biological samples.",
   "type": "object",
   "required": ["lab", "samples"],
   "additionalProperties": false,
@@ -33,6 +33,12 @@
         "type": "string",
         "linkTo": "Biosample"
       }
+    },
+    "multiplexing_method": {
+      "title": "Multiplexing Method",
+      "description": "Method used for sample multiplexing in this library.",
+      "type": "string",
+      "enum": ["cell hashing", "lipid hashing", "genetic", "sample barcodes"]
     }
   }
 }
