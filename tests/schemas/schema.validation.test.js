@@ -54,6 +54,7 @@ const primaryCellSchema = loadSchema('PrimaryCell.json');
 const inVitroSystemSchema = loadSchema('InVitroSystem.json');
 const inVivoSystemSchema = loadSchema('InVivoSystem.json');
 const treatmentSchema = loadSchema('Treatment.json');
+const geneticModificationSchema = loadSchema('GeneticModification.json');
 
 describe('Schema Validation Tests', () => {
   describe('Schema Structure Validation', () => {
@@ -170,6 +171,14 @@ describe('Schema Validation Tests', () => {
       expect(treatmentSchema).toHaveProperty('type', 'object');
       expect(treatmentSchema.required).toContain('is_composite');
     });
+
+    test('GeneticModification.json should have required JSON Schema properties', () => {
+      expect(geneticModificationSchema).toHaveProperty('$schema');
+      expect(geneticModificationSchema).toHaveProperty('title');
+      expect(geneticModificationSchema).toHaveProperty('type', 'object');
+      expect(geneticModificationSchema.required).toContain('description');
+      expect(geneticModificationSchema.required).toContain('modality');
+    });
   });
 
   describe('Schema Required Fields', () => {
@@ -223,6 +232,10 @@ describe('Schema Validation Tests', () => {
 
     test('Treatment schema has correct required fields array', () => {
       expect(treatmentSchema.required).toEqual(['is_composite']);
+    });
+
+    test('GeneticModification schema has correct required fields array', () => {
+      expect(geneticModificationSchema.required).toEqual(['description', 'modality']);
     });
   });
 
@@ -289,6 +302,7 @@ describe('Schema Validation Tests', () => {
       expect(inVitroSystemSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(inVivoSystemSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(treatmentSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(geneticModificationSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
     });
 
     test('Tissue schema inherits from abstract Biosample', () => {
@@ -356,6 +370,11 @@ describe('Schema Validation Tests', () => {
     test('Biosample schema has treatment property linking to Treatment', () => {
       expect(biosampleSchema.properties.treatment).toHaveProperty('type', 'string');
       expect(biosampleSchema.properties.treatment).toHaveProperty('linkTo', 'Treatment');
+    });
+
+    test('Biosample schema has genetic_modification property linking to GeneticModification', () => {
+      expect(biosampleSchema.properties.genetic_modification).toHaveProperty('type', 'string');
+      expect(biosampleSchema.properties.genetic_modification).toHaveProperty('linkTo', 'GeneticModification');
     });
 
     test('Tissue schema has thickness dependent validations only', () => {
@@ -435,6 +454,38 @@ describe('Schema Validation Tests', () => {
       expect(nonCompositeSchema.dependentSchemas.concentration_units.required).toContain('concentration');
       expect(nonCompositeSchema.dependentSchemas.duration.required).toContain('duration_units');
       expect(nonCompositeSchema.dependentSchemas.duration_units.required).toContain('duration');
+    });
+
+    test('GeneticModification schema has correct property validation', () => {
+      expect(geneticModificationSchema.properties.description.type).toBe('string');
+      expect(geneticModificationSchema.properties.description.pattern).toBe('^(\\S+(\\s|\\S)*\\S+|\\S)$');
+      expect(geneticModificationSchema.properties.modality.type).toBe('string');
+      expect(geneticModificationSchema.properties.modality.enum).toContain('activation');
+      expect(geneticModificationSchema.properties.modality.enum).toContain('knockout');
+      expect(geneticModificationSchema.properties.modality.enum).toContain('base editing');
+      expect(geneticModificationSchema.properties.cas.enum).toContain('Cas9');
+      expect(geneticModificationSchema.properties.cas.enum).toContain('dCas9');
+      expect(geneticModificationSchema.properties.activating_agent_term_id.pattern).toBe('^CHEBI:[0-9]{1,7}$');
+    });
+
+    test('GeneticModification schema has chemical activation dependency', () => {
+      expect(geneticModificationSchema.dependentSchemas.activated).toBeDefined();
+
+      // Test the if condition - activated must be true
+      const ifCondition = geneticModificationSchema.dependentSchemas.activated.if;
+      expect(ifCondition.properties.activated.const).toBe(true);
+
+      // Test the then requirement - requires both agent properties
+      const thenSchema = geneticModificationSchema.dependentSchemas.activated.then;
+      expect(thenSchema.required).toEqual(['activating_agent_term_id', 'activating_agent_term_name']);
+    });
+
+    test('GeneticModification schema has tagged_proteins array with Gene linkTo', () => {
+      expect(geneticModificationSchema.properties.tagged_proteins.type).toBe('array');
+      expect(geneticModificationSchema.properties.tagged_proteins.minItems).toBe(1);
+      expect(geneticModificationSchema.properties.tagged_proteins.maxItems).toBe(1);
+      expect(geneticModificationSchema.properties.tagged_proteins.uniqueItems).toBe(true);
+      expect(geneticModificationSchema.properties.tagged_proteins.items.linkTo).toBe('Gene');
     });
   });
 

@@ -415,11 +415,11 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Current Metrics
 
-- **Files:** 31 total, 14 schemas implemented, 14 example data files
-- **Tests:** 64 passing / 64 total (increased from 63)
+- **Files:** 32 total, 15 schemas implemented, 14 example data files
+- **Tests:** 71 passing / 71 total (increased from 68)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
-- **Schema Versions:** 14 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem, Treatment)
+- **Schema Versions:** 15 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem, Treatment, GeneticModification)
 - **Example Data:** Complete validation examples for all concrete biosample types with classification properties
 
 ### Recent Activity
@@ -616,7 +616,46 @@ npm run lint:fix               # Auto-fix formatting
 - **Flexibility** for complex custom treatments requiring manual documentation
 
 **Biosample Updates:**
-- `treatments` (array, optional) - Links to Treatment records (`"linkTo": "Treatment"`)
+- `treatment` (string, optional) - Links to Treatment record (`"linkTo": "Treatment"`)
+- `genetic_modification` (string, optional) - Links to GeneticModification record (`"linkTo": "GeneticModification"`)
+
+#### Genetic Modification Integration
+**Target Schemas:** Biosample.json + New GeneticModification.json
+**Status:** ✅ Complete
+
+**GeneticModification Schema (Implemented):**
+- **File:** `schemas/GeneticModification.json`
+- **Type:** Concrete class
+- **Required:** `description`, `modality`
+
+**Core Properties:**
+- `description` (string, required) - Plain text description with pattern validation
+- `modality` (enum, required) - Purpose/effect: activation, base editing, cutting, interference, knockout, localizing, prime editing
+
+**CRISPR Properties (Optional):**
+- `cas` (enum, optional) - Cas protein: Cas9, Cas12a, Cas13, dCas9, nCas9, SpG, SpRY
+- `cas_species` (enum, optional) - Origin species: Streptococcus pyogenes, Staphylococcus aureus, etc.
+- `fused_domain` (enum, optional) - Fused molecule: VP64, KRAB, p300, ABE8e, BE4max, etc.
+
+**Chemical Activation Properties (Optional):**
+- `activated` (boolean, optional) - Whether chemically activated
+- `activating_agent_term_id` (string, conditional) - CHEBI ID with pattern validation
+- `activating_agent_term_name` (string, conditional) - CHEBI term name
+
+**Target Properties:**
+- `tagged_proteins` (array, optional) - Links to Gene schema (maxItems: 1)
+
+**Validation Features:**
+- **Dependent schemas** ensure activated=true requires CHEBI agent terms
+- **Pattern validation** for CHEBI IDs (^CHEBI:[0-9]{1,7}$) and descriptions
+- **Comprehensive enums** covering major CRISPR systems and genetic engineering approaches
+- **Gene linkTo** for tracking protein targets
+
+**Benefits:**
+- **Comprehensive CRISPR coverage** including cutting-edge base/prime editing systems
+- **Chemical activation support** for inducible genetic modifications
+- **Standardized ontology** integration via CHEBI for activating agents
+- **Flexible modality system** covering major genetic engineering approaches
 
 #### Tissue-Specific Enhancements
 **Target Schema:** Tissue.json
@@ -653,7 +692,7 @@ npm run lint:fix               # Auto-fix formatting
 | Suspension Type | Biosample.json | Low | None | ✅ Complete |
 | Preservation Update | Tissue.json | Low | None | ✅ Complete |
 | Treatment Integration | Biosample.json + Treatment.json | High | New Treatment schema | ✅ Complete |
-| Genetic Modifications | Biosample.json | Medium | None | Medium |
+| Genetic Modifications | Biosample.json + GeneticModification.json | Medium | None | ✅ Complete |
 | Ontological Term Refactoring | Abstract OntologicalTerm + Concrete terms | High | BiosampleOntologyTerm migration | Low |
 
 ### Design Considerations

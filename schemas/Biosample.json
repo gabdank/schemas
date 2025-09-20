@@ -81,6 +81,13 @@
       "comment": "See Treatment.json for available identifiers.",
       "type": "string",
       "linkTo": "Treatment"
+    },
+    "genetic_modification": {
+      "title": "Genetic Modification",
+      "description": "Genetic modification applied to this biosample.",
+      "comment": "See GeneticModification.json for available identifiers.",
+      "type": "string",
+      "linkTo": "GeneticModification"
     }
   }
 }

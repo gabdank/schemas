@@ -1,0 +1,132 @@
+{
+  "title": "Genetic Modification",
+  "$id": "/profiles/genetic_modification.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Genetic modifications applied to biological samples, including CRISPR-based and other genetic engineering techniques.",
+  "type": "object",
+  "required": ["description", "modality"],
+  "additionalProperties": false,
+  "mixinProperties": [
+    {
+      "$ref": "mixins.json#/basic_item"
+    }
+  ],
+  "dependentSchemas": {
+    "activated": {
+      "if": {
+        "properties": {
+          "activated": {"const": true}
+        }
+      },
+      "then": {
+        "required": ["activating_agent_term_id", "activating_agent_term_name"]
+      }
+    }
+  },
+  "properties": {
+    "description": {
+      "title": "Description",
+      "description": "A plain text description of the genetic modification.",
+      "type": "string",
+      "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$"
+    },
+    "modality": {
+      "title": "Modality",
+      "description": "The purpose or intended effect of the genetic modification.",
+      "type": "string",
+      "enum": [
+        "activation",
+        "base editing",
+        "cutting",
+        "interference",
+        "knockout",
+        "localizing",
+        "prime editing"
+      ]
+    },
+    "activated": {
+      "title": "Activated",
+      "description": "A boolean indicating whether the modification has been activated by a chemical agent.",
+      "type": "boolean"
+    },
+    "activating_agent_term_id": {
+      "title": "Activating Agent Term ID",
+      "description": "The CHEBI identifier for the activating agent of the modification.",
+      "type": "string",
+      "pattern": "^CHEBI:[0-9]{1,7}$"
+    },
+    "activating_agent_term_name": {
+      "title": "Activating Agent Term Name",
+      "description": "The CHEBI name for the activating agent of the modification.",
+      "type": "string"
+    },
+    "cas": {
+      "title": "Cas",
+      "description": "The name of the CRISPR associated protein used in the modification.",
+      "type": "string",
+      "enum": [
+        "Cas9",
+        "Cas12a",
+        "Cas13",
+        "dCas9",
+        "nCas9",
+        "SpG",
+        "SpRY"
+      ]
+    },
+    "cas_species": {
+      "title": "Cas Species",
+      "description": "The originating species of the Cas nuclease.",
+      "type": "string",
+      "enum": [
+        "Streptococcus pyogenes (Sp)",
+        "Staphylococcus aureus (Sa)",
+        "Campylobacter jejuni (Cj)",
+        "Neisseria meningitidis (Nm)"
+      ]
+    },
+    "fused_domain": {
+      "title": "Fused Domain",
+      "description": "The name of the molecule fused to a Cas protein.",
+      "type": "string",
+      "enum": [
+        "2xVP64",
+        "2xVP64-2A-Puro",
+        "2xVP64-2A-Thy1.1",
+        "3xVP64",
+        "ABE8e",
+        "ABE8.20",
+        "ANTI-FLAG",
+        "BE4",
+        "BE4max",
+        "eA3A",
+        "eA3A-T31A",
+        "eA3A-T44D-S45A",
+        "KOX1-KRAB",
+        "M-MLV RT (PE2)",
+        "p300",
+        "TdCBE",
+        "TdCGBE",
+        "TdDE",
+        "Tet1",
+        "VPH",
+        "VP64",
+        "VP64-p65-Rta (VPR)",
+        "ZIM3-KRAB"
+      ]
+    },
+    "tagged_proteins": {
+      "title": "Tagged Proteins",
+      "description": "The tagged proteins in which the Cas nuclease is fused to an antibody.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "title": "Gene",
+        "type": "string",
+        "linkTo": "Gene"
+      }
+    }
+  }
+}
