@@ -3,7 +3,7 @@
 ## Project Metadata
 
 - **Created:** September 2, 2024
-- **Last Updated:** January 15, 2025 (GeneticModification schema implementation)
+- **Last Updated:** September 22, 2025 (ControlledTerm ontological architecture refactoring)
 - **Version:** 1.0.0
 - **Repository:** https://github.com/gabdank/schemas
 - **Claude Project:** Database Schema Establishment
@@ -66,7 +66,7 @@ schemas/
 │   ├── PlateBasedLibrary.json          # Plate-based library schema (concrete)
 │   ├── Donor.json                      # Donor entity schema (concrete)
 │   ├── Biosample.json                  # Biosample entity schema (abstract)
-│   ├── BiosampleOntologyTerm.json      # Ontology terms for biosamples
+│   ├── ControlledTerm.json             # Controlled vocabulary terms from biological ontologies
 │   ├── Tissue.json                     # Tissue sample schema (concrete)
 │   ├── PrimaryCell.json                # Primary cell schema (concrete)
 │   ├── InVitroSystem.json              # In vitro system schema (concrete)
@@ -75,7 +75,7 @@ schemas/
 │   └── GeneticModification.json        # Genetic modification schema (concrete)
 ├── tests/                              # Schema validation tests
 │   ├── schemas/                        # Schema structure tests
-│   │   └── schema.validation.test.js   # Jest test suite (52 tests)
+│   │   └── schema.validation.test.js   # Jest test suite (71 tests)
 │   └── examples/                       # Example data validation tests
 │       ├── user/                       # User test data
 │       │   ├── valid-user.json
@@ -116,12 +116,12 @@ schemas/
 | `schemas/PlateBasedLibrary.json`          | Plate-based library schema (concrete)| ✅ Complete |
 | `schemas/Donor.json`                      | Donor entity schema (abstract)  | ✅ Complete    |
 | `schemas/Biosample.json`                  | Biosample schema (abstract)     | ✅ Complete    |
-| `schemas/BiosampleOntologyTerm.json`      | Ontology terms for samples      | ✅ Complete    |
+| `schemas/ControlledTerm.json`             | Controlled vocabulary terms     | ✅ Complete    |
 | `schemas/Tissue.json`                     | Tissue sample schema (concrete) | ✅ Complete    |
 | `schemas/PrimaryCell.json`                | Primary cell schema (concrete)  | ✅ Complete    |
 | `schemas/InVitroSystem.json`              | In vitro system schema (concrete)| ✅ Complete   |
 | `schemas/InVivoSystem.json`               | In vivo system schema (concrete) | ✅ Complete    |
-| `tests/schemas/schema.validation.test.js` | Jest test suite (52 tests)      | ✅ Complete    |
+| `tests/schemas/schema.validation.test.js` | Jest test suite (71 tests)      | ✅ Complete    |
 | `PROJECT.md`                              | Project documentation           | ✅ Complete    |
 
 ---
@@ -257,7 +257,7 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 | PlateBasedLibrary     | 1.0.0   | `schemas/PlateBasedLibrary.json`     | ✅ Complete | Concrete   | Plate-based libraries (sci-methods, SCALE) |
 | Donor                 | 1.0.0   | `schemas/Donor.json`                 | ✅ Complete | Abstract   | IGVFD donor.json (simplified)              |
 | Biosample             | 1.0.0   | `schemas/Biosample.json`             | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)          |
-| BiosampleOntologyTerm | 1.0.0   | `schemas/BiosampleOntologyTerm.json` | ✅ Complete | Concrete   | IGVFD sample_term.json + ontology patterns |
+| ControlledTerm        | 1.0.0   | `schemas/ControlledTerm.json`        | ✅ Complete | Concrete   | Multi-ontology terms (CL, EFO, UBERON, CHEBI, UniProt, Cellosaurus) |
 | Tissue                | 1.0.0   | `schemas/Tissue.json`                | ✅ Complete | Concrete   | IGVFD + Lattice-DB tissue + tissue_section |
 | PrimaryCell           | 1.0.0   | `schemas/PrimaryCell.json`           | ✅ Complete | Concrete   | IGVFD primary_cell.json (simplified)       |
 | InVitroSystem         | 1.0.0   | `schemas/InVitroSystem.json`         | ✅ Complete | Concrete   | IGVFD in_vitro_system.json (minimal)       |
@@ -426,11 +426,12 @@ Deployment:  ░░░░░░░░░░   0%
 - **Tests:** 71 passing / 71 total (increased from 68)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
-- **Schema Versions:** 15 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, BiosampleOntologyTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem, Treatment, GeneticModification)
+- **Schema Versions:** 15 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, ControlledTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem, Treatment, GeneticModification)
 - **Example Data:** Complete validation examples for all concrete biosample types with classification properties
 
 ### Recent Activity
 
+- **September 22, 2025:** Refactored BiosampleOntologyTerm.json to ControlledTerm.json - implemented unified ontological architecture supporting CL, EFO, UBERON, CHEBI, UniProt, and Cellosaurus ontologies, removed maxItems restriction enabling multiple ontology terms per sample, added required ontology_source property for clear validation, maintained test coverage at 71 tests
 - **September 19, 2025:** Added dependentSchemas validation for multiplexing_method in Library schema - enforces logical constraint that multiplexing requires minimum 2 samples, expanded test coverage to 60 tests
 - **September 19, 2025:** Refactored Library to abstract schema with concrete DropletLibrary and PlateBasedLibrary - added multiplexing_method enum ["cell hashing", "lipid hashing", "genetic", "sample barcodes"], expanded test coverage to 59 tests, enables proper library type modeling for droplet vs plate-based workflows
 - **September 19, 2025:** Implemented suspension_type property in Biosample schema - added optional enum with values ["cell", "nucleus"], moved suspension_method and viability_percentage to future planning, expanded test coverage to 53 tests

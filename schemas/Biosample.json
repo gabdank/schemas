@@ -47,14 +47,13 @@
       "description": "Ontology terms identifying a biosample.",
       "type": "array",
       "minItems": 1,
-      "maxItems": 1,
       "uniqueItems": true,
       "items": {
         "title": "Sample Term",
         "description": "Ontology term identifying a biosample.",
         "type": "string",
-        "comment": "See biosample_ontology_term.json for available identifiers.",
-        "linkTo": "BiosampleOntologyTerm"
+        "comment": "See controlled_term.json for available identifiers.",
+        "linkTo": "ControlledTerm"
       }
     },
     "sample_procurement_interval": {

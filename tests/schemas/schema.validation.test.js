@@ -49,7 +49,7 @@ const plateBasedLibrarySchema = loadSchema('PlateBasedLibrary.json');
 const donorSchema = loadSchema('Donor.json');
 const biosampleSchema = loadSchema('Biosample.json');
 const tissueSchema = loadSchema('Tissue.json');
-const biosampleOntologyTermSchema = loadSchema('BiosampleOntologyTerm.json');
+const controlledTermSchema = loadSchema('ControlledTerm.json');
 const primaryCellSchema = loadSchema('PrimaryCell.json');
 const inVitroSystemSchema = loadSchema('InVitroSystem.json');
 const inVivoSystemSchema = loadSchema('InVivoSystem.json');
@@ -130,12 +130,13 @@ describe('Schema Validation Tests', () => {
       expect(tissueSchema.required).toContain('donors');
     });
 
-    test('BiosampleOntologyTerm.json should have required JSON Schema properties', () => {
-      expect(biosampleOntologyTermSchema).toHaveProperty('$schema');
-      expect(biosampleOntologyTermSchema).toHaveProperty('title');
-      expect(biosampleOntologyTermSchema).toHaveProperty('type', 'object');
-      expect(biosampleOntologyTermSchema.required).toContain('term_id');
-      expect(biosampleOntologyTermSchema.required).toContain('term_name');
+    test('ControlledTerm.json should have required JSON Schema properties', () => {
+      expect(controlledTermSchema).toHaveProperty('$schema');
+      expect(controlledTermSchema).toHaveProperty('title');
+      expect(controlledTermSchema).toHaveProperty('type', 'object');
+      expect(controlledTermSchema.required).toContain('term_id');
+      expect(controlledTermSchema.required).toContain('term_name');
+      expect(controlledTermSchema.required).toContain('ontology_source');
     });
 
     test('PrimaryCell.json should have required JSON Schema properties', () => {
@@ -214,8 +215,8 @@ describe('Schema Validation Tests', () => {
       expect(tissueSchema.required).toEqual(['lab', 'sample_terms', 'donors']);
     });
 
-    test('BiosampleOntologyTerm schema has correct required fields array', () => {
-      expect(biosampleOntologyTermSchema.required).toEqual(['term_id', 'term_name']);
+    test('ControlledTerm schema has correct required fields array', () => {
+      expect(controlledTermSchema.required).toEqual(['term_id', 'term_name', 'ontology_source']);
     });
 
     test('PrimaryCell schema has correct required fields array', () => {
@@ -253,7 +254,7 @@ describe('Schema Validation Tests', () => {
     test('Biosample schema has sample_terms with array constraints', () => {
       expect(biosampleSchema.properties.sample_terms).toHaveProperty('type', 'array');
       expect(biosampleSchema.properties.sample_terms).toHaveProperty('minItems', 1);
-      expect(biosampleSchema.properties.sample_terms).toHaveProperty('maxItems', 1);
+      expect(biosampleSchema.properties.sample_terms.maxItems).toBeUndefined();
     });
 
     test('Lab schema has correct property validations', () => {
@@ -297,7 +298,7 @@ describe('Schema Validation Tests', () => {
       expect(donorSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(biosampleSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(tissueSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
-      expect(biosampleOntologyTermSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(controlledTermSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(primaryCellSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(inVitroSystemSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(inVivoSystemSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
@@ -326,17 +327,17 @@ describe('Schema Validation Tests', () => {
       expect(primaryCellSchema.properties.passage_number.minimum).toBe(0);
     });
 
-    test('BiosampleOntologyTerm has correct pattern validations', () => {
-      expect(biosampleOntologyTermSchema.properties.term_id.pattern).toBe(
-        '^(UBERON|EFO|CL|CLO|NTR):[0-9]{2,8}$'
+    test('ControlledTerm has correct pattern validations', () => {
+      expect(controlledTermSchema.properties.term_id.pattern).toBe(
+        '^(CL|EFO|UBERON|CHEBI|UniProt|Cellosaurus):[A-Za-z0-9_]+$'
       );
-      expect(biosampleOntologyTermSchema.properties.term_name.pattern).toBe(
+      expect(controlledTermSchema.properties.term_name.pattern).toBe(
         '^(?![\\s\"\'])[\\S|\\s]*[^\\s\"\']$'
       );
     });
 
-    test('Biosample schema links to BiosampleOntologyTerm', () => {
-      expect(biosampleSchema.properties.sample_terms.items.linkTo).toBe('BiosampleOntologyTerm');
+    test('Biosample schema links to ControlledTerm', () => {
+      expect(biosampleSchema.properties.sample_terms.items.linkTo).toBe('ControlledTerm');
     });
 
     test('Tissue schema has orientation enum values', () => {
