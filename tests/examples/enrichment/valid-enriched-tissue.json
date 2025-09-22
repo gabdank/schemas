@@ -1,0 +1,22 @@
+{
+  "lab": "john-doe-lab",
+  "donors": ["DONOR123"],
+  "sample_terms": ["CL:2000001"],
+  "spatial_information": "Left frontal cortex, Brodmann area 9",
+  "preservation_method": "flash-freezing",
+  "sample_procurement_interval": 2,
+  "sample_procurement_interval_units": "hour",
+  "thickness": 50,
+  "thickness_units": "μm",
+  "date_obtained": "2024-01-15",
+  "orientation": "coronal",
+  "description": "CD45+ enriched tissue sample from human frontal cortex",
+  "enrichment_method": "FACS",
+  "enriched_cell_types": ["CL:0000842"],
+  "enrichment_markers": [
+    {
+      "marker": "CD45",
+      "expression_level": "positive"
+    }
+  ]
+}

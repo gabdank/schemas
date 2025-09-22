@@ -1,0 +1,26 @@
+{
+  "lab": "john-doe-lab",
+  "donors": ["DONOR456"],
+  "sample_terms": ["CL:0000540"],
+  "sample_procurement_interval": 1,
+  "sample_procurement_interval_units": "day",
+  "passage_number": 3,
+  "description": "Primary T cells with CD8+ depletion via MACS",
+  "enrichment_method": "MACS",
+  "enriched_cell_types": ["CL:0000084"],
+  "depleted_cell_types": ["CL:0000625"],
+  "enrichment_markers": [
+    {
+      "marker": "CD3",
+      "expression_level": "positive"
+    },
+    {
+      "marker": "CD4",
+      "expression_level": "positive"
+    },
+    {
+      "marker": "CD8",
+      "expression_level": "negative"
+    }
+  ]
+}

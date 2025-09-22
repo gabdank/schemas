@@ -423,7 +423,7 @@ Deployment:  ░░░░░░░░░░   0%
 ### Current Metrics
 
 - **Files:** 32 total, 15 schemas implemented, 14 example data files
-- **Tests:** 71 passing / 71 total (increased from 68)
+- **Tests:** 73 passing / 73 total (increased from 71)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
 - **Schema Versions:** 15 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, ControlledTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem, Treatment, GeneticModification)
@@ -431,6 +431,7 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Recent Activity
 
+- **September 22, 2025:** Implemented sample enrichment properties in Biosample.json - added enrichment_method enum (6 methods), enriched/depleted_cell_types linking to ControlledTerm, enrichment_markers with 16 CD marker enums and expression levels, expanded test coverage to 73 tests, includes comprehensive example data for enrichment workflows
 - **September 22, 2025:** Refactored BiosampleOntologyTerm.json to ControlledTerm.json - implemented unified ontological architecture supporting CL, EFO, UBERON, CHEBI, UniProt, and Cellosaurus ontologies, removed maxItems restriction enabling multiple ontology terms per sample, added required ontology_source property for clear validation, maintained test coverage at 71 tests
 - **September 19, 2025:** Added dependentSchemas validation for multiplexing_method in Library schema - enforces logical constraint that multiplexing requires minimum 2 samples, expanded test coverage to 60 tests
 - **September 19, 2025:** Refactored Library to abstract schema with concrete DropletLibrary and PlateBasedLibrary - added multiplexing_method enum ["cell hashing", "lipid hashing", "genetic", "sample barcodes"], expanded test coverage to 59 tests, enables proper library type modeling for droplet vs plate-based workflows
@@ -561,18 +562,33 @@ npm run lint:fix               # Auto-fix formatting
 
 #### Sample Enrichment & Processing Enhancements
 **Target Schema:** Biosample.json (Abstract class)
-**Status:** 📋 Planned
+**Status:** ✅ Complete
 
-**Enrichment Criteria/Info Addition:**
-- `enrichment_factors` (array, optional) - Factors used for cell enrichment/selection (e.g., ["CD4+", "FACS sorted"])
-- `depletion_factors` (array, optional) - Factors used for cell depletion/removal (e.g., ["CD8+", "dead cells"])
-- `enriched_cell_types` (array, optional) - Description of enriched cell populations
-- `depleted_cell_types` (array, optional) - Description of depleted cell populations
+**Enrichment Properties (Implemented):**
+- `enrichment_method` (enum, optional) - Method used for enrichment: ["FACS", "MACS", "size_exclusion", "density_gradient", "manual_picking", "microfluidics"]
+- `enriched_cell_types` (array, optional) - Links to ControlledTerm for enriched cell populations (CL ontology)
+- `depleted_cell_types` (array, optional) - Links to ControlledTerm for depleted cell populations (CL ontology)
+- `enrichment_markers` (array, optional) - Structured marker objects with CD marker enums and expression levels
+
+**Enrichment Markers Structure:**
+```json
+{
+  "marker": "CD45",           // Enum of 16 common CD markers
+  "expression_level": "positive"  // ["positive", "negative", "low", "high", "intermediate"]
+}
+```
+
+**Validation Features:**
+- **CD Marker Standardization**: 16 validated CD markers (CD3, CD4, CD8, CD14, CD16, CD19, CD20, CD31, CD34, CD45, CD56, CD90, CD123, CD141, CD144, CD205)
+- **Expression Level Control**: Structured enum for marker expression patterns
+- **Ontological Cell Types**: Leverages ControlledTerm with CL ontology for standardized cell type annotation
+- **Method Classification**: Standardized enrichment method vocabulary
 
 **Benefits:**
-- Support for advanced sample processing documentation
-- Tracking of enrichment/depletion methodologies
-- Enhanced metadata for processed biological samples
+- **Minimal Free Text**: Structured approach reduces data inconsistency
+- **Real-World Validated**: Based on analysis of 7,000+ suspension samples
+- **Ontological Standardization**: Cell types use Cell Ontology (CL) via ControlledTerm
+- **Complex Workflow Support**: Multi-marker enrichment scenarios with positive/negative selection
 
 #### Genetic Modification Tracking
 **Target Schema:** Biosample.json (Abstract class)

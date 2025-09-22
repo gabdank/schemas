@@ -1,0 +1,30 @@
+{
+  "lab": "jane-smith-lab",
+  "donors": ["DONOR789"],
+  "sample_terms": ["CL:0002293"],
+  "sample_procurement_interval": 4,
+  "sample_procurement_interval_units": "hour",
+  "classification": "organoid",
+  "description": "Complex multi-marker enrichment for stem cell isolation from organoid",
+  "enrichment_method": "FACS",
+  "enriched_cell_types": ["CL:0000034", "CL:0002293"],
+  "depleted_cell_types": ["CL:0000094"],
+  "enrichment_markers": [
+    {
+      "marker": "CD34",
+      "expression_level": "high"
+    },
+    {
+      "marker": "CD45",
+      "expression_level": "negative"
+    },
+    {
+      "marker": "CD31",
+      "expression_level": "negative"
+    },
+    {
+      "marker": "CD90",
+      "expression_level": "positive"
+    }
+  ]
+}

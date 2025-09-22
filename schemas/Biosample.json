@@ -87,6 +87,65 @@
       "comment": "See GeneticModification.json for available identifiers.",
       "type": "string",
       "linkTo": "GeneticModification"
+    },
+    "enrichment_method": {
+      "title": "Enrichment Method",
+      "description": "Method used for cell enrichment or sorting.",
+      "type": "string",
+      "enum": ["FACS", "MACS", "size_exclusion", "density_gradient", "manual_picking", "microfluidics"]
+    },
+    "enriched_cell_types": {
+      "title": "Enriched Cell Types",
+      "description": "Cell types that were enriched in this sample.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "title": "Enriched Cell Type",
+        "description": "Ontology term for enriched cell type.",
+        "type": "string",
+        "comment": "See controlled_term.json for available identifiers.",
+        "linkTo": "ControlledTerm"
+      }
+    },
+    "depleted_cell_types": {
+      "title": "Depleted Cell Types",
+      "description": "Cell types that were depleted from this sample.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "title": "Depleted Cell Type",
+        "description": "Ontology term for depleted cell type.",
+        "type": "string",
+        "comment": "See controlled_term.json for available identifiers.",
+        "linkTo": "ControlledTerm"
+      }
+    },
+    "enrichment_markers": {
+      "title": "Enrichment Markers",
+      "description": "Markers used for cell enrichment or depletion.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["marker", "expression_level"],
+        "properties": {
+          "marker": {
+            "title": "Marker",
+            "description": "Cell surface marker or protein used for enrichment.",
+            "type": "string",
+            "enum": [
+              "CD3", "CD4", "CD8", "CD14", "CD16", "CD19", "CD20", "CD31", "CD34", "CD45", "CD56", "CD90", "CD123", "CD141", "CD144", "CD205"
+            ]
+          },
+          "expression_level": {
+            "title": "Expression Level",
+            "description": "Level of marker expression used for selection.",
+            "type": "string",
+            "enum": ["positive", "negative", "low", "high", "intermediate"]
+          }
+        }
+      }
     }
   }
 }

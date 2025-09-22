@@ -378,6 +378,46 @@ describe('Schema Validation Tests', () => {
       expect(biosampleSchema.properties.genetic_modification).toHaveProperty('linkTo', 'GeneticModification');
     });
 
+    test('Biosample schema has enrichment properties with correct validation', () => {
+      // enrichment_method enum validation
+      expect(biosampleSchema.properties.enrichment_method).toHaveProperty('type', 'string');
+      expect(biosampleSchema.properties.enrichment_method.enum).toEqual([
+        'FACS', 'MACS', 'size_exclusion', 'density_gradient', 'manual_picking', 'microfluidics'
+      ]);
+
+      // enriched_cell_types array linking to ControlledTerm
+      expect(biosampleSchema.properties.enriched_cell_types).toHaveProperty('type', 'array');
+      expect(biosampleSchema.properties.enriched_cell_types).toHaveProperty('uniqueItems', true);
+      expect(biosampleSchema.properties.enriched_cell_types.items).toHaveProperty('linkTo', 'ControlledTerm');
+
+      // depleted_cell_types array linking to ControlledTerm
+      expect(biosampleSchema.properties.depleted_cell_types).toHaveProperty('type', 'array');
+      expect(biosampleSchema.properties.depleted_cell_types).toHaveProperty('uniqueItems', true);
+      expect(biosampleSchema.properties.depleted_cell_types.items).toHaveProperty('linkTo', 'ControlledTerm');
+
+      // enrichment_markers complex object array
+      expect(biosampleSchema.properties.enrichment_markers).toHaveProperty('type', 'array');
+      expect(biosampleSchema.properties.enrichment_markers).toHaveProperty('uniqueItems', true);
+      expect(biosampleSchema.properties.enrichment_markers.items.type).toBe('object');
+      expect(biosampleSchema.properties.enrichment_markers.items.required).toEqual(['marker', 'expression_level']);
+    });
+
+    test('Biosample enrichment_markers has correct marker enum values', () => {
+      const markerEnum = biosampleSchema.properties.enrichment_markers.items.properties.marker.enum;
+      expect(markerEnum).toContain('CD45');
+      expect(markerEnum).toContain('CD31');
+      expect(markerEnum).toContain('CD3');
+      expect(markerEnum).toContain('CD4');
+      expect(markerEnum).toContain('CD123');
+      expect(markerEnum).toContain('CD205');
+      expect(markerEnum).toEqual([
+        "CD3", "CD4", "CD8", "CD14", "CD16", "CD19", "CD20", "CD31", "CD34", "CD45", "CD56", "CD90", "CD123", "CD141", "CD144", "CD205"
+      ]);
+
+      const expressionEnum = biosampleSchema.properties.enrichment_markers.items.properties.expression_level.enum;
+      expect(expressionEnum).toEqual(['positive', 'negative', 'low', 'high', 'intermediate']);
+    });
+
     test('Tissue schema has thickness dependent validations only', () => {
       expect(tissueSchema.dependentSchemas.thickness.required).toContain('thickness_units');
       expect(tissueSchema.dependentSchemas.thickness_units.required).toContain('thickness');
