@@ -262,6 +262,9 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 | PrimaryCell           | 1.0.0   | `schemas/PrimaryCell.json`           | ✅ Complete | Concrete   | IGVFD primary_cell.json (simplified)       |
 | InVitroSystem         | 1.0.0   | `schemas/InVitroSystem.json`         | ✅ Complete | Concrete   | IGVFD in_vitro_system.json (minimal)       |
 | InVivoSystem          | 1.0.0   | `schemas/InVivoSystem.json`          | ✅ Complete | Concrete   | IGVFD in_vivo_system.json (minimal)        |
+| Treatment             | 1.0.0   | `schemas/Treatment.json`             | ✅ Complete | Concrete   | Chemical treatments with composite/non-composite validation |
+| GeneticModification   | 1.0.0   | `schemas/GeneticModification.json`   | ✅ Complete | Concrete   | CRISPR and genetic engineering metadata    |
+| ExperimentalCondition | 1.0.0   | `schemas/ExperimentalCondition.json` | ✅ Complete | Concrete   | Environmental parameters (pH, temperature, diet, etc.) |
 
 ### Schema Design Decisions
 
@@ -422,15 +425,16 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Current Metrics
 
-- **Files:** 32 total, 15 schemas implemented, 14 example data files
+- **Files:** 33 total, 16 schemas implemented, 14 example data files
 - **Tests:** 73 passing / 73 total (increased from 71)
 - **Coverage:** 100%
 - **Issues:** 0 open, 0 closed
-- **Schema Versions:** 15 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, ControlledTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem, Treatment, GeneticModification)
+- **Schema Versions:** 16 active schemas (mixins, User, Lab, Library, DropletLibrary, PlateBasedLibrary, Donor, Biosample, ControlledTerm, Tissue, PrimaryCell, InVitroSystem, InVivoSystem, Treatment, GeneticModification, ExperimentalCondition)
 - **Example Data:** Complete validation examples for all concrete biosample types with classification properties
 
 ### Recent Activity
 
+- **September 22, 2025:** Implemented ExperimentalCondition schema for environmental and experimental parameters - added new schema with condition enum (pH, temperature, surface tension, diet, smoking status, oxygen level, humidity, pressure, osmolarity), value/units with dependency validation, linked from Biosample via experimental_conditions array, enabling tracking of experimental context beyond treatments and genetic modifications
 - **September 22, 2025:** Enhanced DropletLibrary and PlateBasedLibrary with technology-specific properties - added chemistry_version (14 10X assay types), cell_barcode_length, umi_length, feature_types for droplets; added kit_version (QuantumScale, sci-RNA-seq3) and indexing_rounds for plate-based workflows, enabling accurate representation of real-world library preparation technologies
 - **September 22, 2025:** Implemented sample enrichment properties in Biosample.json - added enrichment_method enum (6 methods), enriched/depleted_cell_types linking to ControlledTerm, enrichment_markers with 16 CD marker enums and expression levels, expanded test coverage to 73 tests, includes comprehensive example data for enrichment workflows
 - **September 22, 2025:** Refactored BiosampleOntologyTerm.json to ControlledTerm.json - implemented unified ontological architecture supporting CL, EFO, UBERON, CHEBI, UniProt, and Cellosaurus ontologies, removed maxItems restriction enabling multiple ontology terms per sample, added required ontology_source property for clear validation, maintained test coverage at 71 tests

@@ -1,0 +1,54 @@
+{
+  "title": "Experimental Condition",
+  "$id": "/profiles/experimental_condition.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Experimental conditions and environmental parameters that affect biological samples during culture or experimental procedures.",
+  "type": "object",
+  "required": ["condition"],
+  "additionalProperties": false,
+  "mixinProperties": [
+    {
+      "$ref": "mixins.json#/basic_item"
+    }
+  ],
+  "dependentSchemas": {
+    "value": {
+      "required": ["units"]
+    },
+    "units": {
+      "required": ["value"]
+    }
+  },
+  "properties": {
+    "condition": {
+      "title": "Condition",
+      "description": "Type of experimental condition or parameter.",
+      "type": "string",
+      "enum": ["pH", "temperature", "surface tension", "diet", "smoking status", "oxygen level", "humidity", "pressure", "osmolarity"]
+    },
+    "value": {
+      "title": "Value",
+      "description": "Measured or set value of the condition.",
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "units": {
+      "title": "Units",
+      "description": "Units of measurement for the condition value.",
+      "type": "string",
+      "enum": ["celsius", "fahrenheit", "kelvin", "mN/m", "dyn/cm", "mmHg", "kPa", "percent", "pH units", "mOsm/kg"]
+    },
+    "description": {
+      "title": "Description",
+      "description": "Human-readable description of the experimental condition.",
+      "type": "string",
+      "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$"
+    }
+  }
+}

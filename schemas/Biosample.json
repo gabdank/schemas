@@ -146,6 +146,19 @@
           }
         }
       }
+    },
+    "experimental_conditions": {
+      "title": "Experimental Conditions",
+      "description": "Environmental and experimental parameters affecting the sample.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "title": "Experimental Condition",
+        "description": "Reference to experimental condition applied to this sample.",
+        "type": "string",
+        "comment": "See experimental_condition.json for available identifiers.",
+        "linkTo": "ExperimentalCondition"
+      }
     }
   }
 }
