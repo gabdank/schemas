@@ -96,27 +96,27 @@
     },
     "enriched_cell_types": {
       "title": "Enriched Cell Types",
-      "description": "Cell types that were enriched in this sample.",
+      "description": "Cell types that were enriched in this sample. Must reference ControlledTerm objects with Cell Ontology (CL) terms.",
       "type": "array",
       "uniqueItems": true,
       "items": {
         "title": "Enriched Cell Type",
-        "description": "Ontology term for enriched cell type.",
+        "description": "Reference to ControlledTerm with Cell Ontology (CL) term for enriched cell type.",
         "type": "string",
-        "comment": "See controlled_term.json for available identifiers.",
+        "comment": "Must link to ControlledTerm with ontology_source='CL'. See controlled_term.json for available identifiers.",
         "linkTo": "ControlledTerm"
       }
     },
     "depleted_cell_types": {
       "title": "Depleted Cell Types",
-      "description": "Cell types that were depleted from this sample.",
+      "description": "Cell types that were depleted from this sample. Must reference ControlledTerm objects with Cell Ontology (CL) terms.",
       "type": "array",
       "uniqueItems": true,
       "items": {
         "title": "Depleted Cell Type",
-        "description": "Ontology term for depleted cell type.",
+        "description": "Reference to ControlledTerm with Cell Ontology (CL) term for depleted cell type.",
         "type": "string",
-        "comment": "See controlled_term.json for available identifiers.",
+        "comment": "Must link to ControlledTerm with ontology_source='CL'. See controlled_term.json for available identifiers.",
         "linkTo": "ControlledTerm"
       }
     },

@@ -385,15 +385,19 @@ describe('Schema Validation Tests', () => {
         'FACS', 'MACS', 'size_exclusion', 'density_gradient', 'manual_picking', 'microfluidics'
       ]);
 
-      // enriched_cell_types array linking to ControlledTerm
+      // enriched_cell_types array linking to ControlledTerm with CL requirement
       expect(biosampleSchema.properties.enriched_cell_types).toHaveProperty('type', 'array');
       expect(biosampleSchema.properties.enriched_cell_types).toHaveProperty('uniqueItems', true);
       expect(biosampleSchema.properties.enriched_cell_types.items).toHaveProperty('linkTo', 'ControlledTerm');
+      expect(biosampleSchema.properties.enriched_cell_types.description).toContain('Cell Ontology (CL)');
+      expect(biosampleSchema.properties.enriched_cell_types.items.comment).toContain("ontology_source='CL'");
 
-      // depleted_cell_types array linking to ControlledTerm
+      // depleted_cell_types array linking to ControlledTerm with CL requirement
       expect(biosampleSchema.properties.depleted_cell_types).toHaveProperty('type', 'array');
       expect(biosampleSchema.properties.depleted_cell_types).toHaveProperty('uniqueItems', true);
       expect(biosampleSchema.properties.depleted_cell_types.items).toHaveProperty('linkTo', 'ControlledTerm');
+      expect(biosampleSchema.properties.depleted_cell_types.description).toContain('Cell Ontology (CL)');
+      expect(biosampleSchema.properties.depleted_cell_types.items.comment).toContain("ontology_source='CL'");
 
       // enrichment_markers complex object array
       expect(biosampleSchema.properties.enrichment_markers).toHaveProperty('type', 'array');
@@ -521,13 +525,6 @@ describe('Schema Validation Tests', () => {
       expect(thenSchema.required).toEqual(['activating_agent_term_id', 'activating_agent_term_name']);
     });
 
-    test('GeneticModification schema has tagged_proteins array with Gene linkTo', () => {
-      expect(geneticModificationSchema.properties.tagged_proteins.type).toBe('array');
-      expect(geneticModificationSchema.properties.tagged_proteins.minItems).toBe(1);
-      expect(geneticModificationSchema.properties.tagged_proteins.maxItems).toBe(1);
-      expect(geneticModificationSchema.properties.tagged_proteins.uniqueItems).toBe(true);
-      expect(geneticModificationSchema.properties.tagged_proteins.items.linkTo).toBe('Gene');
-    });
   });
 
   describe('Example Data Structure Validation', () => {

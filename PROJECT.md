@@ -253,8 +253,8 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 | User                  | 1.0.0   | `schemas/User.json`                  | ✅ Complete | Concrete   | IGVFD user.json (simplified)               |
 | Lab                   | 1.0.0   | `schemas/Lab.json`                   | ✅ Complete | Concrete   | IGVFD lab.json (minimal)                   |
 | Library               | 1.0.0   | `schemas/Library.json`               | ✅ Complete | Abstract   | IGVFD library.json (minimal)               |
-| DropletLibrary        | 1.0.0   | `schemas/DropletLibrary.json`        | ✅ Complete | Concrete   | Droplet-based libraries (10X, Bio-Rad)     |
-| PlateBasedLibrary     | 1.0.0   | `schemas/PlateBasedLibrary.json`     | ✅ Complete | Concrete   | Plate-based libraries (sci-methods, SCALE) |
+| DropletLibrary        | 1.0.0   | `schemas/DropletLibrary.json`        | ✅ Complete | Concrete   | 10X technology-specific properties (chemistry, barcodes, features) |
+| PlateBasedLibrary     | 1.0.0   | `schemas/PlateBasedLibrary.json`     | ✅ Complete | Concrete   | Plate-based workflows (QuantumScale, sci-RNA-seq3, indexing) |
 | Donor                 | 1.0.0   | `schemas/Donor.json`                 | ✅ Complete | Abstract   | IGVFD donor.json (simplified)              |
 | Biosample             | 1.0.0   | `schemas/Biosample.json`             | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)          |
 | ControlledTerm        | 1.0.0   | `schemas/ControlledTerm.json`        | ✅ Complete | Concrete   | Multi-ontology terms (CL, EFO, UBERON, CHEBI, UniProt, Cellosaurus) |
@@ -431,6 +431,7 @@ Deployment:  ░░░░░░░░░░   0%
 
 ### Recent Activity
 
+- **September 22, 2025:** Enhanced DropletLibrary and PlateBasedLibrary with technology-specific properties - added chemistry_version (14 10X assay types), cell_barcode_length, umi_length, feature_types for droplets; added kit_version (QuantumScale, sci-RNA-seq3) and indexing_rounds for plate-based workflows, enabling accurate representation of real-world library preparation technologies
 - **September 22, 2025:** Implemented sample enrichment properties in Biosample.json - added enrichment_method enum (6 methods), enriched/depleted_cell_types linking to ControlledTerm, enrichment_markers with 16 CD marker enums and expression levels, expanded test coverage to 73 tests, includes comprehensive example data for enrichment workflows
 - **September 22, 2025:** Refactored BiosampleOntologyTerm.json to ControlledTerm.json - implemented unified ontological architecture supporting CL, EFO, UBERON, CHEBI, UniProt, and Cellosaurus ontologies, removed maxItems restriction enabling multiple ontology terms per sample, added required ontology_source property for clear validation, maintained test coverage at 71 tests
 - **September 19, 2025:** Added dependentSchemas validation for multiplexing_method in Library schema - enforces logical constraint that multiplexing requires minimum 2 samples, expanded test coverage to 60 tests
