@@ -748,32 +748,179 @@ npm run lint:fix               # Auto-fix formatting
 - Test inheritance behavior across concrete sample types
 - Validate enum constraints and dependent property requirements
 
-### Phase 5: Ontological Term Architecture Refactoring
+### Phase 5: Donor Taxonomy & Organism Classification
 
-#### Proposed Abstract OntologicalTerm Architecture
-**Motivation:** Current BiosampleOntologyTerm.json could be generalized to support multiple ontology types
+#### Donor Organism Architecture Challenge
+**Current Issue:** The existing Donor.json schema has minimal organism classification (only `taxa` property). Real-world biological research requires more nuanced organism categorization.
 
-**Abstract OntologicalTerm.json:**
-- **Properties:** `term_id`, `term_name`, `ontology_source`, `definition`, `synonyms`
-- **Validation:** Pattern matching for different ID formats (CheBI:123, UniProt:P12345, etc.)
+**Design Questions to Address:**
 
-**Concrete Implementations:**
-1. **BiosampleOntologyTerm.json** - Current implementation (tissues, cell types, anatomical terms)
-2. **ChemicalOntologyTerm.json** - Chemical compounds, drugs (CheBI, ChEMBL)
-3. **ProteinOntologyTerm.json** - Proteins, enzymes (UniProt, InterPro)
-4. **DiseaseOntologyTerm.json** - Diseases, phenotypes (MONDO, HPO)
-5. **EnvironmentalOntologyTerm.json** - Environmental conditions (ENVO)
+1. **Human vs Non-Human Classification**
+   - Should we have separate Human and NonHuman concrete donor classes?
+   - How to handle consent, privacy, and regulatory requirements for human samples?
+   - Consider age restrictions, developmental stages, and medical history for human donors
+
+2. **Model vs Non-Model Organisms**
+   - **Model organisms:** Standardized strains with known genetics (C57BL/6J mice, Drosophila melanogaster)
+   - **Non-model organisms:** Wild-caught, environmental samples, non-standard laboratory animals
+   - Different metadata requirements for strain documentation vs environmental collection
+
+3. **Wild vs Laboratory Animals**
+   - **Laboratory animals:** Known genetic background, controlled environment, breeding records
+   - **Wild animals:** Environmental collection data, geographic origin, seasonal factors
+   - Regulatory compliance (IACUC for lab animals, wildlife permits for wild collection)
+
+4. **Developmental Stage Considerations**
+   - **Prenatal stages:** Embryonic day (E), gestational week, developmental milestones
+   - **Postnatal stages:** Postnatal day (P), age in weeks/months/years
+   - **Example Shendure mice birth experiment:** Time-series from E10.5 through P0 to adult
+   - Cross-species developmental stage normalization challenges
+
+**Proposed Organism-Only Approach:**
+Instead of complex donor classification, consider flattening to organism-centric design:
+- Single `Organism.json` schema with comprehensive organism metadata
+- Properties: `species`, `strain`, `genetic_background`, `source_type` [laboratory/wild/commercial]
+- Developmental stage as separate time-series metadata
+- Reduces complexity while maintaining biological accuracy
+
+**Benefits of Organism-Only Design:**
+- **Simplified architecture:** Single organism entity vs multiple donor types
+- **Reduced redundancy:** Organism metadata centralized
+- **Flexible relationships:** Multiple biosamples can reference same organism
+- **Development tracking:** Time-series experiments share organism reference
+
+#### Prenatal/Postnatal Timing Integration
+**Challenge:** Developmental timing spans conception through adulthood with species-specific considerations.
+
+**Proposed Solution:**
+- `developmental_stage` (string, optional) - Standardized stage notation (E14.5, P7, 8 weeks, etc.)
+- `stage_notation` (enum) - ["embryonic_day", "postnatal_day", "gestational_week", "chronological_age"]
+- `stage_value` (number) - Numeric value for the developmental stage
+- `stage_units` (enum) - ["days", "weeks", "months", "years"]
+
+**Real-World Example Integration:**
+Shendure lab mouse birth experiment tracking:
+```json
+{
+  "organism": "link:organism_c57bl6j_001",
+  "developmental_stage": "E14.5",
+  "stage_notation": "embryonic_day",
+  "stage_value": 14.5,
+  "stage_units": "days"
+}
+```
+
+### Phase 6: File System Architecture
+
+#### Abstract File Schema Design
+**Motivation:** Biological research generates diverse file types requiring standardized metadata and validation.
+
+**Proposed Abstract File.json:**
+- **Required:** `lab`, `filename`, `file_format`, `file_size`, `checksum`
+- **Core Properties:**
+  - `content_type` (string) - MIME type for file format validation
+  - `compression` (enum) - ["none", "gzip", "bzip2", "xz"] for compressed files
+  - `creation_date` (string, date-time) - File creation timestamp
+  - `file_status` (enum) - ["uploading", "uploaded", "processing", "released", "archived"]
+
+**Concrete File Type Implementations:**
+
+1. **TSVFile.json** - Tabular data files
+   - `delimiter` (enum) - ["\t", ",", ";"] for different separators
+   - `header_rows` (integer) - Number of header rows to skip
+   - `column_count` (integer) - Expected number of columns for validation
+
+2. **FASTQFile.json** - Sequencing read files
+   - `read_type` (enum) - ["single", "paired_R1", "paired_R2", "index"]
+   - `sequencing_platform` (enum) - ["Illumina", "PacBio", "Oxford_Nanopore", "Ion_Torrent"]
+   - `read_length` (integer) - Expected read length for validation
+   - `quality_encoding` (enum) - ["Phred33", "Phred64"] for quality score interpretation
+
+3. **CRAMFile.json** - Compressed alignment files
+   - `reference_genome` (string) - Reference genome used for compression
+   - `alignment_software` (string) - Software used for alignment (BWA, STAR, etc.)
+   - `contains_unmapped` (boolean) - Whether file includes unmapped reads
+
+4. **H5ADFile.json** - Single-cell analysis matrices
+   - `cell_count` (integer) - Number of cells in matrix
+   - `gene_count` (integer) - Number of genes/features in matrix
+   - `normalization` (enum) - ["raw", "log1p", "tpm", "fpkm", "counts_per_million"]
+   - `cell_metadata_columns` (array) - List of cell annotation columns
+   - `gene_metadata_columns` (array) - List of gene annotation columns
+
+**File-Dataset Relationship:**
+Following IGVF model, files must belong to datasets:
+- `dataset` (string, required) - linkTo relationship to Dataset entity
+- Enables grouping related files and managing access permissions
+- Supports versioning and publication workflows
+
+### Phase 7: Dataset Architecture (Minimize Complexity)
+
+#### Dataset Design Philosophy
+**Goal:** Simple, practical dataset representation that reflects real-world usage without overcomplication.
+
+**Core Dataset Concept:**
+Single `Dataset.json` schema representing a coherent collection of related files and metadata, similar to CxG (CellxGene) dataset concept.
+
+**Primary Dataset Type: H5AD Matrix Dataset**
+Most single-cell datasets center around an H5AD matrix file with associated metadata:
+
+```json
+{
+  "title": "Mouse embryonic brain development scRNA-seq",
+  "primary_file": "link:h5ad_file_001",  // Links to H5ADFile
+  "associated_files": ["link:fastq_file_001", "link:tsv_file_001"],
+  "cell_count": 50000,
+  "gene_count": 25000,
+  "assay_type": "scRNA-seq",
+  "organism": "link:organism_mus_musculus",
+  "tissue_types": ["link:controlled_term_brain"],
+  "publication_status": "published"
+}
+```
+
+#### Curated vs Non-Curated Datasets
+**Simple Classification Approach:**
+
+**Curated Datasets:**
+- `curation_status` (enum) - ["curated", "non_curated", "in_review"]
+- `curator` (string, optional) - Links to User who performed curation
+- `curation_notes` (string, optional) - Description of curation process
+- **Benefits:** Quality control, standardized annotations, publication-ready
+
+**Non-Curated Datasets:**
+- Raw upload from submitters
+- Minimal validation requirements
+- Rapid data sharing for collaboration
+
+#### Collections Concept
+**Optional Grouping Mechanism:**
+- `Collection.json` as simple grouping entity for related datasets
+- Use case: Multi-timepoint experiments, cross-lab collaborations, publication figures
+- Properties: `title`, `description`, `datasets` (array of links), `collection_type` (enum)
+
+**Collection Types:**
+- `["publication", "project", "time_series", "multi_lab", "atlas"]`
 
 **Benefits:**
-- **Consistency** across all ontological references
-- **Validation** for proper ID formats per ontology
-- **Extensibility** for future ontology types
-- **Reusability** across Treatment, Biosample, and other schemas
+- **Flexible grouping** without complex hierarchies
+- **Publication support** for papers with multiple datasets
+- **Project management** for long-term research initiatives
 
-**Migration Strategy:**
-- Maintain backward compatibility with existing BiosampleOntologyTerm
-- Gradual migration to abstract architecture
-- Automated validation for ontology ID formats
+#### Avoiding Overcomplication
+**Design Principles:**
+1. **Single file type focus:** Most datasets are H5AD-centric
+2. **Minimal metadata:** Required fields only, optional enhancement
+3. **Flat relationships:** Avoid deep nesting and complex hierarchies
+4. **Real-world driven:** Based on CxG and common usage patterns
+5. **Gradual enhancement:** Start simple, add complexity only when needed
+
+**Not Included (To Avoid Complexity):**
+- Multi-modal dataset complex relationships
+- Versioning systems for dataset evolution
+- Complex access control beyond basic publication status
+- Dataset transformation pipelines and provenance
+- Cross-dataset analysis metadata
 
 ---
 
