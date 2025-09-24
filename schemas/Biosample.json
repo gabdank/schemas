@@ -95,9 +95,9 @@
       "enum": [
         "FACS",
         "MACS",
-        "size_exclusion",
-        "density_gradient",
-        "manual_picking",
+        "size exclusion",
+        "density gradient",
+        "manual picking",
         "microfluidics"
       ]
     },

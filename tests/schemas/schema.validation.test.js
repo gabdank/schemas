@@ -480,9 +480,9 @@ describe('Schema Validation Tests', () => {
       expect(biosampleSchema.properties.enrichment_method.enum).toEqual([
         'FACS',
         'MACS',
-        'size_exclusion',
-        'density_gradient',
-        'manual_picking',
+        'size exclusion',
+        'density gradient',
+        'manual picking',
         'microfluidics',
       ]);
 
