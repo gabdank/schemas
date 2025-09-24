@@ -1,7 +1,6 @@
 {
   "lab": "john-doe-lab",
   "taxa": "Homo sapiens",
-  "sex": "female",
   "ethnicity": "HUMAN_ETHNICITY_001",
   "description": "Adult human donor for genomic studies"
 }

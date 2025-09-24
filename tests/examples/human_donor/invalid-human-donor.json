@@ -1,7 +1,6 @@
 {
   "lab": "john-doe-lab",
-  "taxa": "Homo sapiens",
-  "sex": "invalid_sex_value",
+  "taxa": "Mus musculus",
   "ethnicity": "HUMAN_ETHNICITY_001",
-  "description": "Human donor with invalid sex value - should fail validation"
+  "description": "Human donor with wrong species - should fail validation"
 }

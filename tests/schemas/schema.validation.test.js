@@ -303,11 +303,6 @@ describe('Schema Validation Tests', () => {
       expect(humanDonorSchema.properties.taxa.enum).toEqual(['Homo sapiens']);
     });
 
-    test('HumanDonor schema has sex property with correct enum values', () => {
-      expect(humanDonorSchema.properties.sex.type).toBe('string');
-      expect(humanDonorSchema.properties.sex.enum).toEqual(['male', 'female', 'unspecified']);
-    });
-
     test('HumanDonor schema has ethnicity property linking to ControlledTerm', () => {
       expect(humanDonorSchema.properties.ethnicity.type).toBe('string');
       expect(humanDonorSchema.properties.ethnicity.linkTo).toBe('ControlledTerm');

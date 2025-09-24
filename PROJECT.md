@@ -290,12 +290,26 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 
 #### Donor Schema Design Notes
 
-**Based on:** IGVFD `/profiles/donor.json` (JSON Schema draft 2020-12)  
+**Based on:** IGVFD `/profiles/donor.json` (JSON Schema draft 2020-12)
 **Simplified Properties:**
 
 - `basic_item` mixin for core metadata
 - `lab` (required) - lab attribution
 - `taxa` (required) - species specification
+
+**⚠️ Important Design Constraint: Temporal Properties Exclusion**
+
+**Properties NOT included in Donor schemas:** age, sex, BMI, developmental stage, and other time-sensitive biological characteristics.
+
+**Rationale:**
+
+- Donors can contribute multiple samples over extended time periods
+- These properties may change between sample collection timepoints
+- Age, developmental stage, and physiological measurements are sample-specific, not donor-specific
+- Including them in Donor schema would create data inconsistency when the same donor provides samples at different ages/stages
+- Sex may be relevant at the sample level for research contexts but should not be generalized at the donor level
+
+**Recommendation:** Place temporal and sample-specific biological properties in concrete Biosample schemas (Tissue, PrimaryCell, etc.) rather than abstract Donor schema to maintain data accuracy and temporal integrity.
 
 #### Biosample Schema Design Notes
 

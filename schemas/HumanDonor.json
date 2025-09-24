@@ -21,12 +21,6 @@
       "description": "The species of the organism.",
       "enum": ["Homo sapiens"]
     },
-    "sex": {
-      "title": "Sex",
-      "type": "string",
-      "description": "The biological sex of the human donor.",
-      "enum": ["male", "female", "unspecified"]
-    },
     "ethnicity": {
       "title": "Ethnicity",
       "type": "string",
