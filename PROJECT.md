@@ -311,6 +311,25 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 
 **Recommendation:** Place temporal and sample-specific biological properties in concrete Biosample schemas (Tissue, PrimaryCell, etc.) rather than abstract Donor schema to maintain data accuracy and temporal integrity.
 
+**🔄 Required Enhancement: Individual vs. Pooled Donors**
+
+**Properties needed in Donor schemas:** Support for distinguishing individual donors from pooled donor collections.
+
+**Required Implementation:**
+
+- `pooled_donors` (boolean, required) - indicates if this represents a single donor (false) or pooled donors (true)
+- `donor_count` (integer, optional) - number of individual donors in pool (required if pooled_donors=true)
+- Add dependentSchemas validation: if pooled_donors=true, then donor_count is required
+
+**Rationale:**
+
+- Research samples often come from pooled donor sources
+- Critical for accurate sample provenance and statistical analysis
+- Required for proper experimental design documentation
+- Enables tracking of both individual subject studies and population-level collections
+
+**Status:** Required for production implementation - currently missing from schema
+
 #### Biosample Schema Design Notes
 
 **Based on:** IGVFD `/profiles/biosample.json` (JSON Schema draft 2020-12)  
@@ -1205,11 +1224,11 @@ Most single-cell datasets center around an H5AD matrix file with associated meta
 
 ### Donor Pooling Enhancement
 
-**Status:** 📋 Planned for Future Implementation
+**Status:** ⚠️ Required for Production Implementation (referenced in current design notes)
 
 **Objective:** Add support for donor pooling to better represent biological sample collection workflows.
 
-**Proposed Changes to Donor.json:**
+**Required Changes to Donor.json:** (See Schema Design Notes section above for current requirements)
 
 - `pooled_donors` (boolean, required) - indicates if this represents a single donor (false) or pooled donors (true)
 - `donor_count` (integer, optional) - number of individual donors in pool (required if pooled_donors=true)
@@ -1220,6 +1239,7 @@ Most single-cell datasets center around an H5AD matrix file with associated meta
 - Accurate representation of sample collection methodologies
 - Support for both individual and pooled donor scenarios
 - Proper validation of pooling requirements
+- Essential for research provenance and statistical analysis
 
 ### Sample Enrichment Enhancement
 
