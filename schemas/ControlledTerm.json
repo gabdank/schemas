@@ -28,14 +28,7 @@
       "title": "Ontology Source",
       "description": "The source ontology this term comes from.",
       "type": "string",
-      "enum": [
-        "CL",
-        "EFO",
-        "UBERON",
-        "CHEBI",
-        "UniProt",
-        "Cellosaurus"
-      ]
+      "enum": ["CL", "EFO", "UBERON", "CHEBI", "UniProt", "Cellosaurus"]
     },
     "definition": {
       "title": "Definition",

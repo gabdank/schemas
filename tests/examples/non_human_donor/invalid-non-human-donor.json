@@ -1,0 +1,5 @@
+{
+  "lab": "john-doe-lab",
+  "taxa": "Homo sapiens",
+  "description": "Non-human donor with human species - should fail validation"
+}

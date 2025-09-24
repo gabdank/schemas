@@ -1,0 +1,7 @@
+{
+  "lab": "john-doe-lab",
+  "taxa": "Homo sapiens",
+  "sex": "invalid_sex_value",
+  "ethnicity": "HUMAN_ETHNICITY_001",
+  "description": "Human donor with invalid sex value - should fail validation"
+}

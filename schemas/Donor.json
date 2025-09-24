@@ -23,8 +23,7 @@
     "taxa": {
       "title": "Taxa",
       "type": "string",
-      "description": "The species of the organism.",
-      "enum": ["Homo sapiens", "Mus musculus"]
+      "description": "The species of the organism."
     }
   }
 }

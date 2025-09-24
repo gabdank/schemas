@@ -1,0 +1,38 @@
+{
+  "title": "Human Donor",
+  "$id": "/profiles/human_donor.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema for human research subjects and donors.",
+  "type": "object",
+  "required": ["lab", "taxa"],
+  "additionalProperties": false,
+  "mixinProperties": [
+    {
+      "$ref": "mixins.json#/basic_item"
+    },
+    {
+      "$ref": "Donor.json#/properties"
+    }
+  ],
+  "properties": {
+    "taxa": {
+      "title": "Taxa",
+      "type": "string",
+      "description": "The species of the organism.",
+      "enum": ["Homo sapiens"]
+    },
+    "sex": {
+      "title": "Sex",
+      "type": "string",
+      "description": "The biological sex of the human donor.",
+      "enum": ["male", "female", "unspecified"]
+    },
+    "ethnicity": {
+      "title": "Ethnicity",
+      "type": "string",
+      "description": "The ethnicity of the human donor.",
+      "comment": "Link to ControlledTerm with ethnicity ontology terms.",
+      "linkTo": "ControlledTerm"
+    }
+  }
+}

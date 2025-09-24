@@ -92,7 +92,14 @@
       "title": "Enrichment Method",
       "description": "Method used for cell enrichment or sorting.",
       "type": "string",
-      "enum": ["FACS", "MACS", "size_exclusion", "density_gradient", "manual_picking", "microfluidics"]
+      "enum": [
+        "FACS",
+        "MACS",
+        "size_exclusion",
+        "density_gradient",
+        "manual_picking",
+        "microfluidics"
+      ]
     },
     "enriched_cell_types": {
       "title": "Enriched Cell Types",
@@ -135,7 +142,22 @@
             "description": "Cell surface marker or protein used for enrichment.",
             "type": "string",
             "enum": [
-              "CD3", "CD4", "CD8", "CD14", "CD16", "CD19", "CD20", "CD31", "CD34", "CD45", "CD56", "CD90", "CD123", "CD141", "CD144", "CD205"
+              "CD3",
+              "CD4",
+              "CD8",
+              "CD14",
+              "CD16",
+              "CD19",
+              "CD20",
+              "CD31",
+              "CD34",
+              "CD45",
+              "CD56",
+              "CD90",
+              "CD123",
+              "CD141",
+              "CD144",
+              "CD205"
             ]
           },
           "expression_level": {

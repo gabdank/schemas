@@ -22,7 +22,7 @@
     "is_composite": {
       "if": {
         "properties": {
-          "is_composite": {"const": false}
+          "is_composite": { "const": false }
         }
       },
       "then": {

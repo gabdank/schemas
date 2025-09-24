@@ -24,7 +24,17 @@
       "title": "Condition",
       "description": "Type of experimental condition or parameter.",
       "type": "string",
-      "enum": ["pH", "temperature", "surface tension", "diet", "smoking status", "oxygen level", "humidity", "pressure", "osmolarity"]
+      "enum": [
+        "pH",
+        "temperature",
+        "surface tension",
+        "diet",
+        "smoking status",
+        "oxygen level",
+        "humidity",
+        "pressure",
+        "osmolarity"
+      ]
     },
     "value": {
       "title": "Value",
@@ -42,7 +52,18 @@
       "title": "Units",
       "description": "Units of measurement for the condition value.",
       "type": "string",
-      "enum": ["celsius", "fahrenheit", "kelvin", "mN/m", "dyn/cm", "mmHg", "kPa", "percent", "pH units", "mOsm/kg"]
+      "enum": [
+        "celsius",
+        "fahrenheit",
+        "kelvin",
+        "mN/m",
+        "dyn/cm",
+        "mmHg",
+        "kPa",
+        "percent",
+        "pH units",
+        "mOsm/kg"
+      ]
     },
     "description": {
       "title": "Description",

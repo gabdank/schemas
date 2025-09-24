@@ -1,0 +1,55 @@
+{
+  "title": "Non-Human Donor",
+  "$id": "/profiles/non_human_donor.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema for non-human research subjects including model organisms, laboratory animals, and environmental samples.",
+  "type": "object",
+  "required": ["lab", "taxa"],
+  "additionalProperties": false,
+  "mixinProperties": [
+    {
+      "$ref": "mixins.json#/basic_item"
+    },
+    {
+      "$ref": "Donor.json#/properties"
+    }
+  ],
+  "properties": {
+    "taxa": {
+      "title": "Taxa",
+      "type": "string",
+      "description": "The species of the organism.",
+      "enum": [
+        "Mus musculus",
+        "Ciona intestinalis",
+        "Petromyzon marinus",
+        "Nematostella vectensis",
+        "Octopus bimaculoides",
+        "Patiria miniata",
+        "Leucoraja erinaceus",
+        "Sycon ciliatum",
+        "Saccoglossus kowalevskii",
+        "Biomphalaria glabrata",
+        "Limulus polyphemus",
+        "Beroe ovata",
+        "Mnemiopsis leidyi",
+        "Turritopsis dohrnii",
+        "Parhyale hawaiensis",
+        "Platynereis megalops",
+        "Hydroides elegans",
+        "Littorina littorea",
+        "Sclerodactyla briareus",
+        "Myxine glutinosa",
+        "Euprymna berryi",
+        "Xenopus tropicalis",
+        "Nothobranchius furzeri",
+        "Coturnix japonica",
+        "Anolis carolinensis",
+        "Alligator mississippiensis",
+        "Chrysemys picta bellii",
+        "Ranitomeya imitator",
+        "Monodelphis domestica"
+      ]
+    }
+  }
+}

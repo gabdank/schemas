@@ -47,6 +47,8 @@ const librarySchema = loadSchema('Library.json');
 const dropletLibrarySchema = loadSchema('DropletLibrary.json');
 const plateBasedLibrarySchema = loadSchema('PlateBasedLibrary.json');
 const donorSchema = loadSchema('Donor.json');
+const humanDonorSchema = loadSchema('HumanDonor.json');
+const nonHumanDonorSchema = loadSchema('NonHumanDonor.json');
 const biosampleSchema = loadSchema('Biosample.json');
 const tissueSchema = loadSchema('Tissue.json');
 const controlledTermSchema = loadSchema('ControlledTerm.json');
@@ -55,6 +57,7 @@ const inVitroSystemSchema = loadSchema('InVitroSystem.json');
 const inVivoSystemSchema = loadSchema('InVivoSystem.json');
 const treatmentSchema = loadSchema('Treatment.json');
 const geneticModificationSchema = loadSchema('GeneticModification.json');
+const experimentalConditionSchema = loadSchema('ExperimentalCondition.json');
 
 describe('Schema Validation Tests', () => {
   describe('Schema Structure Validation', () => {
@@ -110,6 +113,22 @@ describe('Schema Validation Tests', () => {
       expect(donorSchema).toHaveProperty('type', 'object');
       expect(donorSchema.required).toContain('lab');
       expect(donorSchema.required).toContain('taxa');
+    });
+
+    test('HumanDonor.json should have required JSON Schema properties', () => {
+      expect(humanDonorSchema).toHaveProperty('$schema');
+      expect(humanDonorSchema).toHaveProperty('title');
+      expect(humanDonorSchema).toHaveProperty('type', 'object');
+      expect(humanDonorSchema.required).toContain('lab');
+      expect(humanDonorSchema.required).toContain('taxa');
+    });
+
+    test('NonHumanDonor.json should have required JSON Schema properties', () => {
+      expect(nonHumanDonorSchema).toHaveProperty('$schema');
+      expect(nonHumanDonorSchema).toHaveProperty('title');
+      expect(nonHumanDonorSchema).toHaveProperty('type', 'object');
+      expect(nonHumanDonorSchema.required).toContain('lab');
+      expect(nonHumanDonorSchema.required).toContain('taxa');
     });
 
     test('Biosample.json should have required JSON Schema properties', () => {
@@ -180,6 +199,13 @@ describe('Schema Validation Tests', () => {
       expect(geneticModificationSchema.required).toContain('description');
       expect(geneticModificationSchema.required).toContain('modality');
     });
+
+    test('ExperimentalCondition.json should have required JSON Schema properties', () => {
+      expect(experimentalConditionSchema).toHaveProperty('$schema');
+      expect(experimentalConditionSchema).toHaveProperty('title');
+      expect(experimentalConditionSchema).toHaveProperty('type', 'object');
+      expect(experimentalConditionSchema.required).toContain('condition');
+    });
   });
 
   describe('Schema Required Fields', () => {
@@ -207,6 +233,14 @@ describe('Schema Validation Tests', () => {
       expect(donorSchema.required).toEqual(['lab', 'taxa']);
     });
 
+    test('HumanDonor schema has correct required fields array', () => {
+      expect(humanDonorSchema.required).toEqual(['lab', 'taxa']);
+    });
+
+    test('NonHumanDonor schema has correct required fields array', () => {
+      expect(nonHumanDonorSchema.required).toEqual(['lab', 'taxa']);
+    });
+
     test('Biosample schema has correct required fields array', () => {
       expect(biosampleSchema.required).toEqual(['lab', 'donors', 'sample_terms']);
     });
@@ -224,11 +258,21 @@ describe('Schema Validation Tests', () => {
     });
 
     test('InVitroSystem schema has correct required fields array', () => {
-      expect(inVitroSystemSchema.required).toEqual(['lab', 'sample_terms', 'donors', 'classification']);
+      expect(inVitroSystemSchema.required).toEqual([
+        'lab',
+        'sample_terms',
+        'donors',
+        'classification',
+      ]);
     });
 
     test('InVivoSystem schema has correct required fields array', () => {
-      expect(inVivoSystemSchema.required).toEqual(['lab', 'sample_terms', 'donors', 'classification']);
+      expect(inVivoSystemSchema.required).toEqual([
+        'lab',
+        'sample_terms',
+        'donors',
+        'classification',
+      ]);
     });
 
     test('Treatment schema has correct required fields array', () => {
@@ -238,6 +282,10 @@ describe('Schema Validation Tests', () => {
     test('GeneticModification schema has correct required fields array', () => {
       expect(geneticModificationSchema.required).toEqual(['description', 'modality']);
     });
+
+    test('ExperimentalCondition schema has correct required fields array', () => {
+      expect(experimentalConditionSchema.required).toEqual(['condition']);
+    });
   });
 
   describe('Schema Properties Validation', () => {
@@ -246,9 +294,32 @@ describe('Schema Validation Tests', () => {
       expect(userSchema.properties.email).toHaveProperty('pattern');
     });
 
-    test('Donor schema has taxa with valid species enum', () => {
-      expect(donorSchema.properties.taxa.enum).toContain('Homo sapiens');
-      expect(donorSchema.properties.taxa.enum).toContain('Mus musculus');
+    test('Donor schema has taxa as string type without enum constraint', () => {
+      expect(donorSchema.properties.taxa.type).toBe('string');
+      expect(donorSchema.properties.taxa.enum).toBeUndefined();
+    });
+
+    test('HumanDonor schema has taxa constrained to Homo sapiens', () => {
+      expect(humanDonorSchema.properties.taxa.enum).toEqual(['Homo sapiens']);
+    });
+
+    test('HumanDonor schema has sex property with correct enum values', () => {
+      expect(humanDonorSchema.properties.sex.type).toBe('string');
+      expect(humanDonorSchema.properties.sex.enum).toEqual(['male', 'female', 'unspecified']);
+    });
+
+    test('HumanDonor schema has ethnicity property linking to ControlledTerm', () => {
+      expect(humanDonorSchema.properties.ethnicity.type).toBe('string');
+      expect(humanDonorSchema.properties.ethnicity.linkTo).toBe('ControlledTerm');
+    });
+
+    test('NonHumanDonor schema has taxa constrained to non-human species', () => {
+      expect(nonHumanDonorSchema.properties.taxa.enum).toContain('Mus musculus');
+      expect(nonHumanDonorSchema.properties.taxa.enum).toContain('Ciona intestinalis');
+      expect(nonHumanDonorSchema.properties.taxa.enum).toContain('Xenopus tropicalis');
+      expect(nonHumanDonorSchema.properties.taxa.enum).toContain('Monodelphis domestica');
+      expect(nonHumanDonorSchema.properties.taxa.enum).not.toContain('Homo sapiens');
+      expect(nonHumanDonorSchema.properties.taxa.enum).toHaveLength(29);
     });
 
     test('Biosample schema has sample_terms with array constraints', () => {
@@ -273,20 +344,31 @@ describe('Schema Validation Tests', () => {
       expect(librarySchema.properties.samples).toHaveProperty('uniqueItems', true);
       expect(librarySchema.properties.samples.items).toHaveProperty('linkTo', 'Biosample');
       expect(librarySchema.properties.multiplexing_method).toHaveProperty('type', 'string');
-      expect(librarySchema.properties.multiplexing_method.enum).toEqual(['cell hashing', 'lipid hashing', 'genetic', 'sample barcodes']);
+      expect(librarySchema.properties.multiplexing_method.enum).toEqual([
+        'cell hashing',
+        'lipid hashing',
+        'genetic',
+        'sample barcodes',
+      ]);
     });
 
     test('DropletLibrary schema inherits from Library', () => {
-      expect(dropletLibrarySchema.mixinProperties).toContainEqual({"$ref": "Library.json#/properties"});
+      expect(dropletLibrarySchema.mixinProperties).toContainEqual({
+        $ref: 'Library.json#/properties',
+      });
     });
 
     test('PlateBasedLibrary schema inherits from Library', () => {
-      expect(plateBasedLibrarySchema.mixinProperties).toContainEqual({"$ref": "Library.json#/properties"});
+      expect(plateBasedLibrarySchema.mixinProperties).toContainEqual({
+        $ref: 'Library.json#/properties',
+      });
     });
 
     test('Library schema has multiplexing_method dependency validation', () => {
       expect(librarySchema.dependentSchemas.multiplexing_method).toBeDefined();
-      expect(librarySchema.dependentSchemas.multiplexing_method.properties.samples.minItems).toBe(2);
+      expect(librarySchema.dependentSchemas.multiplexing_method.properties.samples.minItems).toBe(
+        2
+      );
     });
 
     test('All schemas reference basic_item mixin', () => {
@@ -296,6 +378,8 @@ describe('Schema Validation Tests', () => {
       expect(dropletLibrarySchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(plateBasedLibrarySchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(donorSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(humanDonorSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(nonHumanDonorSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(biosampleSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(tissueSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(controlledTermSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
@@ -304,6 +388,15 @@ describe('Schema Validation Tests', () => {
       expect(inVivoSystemSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(treatmentSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
       expect(geneticModificationSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+      expect(experimentalConditionSchema.mixinProperties[0].$ref).toBe('mixins.json#/basic_item');
+    });
+
+    test('HumanDonor schema inherits from abstract Donor', () => {
+      expect(humanDonorSchema.mixinProperties[1].$ref).toBe('Donor.json#/properties');
+    });
+
+    test('NonHumanDonor schema inherits from abstract Donor', () => {
+      expect(nonHumanDonorSchema.mixinProperties[1].$ref).toBe('Donor.json#/properties');
     });
 
     test('Tissue schema inherits from abstract Biosample', () => {
@@ -375,35 +468,60 @@ describe('Schema Validation Tests', () => {
 
     test('Biosample schema has genetic_modification property linking to GeneticModification', () => {
       expect(biosampleSchema.properties.genetic_modification).toHaveProperty('type', 'string');
-      expect(biosampleSchema.properties.genetic_modification).toHaveProperty('linkTo', 'GeneticModification');
+      expect(biosampleSchema.properties.genetic_modification).toHaveProperty(
+        'linkTo',
+        'GeneticModification'
+      );
     });
 
     test('Biosample schema has enrichment properties with correct validation', () => {
       // enrichment_method enum validation
       expect(biosampleSchema.properties.enrichment_method).toHaveProperty('type', 'string');
       expect(biosampleSchema.properties.enrichment_method.enum).toEqual([
-        'FACS', 'MACS', 'size_exclusion', 'density_gradient', 'manual_picking', 'microfluidics'
+        'FACS',
+        'MACS',
+        'size_exclusion',
+        'density_gradient',
+        'manual_picking',
+        'microfluidics',
       ]);
 
       // enriched_cell_types array linking to ControlledTerm with CL requirement
       expect(biosampleSchema.properties.enriched_cell_types).toHaveProperty('type', 'array');
       expect(biosampleSchema.properties.enriched_cell_types).toHaveProperty('uniqueItems', true);
-      expect(biosampleSchema.properties.enriched_cell_types.items).toHaveProperty('linkTo', 'ControlledTerm');
-      expect(biosampleSchema.properties.enriched_cell_types.description).toContain('Cell Ontology (CL)');
-      expect(biosampleSchema.properties.enriched_cell_types.items.comment).toContain("ontology_source='CL'");
+      expect(biosampleSchema.properties.enriched_cell_types.items).toHaveProperty(
+        'linkTo',
+        'ControlledTerm'
+      );
+      expect(biosampleSchema.properties.enriched_cell_types.description).toContain(
+        'Cell Ontology (CL)'
+      );
+      expect(biosampleSchema.properties.enriched_cell_types.items.comment).toContain(
+        "ontology_source='CL'"
+      );
 
       // depleted_cell_types array linking to ControlledTerm with CL requirement
       expect(biosampleSchema.properties.depleted_cell_types).toHaveProperty('type', 'array');
       expect(biosampleSchema.properties.depleted_cell_types).toHaveProperty('uniqueItems', true);
-      expect(biosampleSchema.properties.depleted_cell_types.items).toHaveProperty('linkTo', 'ControlledTerm');
-      expect(biosampleSchema.properties.depleted_cell_types.description).toContain('Cell Ontology (CL)');
-      expect(biosampleSchema.properties.depleted_cell_types.items.comment).toContain("ontology_source='CL'");
+      expect(biosampleSchema.properties.depleted_cell_types.items).toHaveProperty(
+        'linkTo',
+        'ControlledTerm'
+      );
+      expect(biosampleSchema.properties.depleted_cell_types.description).toContain(
+        'Cell Ontology (CL)'
+      );
+      expect(biosampleSchema.properties.depleted_cell_types.items.comment).toContain(
+        "ontology_source='CL'"
+      );
 
       // enrichment_markers complex object array
       expect(biosampleSchema.properties.enrichment_markers).toHaveProperty('type', 'array');
       expect(biosampleSchema.properties.enrichment_markers).toHaveProperty('uniqueItems', true);
       expect(biosampleSchema.properties.enrichment_markers.items.type).toBe('object');
-      expect(biosampleSchema.properties.enrichment_markers.items.required).toEqual(['marker', 'expression_level']);
+      expect(biosampleSchema.properties.enrichment_markers.items.required).toEqual([
+        'marker',
+        'expression_level',
+      ]);
     });
 
     test('Biosample enrichment_markers has correct marker enum values', () => {
@@ -415,10 +533,26 @@ describe('Schema Validation Tests', () => {
       expect(markerEnum).toContain('CD123');
       expect(markerEnum).toContain('CD205');
       expect(markerEnum).toEqual([
-        "CD3", "CD4", "CD8", "CD14", "CD16", "CD19", "CD20", "CD31", "CD34", "CD45", "CD56", "CD90", "CD123", "CD141", "CD144", "CD205"
+        'CD3',
+        'CD4',
+        'CD8',
+        'CD14',
+        'CD16',
+        'CD19',
+        'CD20',
+        'CD31',
+        'CD34',
+        'CD45',
+        'CD56',
+        'CD90',
+        'CD123',
+        'CD141',
+        'CD144',
+        'CD205',
       ]);
 
-      const expressionEnum = biosampleSchema.properties.enrichment_markers.items.properties.expression_level.enum;
+      const expressionEnum =
+        biosampleSchema.properties.enrichment_markers.items.properties.expression_level.enum;
       expect(expressionEnum).toEqual(['positive', 'negative', 'low', 'high', 'intermediate']);
     });
 
@@ -441,7 +575,10 @@ describe('Schema Validation Tests', () => {
     test('InVitroSystem has classification enum with correct values', () => {
       expect(inVitroSystemSchema.properties.classification.type).toBe('string');
       expect(inVitroSystemSchema.properties.classification.enum).toEqual([
-        'organoid', 'gastruloid', 'embryoid', 'immortalized cell line'
+        'organoid',
+        'gastruloid',
+        'embryoid',
+        'immortalized cell line',
       ]);
     });
 
@@ -473,7 +610,11 @@ describe('Schema Validation Tests', () => {
 
       // Test non-composite treatment requirements
       const nonCompositeSchema = treatmentSchema.dependentSchemas.is_composite.then;
-      expect(nonCompositeSchema.required).toEqual(['ontological_term', 'concentration', 'duration']);
+      expect(nonCompositeSchema.required).toEqual([
+        'ontological_term',
+        'concentration',
+        'duration',
+      ]);
       expect(nonCompositeSchema.properties.ontological_term.type).toBe('string');
       expect(nonCompositeSchema.properties.concentration.type).toBe('number');
       expect(nonCompositeSchema.properties.concentration.minimum).toBe(0);
@@ -495,22 +636,30 @@ describe('Schema Validation Tests', () => {
 
     test('Treatment schema has concentration/duration unit dependencies in non-composite', () => {
       const nonCompositeSchema = treatmentSchema.dependentSchemas.is_composite.then;
-      expect(nonCompositeSchema.dependentSchemas.concentration.required).toContain('concentration_units');
-      expect(nonCompositeSchema.dependentSchemas.concentration_units.required).toContain('concentration');
+      expect(nonCompositeSchema.dependentSchemas.concentration.required).toContain(
+        'concentration_units'
+      );
+      expect(nonCompositeSchema.dependentSchemas.concentration_units.required).toContain(
+        'concentration'
+      );
       expect(nonCompositeSchema.dependentSchemas.duration.required).toContain('duration_units');
       expect(nonCompositeSchema.dependentSchemas.duration_units.required).toContain('duration');
     });
 
     test('GeneticModification schema has correct property validation', () => {
       expect(geneticModificationSchema.properties.description.type).toBe('string');
-      expect(geneticModificationSchema.properties.description.pattern).toBe('^(\\S+(\\s|\\S)*\\S+|\\S)$');
+      expect(geneticModificationSchema.properties.description.pattern).toBe(
+        '^(\\S+(\\s|\\S)*\\S+|\\S)$'
+      );
       expect(geneticModificationSchema.properties.modality.type).toBe('string');
       expect(geneticModificationSchema.properties.modality.enum).toContain('activation');
       expect(geneticModificationSchema.properties.modality.enum).toContain('knockout');
       expect(geneticModificationSchema.properties.modality.enum).toContain('base editing');
       expect(geneticModificationSchema.properties.cas.enum).toContain('Cas9');
       expect(geneticModificationSchema.properties.cas.enum).toContain('dCas9');
-      expect(geneticModificationSchema.properties.activating_agent_term_id.pattern).toBe('^CHEBI:[0-9]{1,7}$');
+      expect(geneticModificationSchema.properties.activating_agent_term_id.pattern).toBe(
+        '^CHEBI:[0-9]{1,7}$'
+      );
     });
 
     test('GeneticModification schema has chemical activation dependency', () => {
@@ -522,9 +671,48 @@ describe('Schema Validation Tests', () => {
 
       // Test the then requirement - requires both agent properties
       const thenSchema = geneticModificationSchema.dependentSchemas.activated.then;
-      expect(thenSchema.required).toEqual(['activating_agent_term_id', 'activating_agent_term_name']);
+      expect(thenSchema.required).toEqual([
+        'activating_agent_term_id',
+        'activating_agent_term_name',
+      ]);
     });
 
+    test('ExperimentalCondition schema has correct property validation', () => {
+      expect(experimentalConditionSchema.properties.condition.type).toBe('string');
+      expect(experimentalConditionSchema.properties.condition.enum).toEqual([
+        'pH',
+        'temperature',
+        'surface tension',
+        'diet',
+        'smoking status',
+        'oxygen level',
+        'humidity',
+        'pressure',
+        'osmolarity',
+      ]);
+      expect(experimentalConditionSchema.properties.value.oneOf).toHaveLength(2);
+      expect(experimentalConditionSchema.properties.units.enum).toContain('celsius');
+      expect(experimentalConditionSchema.properties.units.enum).toContain('pH units');
+    });
+
+    test('ExperimentalCondition schema has value/units dependency validation', () => {
+      expect(experimentalConditionSchema.dependentSchemas.value).toBeDefined();
+      expect(experimentalConditionSchema.dependentSchemas.value.required).toEqual(['units']);
+      expect(experimentalConditionSchema.dependentSchemas.units).toBeDefined();
+      expect(experimentalConditionSchema.dependentSchemas.units.required).toEqual(['value']);
+    });
+
+    test('Biosample schema has experimental_conditions property linking to ExperimentalCondition', () => {
+      expect(biosampleSchema.properties.experimental_conditions).toHaveProperty('type', 'array');
+      expect(biosampleSchema.properties.experimental_conditions).toHaveProperty(
+        'uniqueItems',
+        true
+      );
+      expect(biosampleSchema.properties.experimental_conditions.items).toHaveProperty(
+        'linkTo',
+        'ExperimentalCondition'
+      );
+    });
   });
 
   describe('Example Data Structure Validation', () => {
@@ -535,19 +723,19 @@ describe('Schema Validation Tests', () => {
 
     test('Valid tissue example has proper structure and inheritance properties', () => {
       const validTissue = loadExample('tissue/valid-tissue.json');
-      
+
       // Check inherited Biosample properties
       expect(validTissue.lab).toBeDefined();
       expect(validTissue.donors).toBeDefined();
       expect(validTissue.sample_terms).toBeDefined();
       expect(validTissue.sample_procurement_interval).toBeDefined();
       expect(validTissue.sample_procurement_interval_units).toBeDefined();
-      
+
       // Check tissue-specific properties
       expect(validTissue.thickness).toBeDefined();
       expect(validTissue.thickness_units).toBeDefined();
       expect(validTissue.orientation).toBeDefined();
-      
+
       // Verify dependent property pairing is correct
       expect(validTissue.sample_procurement_interval).toBe(2);
       expect(validTissue.sample_procurement_interval_units).toBe('hour');
@@ -555,27 +743,27 @@ describe('Schema Validation Tests', () => {
 
     test('Invalid tissue example missing required dependent property', () => {
       const invalidTissue = loadExample('tissue/invalid-tissue.json');
-      
+
       // Should have sample_procurement_interval but missing units
       expect(invalidTissue.sample_procurement_interval).toBeDefined();
       expect(invalidTissue.sample_procurement_interval_units).toBeUndefined();
-      
+
       // This violates the dependentSchemas rule from Biosample
     });
 
     test('Valid primary cell example has proper structure and inheritance properties', () => {
       const validPrimaryCell = loadExample('primary_cell/valid-primary-cell.json');
-      
+
       // Check inherited Biosample properties
       expect(validPrimaryCell.lab).toBeDefined();
       expect(validPrimaryCell.donors).toBeDefined();
       expect(validPrimaryCell.sample_terms).toBeDefined();
       expect(validPrimaryCell.sample_procurement_interval).toBeDefined();
       expect(validPrimaryCell.sample_procurement_interval_units).toBeDefined();
-      
+
       // Check primary cell-specific properties
       expect(validPrimaryCell.passage_number).toBeDefined();
-      
+
       // Verify dependent property pairing is correct
       expect(validPrimaryCell.sample_procurement_interval).toBe(1);
       expect(validPrimaryCell.sample_procurement_interval_units).toBe('day');
@@ -583,44 +771,50 @@ describe('Schema Validation Tests', () => {
 
     test('Invalid primary cell example missing required dependent property', () => {
       const invalidPrimaryCell = loadExample('primary_cell/invalid-primary-cell.json');
-      
+
       // Should have units but missing sample_procurement_interval
       expect(invalidPrimaryCell.sample_procurement_interval).toBeUndefined();
       expect(invalidPrimaryCell.sample_procurement_interval_units).toBeDefined();
-      
+
       // This violates the dependentSchemas rule from Biosample
     });
 
     test('Both tissue and primary cell inherit sample_procurement_interval properties', () => {
       const validTissue = loadExample('tissue/valid-tissue.json');
       const validPrimaryCell = loadExample('primary_cell/valid-primary-cell.json');
-      
+
       // Both should have inherited the timing properties from Biosample
       expect(validTissue.sample_procurement_interval).toBe(2);
       expect(validTissue.sample_procurement_interval_units).toBe('hour');
       expect(validPrimaryCell.sample_procurement_interval).toBe(1);
       expect(validPrimaryCell.sample_procurement_interval_units).toBe('day');
-      
+
       // Verify units are from valid enum values
-      expect(['second', 'minute', 'hour', 'day', 'week']).toContain(validTissue.sample_procurement_interval_units);
-      expect(['second', 'minute', 'hour', 'day', 'week']).toContain(validPrimaryCell.sample_procurement_interval_units);
+      expect(['second', 'minute', 'hour', 'day', 'week']).toContain(
+        validTissue.sample_procurement_interval_units
+      );
+      expect(['second', 'minute', 'hour', 'day', 'week']).toContain(
+        validPrimaryCell.sample_procurement_interval_units
+      );
     });
 
     test('Valid in vitro system example has proper structure and inheritance properties', () => {
       const validInVitro = loadExample('in_vitro_system/valid-in-vitro-system.json');
-      
+
       // Check inherited Biosample properties
       expect(validInVitro.lab).toBeDefined();
       expect(validInVitro.donors).toBeDefined();
       expect(validInVitro.sample_terms).toBeDefined();
       expect(validInVitro.sample_procurement_interval).toBeDefined();
       expect(validInVitro.sample_procurement_interval_units).toBeDefined();
-      
+
       // Check new classification property
       expect(validInVitro.classification).toBeDefined();
       expect(validInVitro.classification).toBe('organoid');
-      expect(['organoid', 'gastruloid', 'embryoid', 'immortalized cell line']).toContain(validInVitro.classification);
-      
+      expect(['organoid', 'gastruloid', 'embryoid', 'immortalized cell line']).toContain(
+        validInVitro.classification
+      );
+
       // Verify inherited timing properties work correctly
       expect(validInVitro.sample_procurement_interval).toBe(4);
       expect(validInVitro.sample_procurement_interval_units).toBe('hour');
@@ -628,7 +822,7 @@ describe('Schema Validation Tests', () => {
 
     test('Invalid in vitro system example missing required properties', () => {
       const invalidInVitro = loadExample('in_vitro_system/invalid-in-vitro-system.json');
-      
+
       // Should be missing required sample_terms and classification
       expect(invalidInVitro.sample_terms).toBeUndefined();
       expect(invalidInVitro.classification).toBeUndefined();
@@ -639,21 +833,21 @@ describe('Schema Validation Tests', () => {
 
     test('Valid in vivo system example has proper structure and inheritance properties', () => {
       const validInVivo = loadExample('in_vivo_system/valid-in-vivo-system.json');
-      
+
       // Check inherited Biosample properties
       expect(validInVivo.lab).toBeDefined();
       expect(validInVivo.donors).toBeDefined();
       expect(validInVivo.sample_terms).toBeDefined();
       expect(validInVivo.sample_procurement_interval).toBeDefined();
       expect(validInVivo.sample_procurement_interval_units).toBeDefined();
-      
+
       // Check new classification and host properties
       expect(validInVivo.classification).toBeDefined();
       expect(validInVivo.classification).toBe('xenograft');
       expect(['xenograft']).toContain(validInVivo.classification);
       expect(validInVivo.host).toBeDefined();
       expect(validInVivo.host).toBe('HOST_MOUSE_001');
-      
+
       // Verify inherited timing properties work correctly
       expect(validInVivo.sample_procurement_interval).toBe(30);
       expect(validInVivo.sample_procurement_interval_units).toBe('minute');
@@ -661,7 +855,7 @@ describe('Schema Validation Tests', () => {
 
     test('Invalid in vivo system example missing required properties', () => {
       const invalidInVivo = loadExample('in_vivo_system/invalid-in-vivo-system.json');
-      
+
       // Should be missing required donors array and classification
       expect(invalidInVivo.donors).toBeUndefined();
       expect(invalidInVivo.classification).toBeUndefined();
@@ -675,12 +869,14 @@ describe('Schema Validation Tests', () => {
       const validPrimaryCell = loadExample('primary_cell/valid-primary-cell.json');
       const validInVitro = loadExample('in_vitro_system/valid-in-vitro-system.json');
       const validInVivo = loadExample('in_vivo_system/valid-in-vivo-system.json');
-      
+
       // All should have inherited timing properties from Biosample
-      [validTissue, validPrimaryCell, validInVitro, validInVivo].forEach(sample => {
+      [validTissue, validPrimaryCell, validInVitro, validInVivo].forEach((sample) => {
         expect(sample.sample_procurement_interval).toBeDefined();
         expect(sample.sample_procurement_interval_units).toBeDefined();
-        expect(['second', 'minute', 'hour', 'day', 'week']).toContain(sample.sample_procurement_interval_units);
+        expect(['second', 'minute', 'hour', 'day', 'week']).toContain(
+          sample.sample_procurement_interval_units
+        );
       });
     });
   });

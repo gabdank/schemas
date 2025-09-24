@@ -15,7 +15,7 @@
     "activated": {
       "if": {
         "properties": {
-          "activated": {"const": true}
+          "activated": { "const": true }
         }
       },
       "then": {
@@ -64,15 +64,7 @@
       "title": "Cas",
       "description": "The name of the CRISPR associated protein used in the modification.",
       "type": "string",
-      "enum": [
-        "Cas9",
-        "Cas12a",
-        "Cas13",
-        "dCas9",
-        "nCas9",
-        "SpG",
-        "SpRY"
-      ]
+      "enum": ["Cas9", "Cas12a", "Cas13", "dCas9", "nCas9", "SpG", "SpRY"]
     },
     "cas_species": {
       "title": "Cas Species",

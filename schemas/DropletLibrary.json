@@ -19,7 +19,22 @@
       "title": "Chemistry Version",
       "description": "Assay type and version of the chemistry used for library preparation.",
       "type": "string",
-      "enum": ["3' v2", "3' v3", "3' v3.1", "3' v4", "5' v1", "5' v2", "5' v3", "Multiome v1", "Multiome v2", "Flex v1", "ATAC v1", "ATAC v2", "VDJ v1", "VDJ v2"]
+      "enum": [
+        "3' v2",
+        "3' v3",
+        "3' v3.1",
+        "3' v4",
+        "5' v1",
+        "5' v2",
+        "5' v3",
+        "Multiome v1",
+        "Multiome v2",
+        "Flex v1",
+        "ATAC v1",
+        "ATAC v2",
+        "VDJ v1",
+        "VDJ v2"
+      ]
     },
     "cell_barcode_length": {
       "title": "Cell Barcode Length",
@@ -41,7 +56,15 @@
       "uniqueItems": true,
       "items": {
         "type": "string",
-        "enum": ["Gene Expression", "Antibody Capture", "CRISPR Guide Capture", "Multiplexing Capture", "ATAC", "BCR", "TCR"]
+        "enum": [
+          "Gene Expression",
+          "Antibody Capture",
+          "CRISPR Guide Capture",
+          "Multiplexing Capture",
+          "ATAC",
+          "BCR",
+          "TCR"
+        ]
       }
     }
   }

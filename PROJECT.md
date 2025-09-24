@@ -106,23 +106,23 @@ schemas/
 
 ### Key Files for Claude Code
 
-| File Path                                 | Purpose                         | Current Status |
-| ----------------------------------------- | ------------------------------- | -------------- |
-| `schemas/mixins.json`                     | Basic item mixin properties     | ✅ Complete    |
-| `schemas/User.json`                       | User entity schema (concrete)   | ✅ Complete    |
-| `schemas/Lab.json`                        | Lab entity schema (concrete)    | ✅ Complete    |
-| `schemas/Library.json`                    | Library entity schema (abstract)| ✅ Complete    |
-| `schemas/DropletLibrary.json`             | Droplet library schema (concrete)| ✅ Complete   |
-| `schemas/PlateBasedLibrary.json`          | Plate-based library schema (concrete)| ✅ Complete |
-| `schemas/Donor.json`                      | Donor entity schema (abstract)  | ✅ Complete    |
-| `schemas/Biosample.json`                  | Biosample schema (abstract)     | ✅ Complete    |
-| `schemas/ControlledTerm.json`             | Controlled vocabulary terms     | ✅ Complete    |
-| `schemas/Tissue.json`                     | Tissue sample schema (concrete) | ✅ Complete    |
-| `schemas/PrimaryCell.json`                | Primary cell schema (concrete)  | ✅ Complete    |
-| `schemas/InVitroSystem.json`              | In vitro system schema (concrete)| ✅ Complete   |
-| `schemas/InVivoSystem.json`               | In vivo system schema (concrete) | ✅ Complete    |
-| `tests/schemas/schema.validation.test.js` | Jest test suite (71 tests)      | ✅ Complete    |
-| `PROJECT.md`                              | Project documentation           | ✅ Complete    |
+| File Path                                 | Purpose                               | Current Status |
+| ----------------------------------------- | ------------------------------------- | -------------- |
+| `schemas/mixins.json`                     | Basic item mixin properties           | ✅ Complete    |
+| `schemas/User.json`                       | User entity schema (concrete)         | ✅ Complete    |
+| `schemas/Lab.json`                        | Lab entity schema (concrete)          | ✅ Complete    |
+| `schemas/Library.json`                    | Library entity schema (abstract)      | ✅ Complete    |
+| `schemas/DropletLibrary.json`             | Droplet library schema (concrete)     | ✅ Complete    |
+| `schemas/PlateBasedLibrary.json`          | Plate-based library schema (concrete) | ✅ Complete    |
+| `schemas/Donor.json`                      | Donor entity schema (abstract)        | ✅ Complete    |
+| `schemas/Biosample.json`                  | Biosample schema (abstract)           | ✅ Complete    |
+| `schemas/ControlledTerm.json`             | Controlled vocabulary terms           | ✅ Complete    |
+| `schemas/Tissue.json`                     | Tissue sample schema (concrete)       | ✅ Complete    |
+| `schemas/PrimaryCell.json`                | Primary cell schema (concrete)        | ✅ Complete    |
+| `schemas/InVitroSystem.json`              | In vitro system schema (concrete)     | ✅ Complete    |
+| `schemas/InVivoSystem.json`               | In vivo system schema (concrete)      | ✅ Complete    |
+| `tests/schemas/schema.validation.test.js` | Jest test suite (71 tests)            | ✅ Complete    |
+| `PROJECT.md`                              | Project documentation                 | ✅ Complete    |
 
 ---
 
@@ -247,24 +247,26 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 
 ### Target Schema Registry
 
-| Schema Name           | Version | File Path                            | Status      | Class Type | Reference Implementation                   |
-| --------------------- | ------- | ------------------------------------ | ----------- | ---------- | ------------------------------------------ |
-| mixins                | 1.0.0   | `schemas/mixins.json`                | ✅ Complete | Mixin      | IGVFD mixins.json (basic_item only)        |
-| User                  | 1.0.0   | `schemas/User.json`                  | ✅ Complete | Concrete   | IGVFD user.json (simplified)               |
-| Lab                   | 1.0.0   | `schemas/Lab.json`                   | ✅ Complete | Concrete   | IGVFD lab.json (minimal)                   |
-| Library               | 1.0.0   | `schemas/Library.json`               | ✅ Complete | Abstract   | IGVFD library.json (minimal)               |
-| DropletLibrary        | 1.0.0   | `schemas/DropletLibrary.json`        | ✅ Complete | Concrete   | 10X technology-specific properties (chemistry, barcodes, features) |
-| PlateBasedLibrary     | 1.0.0   | `schemas/PlateBasedLibrary.json`     | ✅ Complete | Concrete   | Plate-based workflows (QuantumScale, sci-RNA-seq3, indexing) |
-| Donor                 | 1.0.0   | `schemas/Donor.json`                 | ✅ Complete | Abstract   | IGVFD donor.json (simplified)              |
-| Biosample             | 1.0.0   | `schemas/Biosample.json`             | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)          |
+| Schema Name           | Version | File Path                            | Status      | Class Type | Reference Implementation                                            |
+| --------------------- | ------- | ------------------------------------ | ----------- | ---------- | ------------------------------------------------------------------- |
+| mixins                | 1.0.0   | `schemas/mixins.json`                | ✅ Complete | Mixin      | IGVFD mixins.json (basic_item only)                                 |
+| User                  | 1.0.0   | `schemas/User.json`                  | ✅ Complete | Concrete   | IGVFD user.json (simplified)                                        |
+| Lab                   | 1.0.0   | `schemas/Lab.json`                   | ✅ Complete | Concrete   | IGVFD lab.json (minimal)                                            |
+| Library               | 1.0.0   | `schemas/Library.json`               | ✅ Complete | Abstract   | IGVFD library.json (minimal)                                        |
+| DropletLibrary        | 1.0.0   | `schemas/DropletLibrary.json`        | ✅ Complete | Concrete   | 10X technology-specific properties (chemistry, barcodes, features)  |
+| PlateBasedLibrary     | 1.0.0   | `schemas/PlateBasedLibrary.json`     | ✅ Complete | Concrete   | Plate-based workflows (QuantumScale, sci-RNA-seq3, indexing)        |
+| Donor                 | 1.0.0   | `schemas/Donor.json`                 | ✅ Complete | Abstract   | IGVFD donor.json (simplified)                                       |
+| HumanDonor            | 2.0.0   | `schemas/HumanDonor.json`            | 📋 Planned  | Concrete   | Human subjects with consent and regulatory compliance               |
+| NonHumanDonor         | 2.0.0   | `schemas/NonHumanDonor.json`         | 📋 Planned  | Concrete   | Laboratory animals, model organisms, environmental samples          |
+| Biosample             | 1.0.0   | `schemas/Biosample.json`             | ✅ Complete | Abstract   | IGVFD biosample.json (simplified)                                   |
 | ControlledTerm        | 1.0.0   | `schemas/ControlledTerm.json`        | ✅ Complete | Concrete   | Multi-ontology terms (CL, EFO, UBERON, CHEBI, UniProt, Cellosaurus) |
-| Tissue                | 1.0.0   | `schemas/Tissue.json`                | ✅ Complete | Concrete   | IGVFD + Lattice-DB tissue + tissue_section |
-| PrimaryCell           | 1.0.0   | `schemas/PrimaryCell.json`           | ✅ Complete | Concrete   | IGVFD primary_cell.json (simplified)       |
-| InVitroSystem         | 1.0.0   | `schemas/InVitroSystem.json`         | ✅ Complete | Concrete   | IGVFD in_vitro_system.json (minimal)       |
-| InVivoSystem          | 1.0.0   | `schemas/InVivoSystem.json`          | ✅ Complete | Concrete   | IGVFD in_vivo_system.json (minimal)        |
-| Treatment             | 1.0.0   | `schemas/Treatment.json`             | ✅ Complete | Concrete   | Chemical treatments with composite/non-composite validation |
-| GeneticModification   | 1.0.0   | `schemas/GeneticModification.json`   | ✅ Complete | Concrete   | CRISPR and genetic engineering metadata    |
-| ExperimentalCondition | 1.0.0   | `schemas/ExperimentalCondition.json` | ✅ Complete | Concrete   | Environmental parameters (pH, temperature, diet, etc.) |
+| Tissue                | 1.0.0   | `schemas/Tissue.json`                | ✅ Complete | Concrete   | IGVFD + Lattice-DB tissue + tissue_section                          |
+| PrimaryCell           | 1.0.0   | `schemas/PrimaryCell.json`           | ✅ Complete | Concrete   | IGVFD primary_cell.json (simplified)                                |
+| InVitroSystem         | 1.0.0   | `schemas/InVitroSystem.json`         | ✅ Complete | Concrete   | IGVFD in_vitro_system.json (minimal)                                |
+| InVivoSystem          | 1.0.0   | `schemas/InVivoSystem.json`          | ✅ Complete | Concrete   | IGVFD in_vivo_system.json (minimal)                                 |
+| Treatment             | 1.0.0   | `schemas/Treatment.json`             | ✅ Complete | Concrete   | Chemical treatments with composite/non-composite validation         |
+| GeneticModification   | 1.0.0   | `schemas/GeneticModification.json`   | ✅ Complete | Concrete   | CRISPR and genetic engineering metadata                             |
+| ExperimentalCondition | 1.0.0   | `schemas/ExperimentalCondition.json` | ✅ Complete | Concrete   | Environmental parameters (pH, temperature, diet, etc.)              |
 
 ### Schema Design Decisions
 
@@ -319,7 +321,7 @@ Implement schemas in /schemas/ directory. Base designs on igvfd patterns:
 **Based on:** IGVFD `/profiles/in_vivo_system.json` (JSON Schema draft 2020-12)  
 **Enhanced Properties:**
 
-- Inherits all Biosample properties via mixinProperties  
+- Inherits all Biosample properties via mixinProperties
 - `classification` (required) - enum: ["xenograft"] (expandable for future system types)
 - `host` (optional) - links to Donor for transplantation scenarios
 
@@ -566,55 +568,65 @@ npm run lint:fix               # Auto-fix formatting
 ### Phase 4: Sample Enhancement & Treatment Integration
 
 #### Sample Enrichment & Processing Enhancements
+
 **Target Schema:** Biosample.json (Abstract class)
 **Status:** ✅ Complete
 
 **Enrichment Properties (Implemented):**
+
 - `enrichment_method` (enum, optional) - Method used for enrichment: ["FACS", "MACS", "size_exclusion", "density_gradient", "manual_picking", "microfluidics"]
 - `enriched_cell_types` (array, optional) - Links to ControlledTerm for enriched cell populations (CL ontology)
 - `depleted_cell_types` (array, optional) - Links to ControlledTerm for depleted cell populations (CL ontology)
 - `enrichment_markers` (array, optional) - Structured marker objects with CD marker enums and expression levels
 
 **Enrichment Markers Structure:**
+
 ```json
 {
-  "marker": "CD45",           // Enum of 16 common CD markers
-  "expression_level": "positive"  // ["positive", "negative", "low", "high", "intermediate"]
+  "marker": "CD45", // Enum of 16 common CD markers
+  "expression_level": "positive" // ["positive", "negative", "low", "high", "intermediate"]
 }
 ```
 
 **Validation Features:**
+
 - **CD Marker Standardization**: 16 validated CD markers (CD3, CD4, CD8, CD14, CD16, CD19, CD20, CD31, CD34, CD45, CD56, CD90, CD123, CD141, CD144, CD205)
 - **Expression Level Control**: Structured enum for marker expression patterns
 - **Ontological Cell Types**: Leverages ControlledTerm with CL ontology for standardized cell type annotation
 - **Method Classification**: Standardized enrichment method vocabulary
 
 **Benefits:**
+
 - **Minimal Free Text**: Structured approach reduces data inconsistency
 - **Real-World Validated**: Based on analysis of 7,000+ suspension samples
 - **Ontological Standardization**: Cell types use Cell Ontology (CL) via ControlledTerm
 - **Complex Workflow Support**: Multi-marker enrichment scenarios with positive/negative selection
 
 #### Genetic Modification Tracking
+
 **Target Schema:** Biosample.json (Abstract class)
 **Status:** 📋 Planned
 
 **Genetic Modification Properties:**
+
 - `genetic_modifications` (array, optional) - Links to genetic modification records
 - `modification_type` (enum, optional) - Type of genetic modification ["CRISPR", "overexpression", "knockdown", "knockout", "transgenic"]
 - `modified_genes` (array, optional) - List of genes that were modified
 - `modification_status` (enum, optional) - Status of modification ["confirmed", "pending", "failed"]
 
 **Benefits:**
+
 - Track genetic engineering interventions
 - Link samples to their modification history
 - Support experimental design documentation
 
 #### Treatment Integration
+
 **Target Schemas:** Biosample.json + New Treatment.json + Ontological Term Refactoring
 **Status:** ✅ Complete
 
 **Treatment Schema (Implemented):**
+
 - **File:** `schemas/Treatment.json`
 - **Type:** Concrete class
 - **Required:** `is_composite`
@@ -622,99 +634,118 @@ npm run lint:fix               # Auto-fix formatting
   - `is_composite` (boolean) - True for combination/complex treatments, false for single-agent treatments
 
 **Composite Treatment Properties (when is_composite: true):**
-  - `description` (string, required) - Manual text description of the complex treatment
-  - `protocol_document` (string, required) - Link to PDF document with detailed protocol
+
+- `description` (string, required) - Manual text description of the complex treatment
+- `protocol_document` (string, required) - Link to PDF document with detailed protocol
 
 **Non-Composite Treatment Properties (when is_composite: false):**
-  - `ontological_term` (string, required) - CheBI ID, UniProt ID, or other ontological identifier
-  - `concentration` (number, required) - Treatment concentration (minimum: 0)
-  - `concentration_units` (enum, required) - ["M", "mM", "μM", "nM", "pM", "mg/ml", "μg/ml", "ng/ml", "g/L", "mg/L", "μg/L"]
-  - `duration` (number, required) - Treatment duration (minimum: 0)
-  - `duration_units` (enum, required) - ["second", "minute", "hour", "day", "week", "month"]
+
+- `ontological_term` (string, required) - CheBI ID, UniProt ID, or other ontological identifier
+- `concentration` (number, required) - Treatment concentration (minimum: 0)
+- `concentration_units` (enum, required) - ["M", "mM", "μM", "nM", "pM", "mg/ml", "μg/ml", "ng/ml", "g/L", "mg/L", "μg/L"]
+- `duration` (number, required) - Treatment duration (minimum: 0)
+- `duration_units` (enum, required) - ["second", "minute", "hour", "day", "week", "month"]
 
 **Validation Features:**
+
 - **Dependent schemas** ensure concentration/duration paired with respective units
 - **Conditional validation** based on is_composite boolean
 - **Type safety** with number validation and minimum constraints
 - **Comprehensive unit enums** covering common laboratory concentrations and time periods
 
 **Benefits:**
+
 - **Clear classification** between single-agent vs combination treatments
 - **Ontological standardization** for simple treatments (leverages CheBI, UniProt databases)
 - **Strict validation** ensures data consistency and completeness
 - **Flexibility** for complex custom treatments requiring manual documentation
 
 **Biosample Updates:**
+
 - `treatment` (string, optional) - Links to Treatment record (`"linkTo": "Treatment"`)
 - `genetic_modification` (string, optional) - Links to GeneticModification record (`"linkTo": "GeneticModification"`)
 
 #### Genetic Modification Integration
+
 **Target Schemas:** Biosample.json + New GeneticModification.json
 **Status:** ✅ Complete
 
 **GeneticModification Schema (Implemented):**
+
 - **File:** `schemas/GeneticModification.json`
 - **Type:** Concrete class
 - **Required:** `description`, `modality`
 
 **Core Properties:**
+
 - `description` (string, required) - Plain text description with pattern validation
 - `modality` (enum, required) - Purpose/effect: activation, base editing, cutting, interference, knockout, localizing, prime editing
 
 **CRISPR Properties (Optional):**
+
 - `cas` (enum, optional) - Cas protein: Cas9, Cas12a, Cas13, dCas9, nCas9, SpG, SpRY
 - `cas_species` (enum, optional) - Origin species: Streptococcus pyogenes, Staphylococcus aureus, etc.
 - `fused_domain` (enum, optional) - Fused molecule: VP64, KRAB, p300, ABE8e, BE4max, etc.
 
 **Chemical Activation Properties (Optional):**
+
 - `activated` (boolean, optional) - Whether chemically activated
 - `activating_agent_term_id` (string, conditional) - CHEBI ID with pattern validation
 - `activating_agent_term_name` (string, conditional) - CHEBI term name
 
 **Target Properties:**
+
 - `tagged_proteins` (array, optional) - Links to Gene schema (maxItems: 1)
 
 **Validation Features:**
+
 - **Dependent schemas** ensure activated=true requires CHEBI agent terms
 - **Pattern validation** for CHEBI IDs (^CHEBI:[0-9]{1,7}$) and descriptions
 - **Comprehensive enums** covering major CRISPR systems and genetic engineering approaches
 - **Gene linkTo** for tracking protein targets
 
 **Benefits:**
+
 - **Comprehensive CRISPR coverage** including cutting-edge base/prime editing systems
 - **Chemical activation support** for inducible genetic modifications
 - **Standardized ontology** integration via CHEBI for activating agents
 - **Flexible modality system** covering major genetic engineering approaches
 
 #### Tissue-Specific Enhancements
+
 **Target Schema:** Tissue.json
 **Status:** 📋 Planned
 
 **Preservation Enhancement:**
+
 - Update existing `preservation_method` enum to include:
   - `["fresh", "frozen", "flash-frozen", "fixed-frozen", "fixed", "cryopreservation", "flash-freezing", "paraffin embedding", "OCT embedding"]`
 - Maintain backward compatibility with existing values
 - Add validation for preservation-specific metadata
 
 #### Sample Suspension Type
+
 **Target Schema:** Biosample.json (Abstract class)
 **Status:** 🚧 In Development
 
 **Suspension Type Property:**
+
 - `suspension_type` (enum, optional) - Type of suspension: cells or nuclei
   - `["cell", "nucleus"]`
 
 **Future Potential Additions:**
+
 - `suspension_method` (string, optional) - Method used to create suspension
 - `viability_percentage` (number, optional) - Cell viability percentage (0-100)
 
 **Benefits:**
+
 - Capture fundamental biological distinction between cell and nuclei suspensions
 - Support downstream analysis requirements
 - Simple enum without underscores for clean API usage
 
-
 **MORE TODO**
+
 - refactor Ontology Terms, having an abstract and concrete biosample, treatment, diesease, etc
 - make sure Treatment linked to termontology
 - make sure the Samples linked to ontology biosample
@@ -722,77 +753,189 @@ npm run lint:fix               # Auto-fix formatting
 
 ### Implementation Priority & Timeline
 
-| Enhancement | Target Schema | Estimated Effort | Dependencies | Priority |
-|-------------|---------------|------------------|--------------|----------|
-| Enrichment Criteria | Biosample.json | Medium | None | High |
-| Suspension Type | Biosample.json | Low | None | ✅ Complete |
-| Preservation Update | Tissue.json | Low | None | ✅ Complete |
-| Treatment Integration | Biosample.json + Treatment.json | High | New Treatment schema | ✅ Complete |
-| Genetic Modifications | Biosample.json + GeneticModification.json | Medium | None | ✅ Complete |
-| Ontological Term Refactoring | Abstract OntologicalTerm + Concrete terms | High | BiosampleOntologyTerm migration | Low |
+| Enhancement                  | Target Schema                             | Estimated Effort | Dependencies                    | Priority    |
+| ---------------------------- | ----------------------------------------- | ---------------- | ------------------------------- | ----------- |
+| Enrichment Criteria          | Biosample.json                            | Medium           | None                            | High        |
+| Suspension Type              | Biosample.json                            | Low              | None                            | ✅ Complete |
+| Preservation Update          | Tissue.json                               | Low              | None                            | ✅ Complete |
+| Treatment Integration        | Biosample.json + Treatment.json           | High             | New Treatment schema            | ✅ Complete |
+| Genetic Modifications        | Biosample.json + GeneticModification.json | Medium           | None                            | ✅ Complete |
+| Ontological Term Refactoring | Abstract OntologicalTerm + Concrete terms | High             | BiosampleOntologyTerm migration | Low         |
 
 ### Design Considerations
 
 **Abstract vs Concrete Placement:**
+
 - **Biosample.json** enhancements affect all concrete sample types (Tissue, PrimaryCell, InVitroSystem, InVivoSystem)
 - **Tissue.json** enhancements are tissue-specific and don't affect other sample types
 - **Treatment.json** as new concrete schema enables reusable treatment records
 
 **Validation Strategy:**
+
 - Use dependentSchemas for property interdependencies
 - Maintain enum extensibility for future enhancement
 - Preserve backward compatibility with existing data
 
 **Testing Requirements:**
+
 - Add comprehensive test coverage for new properties
 - Test inheritance behavior across concrete sample types
 - Validate enum constraints and dependent property requirements
 
 ### Phase 5: Donor Taxonomy & Organism Classification
 
-#### Donor Organism Architecture Challenge
-**Current Issue:** The existing Donor.json schema has minimal organism classification (only `taxa` property). Real-world biological research requires more nuanced organism categorization.
+#### Donor Organism Architecture Enhancement Plan
 
-**Design Questions to Address:**
+**Status:** 📋 Planned for Future Implementation
+**Target:** Transform current abstract Donor.json into concrete HumanDonor and NonHumanDonor sub-classes
 
-1. **Human vs Non-Human Classification**
-   - Should we have separate Human and NonHuman concrete donor classes?
-   - How to handle consent, privacy, and regulatory requirements for human samples?
-   - Consider age restrictions, developmental stages, and medical history for human donors
+#### Implementation Plan: Abstract Donor with Concrete Sub-classes
 
-2. **Model vs Non-Model Organisms**
-   - **Model organisms:** Standardized strains with known genetics (C57BL/6J mice, Drosophila melanogaster)
-   - **Non-model organisms:** Wild-caught, environmental samples, non-standard laboratory animals
-   - Different metadata requirements for strain documentation vs environmental collection
+**Architecture Decision:** Keep abstract Donor.json with two concrete implementations:
 
-3. **Wild vs Laboratory Animals**
-   - **Laboratory animals:** Known genetic background, controlled environment, breeding records
-   - **Wild animals:** Environmental collection data, geographic origin, seasonal factors
-   - Regulatory compliance (IACUC for lab animals, wildlife permits for wild collection)
+- `HumanDonor.json` - Human subjects with consent and privacy requirements
+- `NonHumanDonor.json` - Laboratory animals, model organisms, and environmental samples
 
-4. **Developmental Stage Considerations**
-   - **Prenatal stages:** Embryonic day (E), gestational week, developmental milestones
-   - **Postnatal stages:** Postnatal day (P), age in weeks/months/years
-   - **Example Shendure mice birth experiment:** Time-series from E10.5 through P0 to adult
-   - Cross-species developmental stage normalization challenges
+#### HumanDonor.json Schema Design
 
-**Proposed Organism-Only Approach:**
-Instead of complex donor classification, consider flattening to organism-centric design:
-- Single `Organism.json` schema with comprehensive organism metadata
-- Properties: `species`, `strain`, `genetic_background`, `source_type` [laboratory/wild/commercial]
-- Developmental stage as separate time-series metadata
-- Reduces complexity while maintaining biological accuracy
+**Target Schema:** `schemas/HumanDonor.json`
+**Type:** Concrete class inheriting from abstract Donor
+**Status:** 📋 Planned
 
-**Benefits of Organism-Only Design:**
-- **Simplified architecture:** Single organism entity vs multiple donor types
-- **Reduced redundancy:** Organism metadata centralized
-- **Flexible relationships:** Multiple biosamples can reference same organism
-- **Development tracking:** Time-series experiments share organism reference
+**Required Properties:**
+
+- `consent_status` (enum, required) - ["consented", "exempt", "pending"]
+- `age_range` (enum, required) - ["0-17", "18-64", "65+", "unknown"]
+
+**Human-Specific Properties:**
+
+- `medical_history` (array, optional) - Links to medical condition terms
+- `consent_document` (string, optional) - Link to consent documentation
+- `privacy_level` (enum, optional) - ["public", "controlled", "restricted"]
+- `demographic_data` (object, optional) - Structured demographic information
+- `irb_approval` (string, optional) - IRB approval number
+
+**Validation Features:**
+
+- Age-appropriate consent requirements
+- Privacy level enforcement
+- Medical history ontology integration
+- Regulatory compliance validation
+
+#### NonHumanDonor.json Schema Design
+
+**Target Schema:** `schemas/NonHumanDonor.json`
+**Type:** Concrete class inheriting from abstract Donor
+**Status:** 📋 Planned
+
+**Required Properties:**
+
+- `organism_type` (enum, required) - ["model organism", "laboratory animal", "wild caught", "commercial"]
+- `species` (string, required) - Scientific species name
+- `strain` (string, optional) - Genetic strain information
+
+**Non-Human Specific Properties:**
+
+- `genetic_background` (string, optional) - Detailed genetic background
+- `source_information` (object, optional) - Breeding/collection details
+- `housing_conditions` (object, optional) - Laboratory housing parameters
+- `iacuc_approval` (string, optional) - IACUC approval number
+- `collection_permit` (string, optional) - Wildlife collection permit (if applicable)
+
+**Organism Type Specific Validations:**
+
+- **Model organisms:** Standardized strain requirements (C57BL/6J, etc.)
+- **Laboratory animals:** Housing and breeding documentation
+- **Wild caught:** Geographic and seasonal collection data
+- **Commercial:** Vendor and lot information
+
+#### Developmental Stage Integration
+
+**Implementation:** Add to abstract Donor.json for inheritance by both concrete classes
+
+**Proposed Properties:**
+
+- `developmental_stage` (string, optional) - Standardized stage notation (E14.5, P7, 8 weeks, etc.)
+- `stage_notation` (enum, optional) - ["embryonic day", "postnatal day", "gestational week", "chronological age"]
+- `stage_value` (number, optional) - Numeric value for the developmental stage
+- `stage_units` (enum, optional) - ["days", "weeks", "months", "years"]
+
+**Cross-Species Support:**
+
+- Human: gestational weeks, chronological age
+- Mouse: embryonic/postnatal days
+- Other species: species-appropriate staging
+
+**Real-World Example:**
+Shendure lab mouse birth experiment tracking:
+
+```json
+{
+  "@type": "NonHumanDonor",
+  "organism_type": "model organism",
+  "species": "Mus musculus",
+  "strain": "C57BL/6J",
+  "developmental_stage": "E14.5",
+  "stage_notation": "embryonic day",
+  "stage_value": 14.5,
+  "stage_units": "days"
+}
+```
+
+#### Migration Strategy
+
+**Current State:** Abstract Donor.json exists but allows direct instantiation
+**Target State:** True abstract class with mandatory concrete sub-class usage
+
+**Migration Steps:**
+
+1. **Create Concrete Classes:** Implement HumanDonor.json and NonHumanDonor.json
+2. **Update Abstract Donor:** Add developmental stage properties
+3. **Enforce Abstraction:** Prevent direct Donor.json instantiation
+4. **Update Tests:** Comprehensive validation for both concrete classes
+5. **Update Documentation:** Schema relationship diagrams
+
+#### Benefits of Human/NonHuman Split
+
+**Regulatory Compliance:**
+
+- Human: IRB approval, consent management, privacy protection
+- NonHuman: IACUC approval, animal welfare documentation
+
+**Metadata Specificity:**
+
+- Human: Medical history, demographics, consent status
+- NonHuman: Strain information, housing conditions, breeding records
+
+**Validation Accuracy:**
+
+- Species-appropriate developmental stages
+- Regulatory requirement enforcement
+- Ontology integration (human diseases vs animal phenotypes)
+
+#### Testing Requirements
+
+**Test Coverage Expansion:**
+
+- HumanDonor validation with consent scenarios
+- NonHumanDonor validation across organism types
+- Developmental stage validation across species
+- Abstract class inheritance validation
+- Migration path testing
+
+**Example Data:**
+
+- Human donors with various consent statuses
+- Model organisms (mouse, fruit fly, zebrafish)
+- Wild-caught environmental samples
+- Commercial laboratory animals
 
 #### Prenatal/Postnatal Timing Integration
+
 **Challenge:** Developmental timing spans conception through adulthood with species-specific considerations.
 
 **Proposed Solution:**
+
 - `developmental_stage` (string, optional) - Standardized stage notation (E14.5, P7, 8 weeks, etc.)
 - `stage_notation` (enum) - ["embryonic_day", "postnatal_day", "gestational_week", "chronological_age"]
 - `stage_value` (number) - Numeric value for the developmental stage
@@ -800,6 +943,7 @@ Instead of complex donor classification, consider flattening to organism-centric
 
 **Real-World Example Integration:**
 Shendure lab mouse birth experiment tracking:
+
 ```json
 {
   "organism": "link:organism_c57bl6j_001",
@@ -813,9 +957,11 @@ Shendure lab mouse birth experiment tracking:
 ### Phase 6: File System Architecture
 
 #### Abstract File Schema Design
+
 **Motivation:** Biological research generates diverse file types requiring standardized metadata and validation.
 
 **Proposed Abstract File.json:**
+
 - **Required:** `lab`, `filename`, `file_format`, `file_size`, `checksum`
 - **Core Properties:**
   - `content_type` (string) - MIME type for file format validation
@@ -850,6 +996,7 @@ Shendure lab mouse birth experiment tracking:
 
 **File-Dataset Relationship:**
 Following IGVF model, files must belong to datasets:
+
 - `dataset` (string, required) - linkTo relationship to Dataset entity
 - Enables grouping related files and managing access permissions
 - Supports versioning and publication workflows
@@ -857,6 +1004,7 @@ Following IGVF model, files must belong to datasets:
 ### Phase 7: Dataset Architecture (Minimize Complexity)
 
 #### Dataset Design Philosophy
+
 **Goal:** Simple, practical dataset representation that reflects real-world usage without overcomplication.
 
 **Core Dataset Concept:**
@@ -868,7 +1016,7 @@ Most single-cell datasets center around an H5AD matrix file with associated meta
 ```json
 {
   "title": "Mouse embryonic brain development scRNA-seq",
-  "primary_file": "link:h5ad_file_001",  // Links to H5ADFile
+  "primary_file": "link:h5ad_file_001", // Links to H5ADFile
   "associated_files": ["link:fastq_file_001", "link:tsv_file_001"],
   "cell_count": 50000,
   "gene_count": 25000,
@@ -880,35 +1028,44 @@ Most single-cell datasets center around an H5AD matrix file with associated meta
 ```
 
 #### Curated vs Non-Curated Datasets
+
 **Simple Classification Approach:**
 
 **Curated Datasets:**
+
 - `curation_status` (enum) - ["curated", "non_curated", "in_review"]
 - `curator` (string, optional) - Links to User who performed curation
 - `curation_notes` (string, optional) - Description of curation process
 - **Benefits:** Quality control, standardized annotations, publication-ready
 
 **Non-Curated Datasets:**
+
 - Raw upload from submitters
 - Minimal validation requirements
 - Rapid data sharing for collaboration
 
 #### Collections Concept
+
 **Optional Grouping Mechanism:**
+
 - `Collection.json` as simple grouping entity for related datasets
 - Use case: Multi-timepoint experiments, cross-lab collaborations, publication figures
 - Properties: `title`, `description`, `datasets` (array of links), `collection_type` (enum)
 
 **Collection Types:**
+
 - `["publication", "project", "time_series", "multi_lab", "atlas"]`
 
 **Benefits:**
+
 - **Flexible grouping** without complex hierarchies
 - **Publication support** for papers with multiple datasets
 - **Project management** for long-term research initiatives
 
 #### Avoiding Overcomplication
+
 **Design Principles:**
+
 1. **Single file type focus:** Most datasets are H5AD-centric
 2. **Minimal metadata:** Required fields only, optional enhancement
 3. **Flat relationships:** Avoid deep nesting and complex hierarchies
@@ -916,6 +1073,7 @@ Most single-cell datasets center around an H5AD matrix file with associated meta
 5. **Gradual enhancement:** Start simple, add complexity only when needed
 
 **Not Included (To Avoid Complexity):**
+
 - Multi-modal dataset complex relationships
 - Versioning systems for dataset evolution
 - Complex access control beyond basic publication status
@@ -998,19 +1156,22 @@ Most single-cell datasets center around an H5AD matrix file with associated meta
 ### Current Implementation Analysis
 
 **Completed Concrete Biosamples:**
+
 - ✅ **Tissue.json** - Inherited TissueSection properties, includes sample_procurement_interval
 - ✅ **PrimaryCell.json** - Basic cell culture schema
 
 **Planned Concrete Biosamples:**
+
 - 📋 **InVitroSystem.json** - In vitro biological system schema
 - 📋 **InVivoSystem.json** - In vivo biological system schema
 
 ### Missing Suspension Properties Analysis
 
 **Properties from IGVFD suspension/primary_cell patterns:**
+
 - `suspension_type` - Type of cell suspension
 - `enrichment_factors` - Factors used for cell enrichment
-- `depletion_factors` - Factors used for cell depletion  
+- `depletion_factors` - Factors used for cell depletion
 - `enriched_cells` - Description of enriched cell populations
 - `depleted_cells` - Description of depleted cell populations
 - `sample_procurement_interval`/`sample_procurement_interval_units` - Time from collection to processing
@@ -1020,6 +1181,7 @@ Most single-cell datasets center around an H5AD matrix file with associated meta
 **✅ COMPLETED REFACTORING:** `sample_procurement_interval` properties have been successfully moved to abstract Biosample class.
 
 **Completed Changes:**
+
 1. **✅ Moved to Abstract Biosample:** `sample_procurement_interval`/`sample_procurement_interval_units` with dependentSchemas validation
 2. **✅ Enhanced Inheritance:** Both Tissue.json and PrimaryCell.json now inherit timing properties via mixinProperties
 3. **✅ Expanded Test Coverage:** Added comprehensive inheritance validation and example data tests (32 total tests)
@@ -1028,32 +1190,38 @@ Most single-cell datasets center around an H5AD matrix file with associated meta
 ## 🔮 Phase 4: Planned Schema Enhancements (Future)
 
 ### Donor Pooling Enhancement
+
 **Status:** 📋 Planned for Future Implementation
 
 **Objective:** Add support for donor pooling to better represent biological sample collection workflows.
 
 **Proposed Changes to Donor.json:**
+
 - `pooled_donors` (boolean, required) - indicates if this represents a single donor (false) or pooled donors (true)
 - `donor_count` (integer, optional) - number of individual donors in pool (required if pooled_donors=true)
 - Add dependentSchemas validation: if pooled_donors=true, then donor_count is required
 
 **Benefits:**
+
 - Accurate representation of sample collection methodologies
 - Support for both individual and pooled donor scenarios
 - Proper validation of pooling requirements
 
 ### Sample Enrichment Enhancement
+
 **Status:** 📋 Planned for Future Implementation
 
 **Objective:** Add enrichment/depletion tracking to support advanced sample processing workflows.
 
 **Proposed Changes to Biosample.json:**
+
 - `enrichment_factors` (array, optional) - factors used for cell enrichment/selection
 - `depletion_factors` (array, optional) - factors used for cell depletion/removal
 - `enriched_cell_types` (array, optional) - description of enriched cell populations
 - `depleted_cell_types` (array, optional) - description of depleted cell populations
 
 **Benefits:**
+
 - Support for advanced sample processing documentation
 - Tracking of enrichment/depletion methodologies
 - Enhanced metadata for processed biological samples
